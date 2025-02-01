@@ -1,0 +1,23 @@
+.notification_wrap {
+  .buttons_block {
+    margin-top: 3.8px;
+
+    button {
+      margin-left: 10px;
+    }
+
+    .is_confirm, .is_confirm:hover, .is_confirm:active {
+      transition: .3s;
+      cursor: pointer;
+      margin-left: 20px;
+    }
+
+    .is_confirm:hover {
+      scale: 1.2;
+    }
+
+    .is_confirm:active {
+      scale: 1.3;
+    }
+  }
+}

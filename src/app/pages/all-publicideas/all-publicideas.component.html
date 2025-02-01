@@ -1,0 +1,45 @@
+<div class="search-results"
+     id="search-publicideas-results"
+     infiniteScroll
+     [infiniteScrollDistance]="1"
+     [infiniteScrollThrottle]="100"
+     (scrolled)="getDataIfNotEnd(flatCheckboxValue)"
+     [scrollWindow]="false">
+
+  <div>
+    <div class="checkbox__wrap">
+      <div class="check_all" style="border-bottom: 1px solid rgb(233, 233, 233);">
+        <label
+          nz-checkbox
+          [(ngModel)]="allChecked"
+          (ngModelChange)="updateAllChecked()"
+          [nzIndeterminate]="indeterminate"
+        >{{'public.checkAll'|translate}}</label>
+      </div>
+      <br/>
+      <nz-checkbox-group
+        [(ngModel)]="checkboxOptions"
+        (ngModelChange)="updateSingleChecked()"
+      >
+      </nz-checkbox-group>
+    </div>
+
+    <div class="tab__container">
+      <div class="container-fluid">
+        <div *ngIf="!listStartup && !listDreams && !listPlans">
+          {{'public.noResults'|translate}}
+        </div>
+        <div class="row" *ngFor="let item of listCommon; index as i">
+
+          <div *ngIf="listStartup || listDreams || listPlans" class="col-xs-12">
+            <div class="card">
+              <post-item [postData]="item"></post-item>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-up-button [targetId]="'search-publicideas-results'"></app-up-button>

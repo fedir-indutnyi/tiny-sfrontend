@@ -1,0 +1,169 @@
+.donate_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 100%;
+  background-color: #ff6384;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+
+  .donate_animation {
+    max-height: 60px;
+  }
+
+  .notice_wrapper {
+    flex-grow: 1;
+    margin-right: 10px;
+
+    .notice {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .donate_link {
+      display: block;
+      margin-top: 5px;
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+
+  .wrap_button {
+    margin-right: 100px;
+
+    .donate_button {
+      width: 100px;
+      padding: 5px;
+      margin-right: 30px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #f43c6a;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .donate_button:hover {
+      background-color: #c72b52;
+    }
+
+    .donate_button:active {
+      background: #ff6384;
+    }
+  }
+
+  .close_icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .donate_container {
+    .wrap_button {
+      margin-right: 50px;
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .donate_container {
+    .notice_wrapper {
+      .notice {
+        font-size: 10px;
+      }
+
+      donate_link {
+        font-size: 12px;
+      }
+    }
+
+    .wrap_button {
+      margin-right: 10px;
+
+      .donate_button {
+        max-width: 90px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .donate_container {
+    .donate_animation {
+      max-width: 120px;
+    }
+
+    .notice_wrapper {
+      margin-right: 0;
+
+      donate_link {
+        font-size: 10px;
+      }
+    }
+
+    .wrap_button {
+      margin-right: 0;
+
+      .donate_button {
+        max-width: 80px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 481px) {
+  .donate_container {
+    .donate_animation {
+      max-width: 60px;
+    }
+
+    .notice_wrapper {
+      flex-grow: 0;
+      margin-right: 0;
+
+      .notice {
+        font-size: 10px;
+      }
+
+      donate_link {
+        font-size: 8px;
+      }
+    }
+
+    .wrap_button {
+      padding-left: 10px;
+
+      .donate_button {
+        margin-top: 25px;
+        border-radius: 15px;
+        max-width: 60px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .donate_container {
+    .donate_animation {
+      display: none;
+    }
+
+    .wrap_button {
+      display: none;
+    }
+
+    .close_icon {
+      top: 15px;
+    }
+  }
+}

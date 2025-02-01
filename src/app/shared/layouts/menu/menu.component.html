@@ -1,0 +1,32 @@
+<ul nz-menu
+    nzMode="inline">
+
+  <li
+    *ngFor="let item of menuInfo;let i = index" class="menu-item" [ngClass]="{'item-toggle-on':item.toggle === 'on'}">
+    <a [routerLink]="[item.routerLink.join('/')]"
+       *ngIf="item.title === 'menu.adminTools' ? userRole === 'admin' : item.routerLink "
+       routerLinkActive="active" class="menu-link"
+       (click)="_selectItem(item)">
+      <div class="placeholder">
+        <span nz-icon [nzType]="item.icon" nzTheme="outline"></span>
+      </div>
+      <span class="text">{{item.title|translate}}</span>
+    </a>
+    <a href="{{item.button.path}}" class="menu-button" *ngIf="item.button">
+      <span class="text"><i class="fa fa-plus"></i>{{item.button.title}}</span>
+    </a>
+
+    <a class="menu-link" *ngIf="!item.routerLink" (click)="isToggleOn(item)">
+      <div class="placeholder">
+        <mat-icon aria-hidden="false" aria-label="Add an Idea" [fontIcon]="item.icon" *ngIf="item.icon"></mat-icon>
+      </div>
+      <span class="text">{{item.title|translate}}</span>
+      <span class="fa fa-angle-right fa-fw direction"></span>
+    </a>
+
+
+    <div class="item-children" [@collapse]="item.toggle" *ngIf="item.children">
+      <du-menu [menuInfo]="item.children"></du-menu>
+    </div>
+  </li>
+</ul>

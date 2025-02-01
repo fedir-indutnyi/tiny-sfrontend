@@ -1,0 +1,19 @@
+<div class="container" style="width: fit-content;">
+    <mat-form-field appearance="outline">
+   <mat-label>Enter Label</mat-label>
+        <input matInput [(ngModel)]="label">
+    </mat-form-field><br>
+
+
+    <button mat-raised-button color="primary" (click)="submit()">
+        Submit
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        class="ml-3"
+        (click)="closeDialog()"
+      >
+        Close
+      </button>
+</div>

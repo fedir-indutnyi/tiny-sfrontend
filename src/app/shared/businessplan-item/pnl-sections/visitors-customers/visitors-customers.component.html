@@ -1,0 +1,111 @@
+<form nz-form nzLayout="vertical" [formGroup]="visitorsForm" (ngSubmit)="applyForm(visitorsForm)">
+  <div nz-row [nzGutter]="{ lg: 30, xl: 50 }">
+    <div nz-col [nzLg]="{ span: 16 }" [nzXs]="{ span: 24 }">
+      <div nz-row [nzGutter]="{md: 8, xl: 16 }">
+        <div nz-col [nzMd]="{ span: 12 }" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.totalMonthlyCrowd | translate"
+                          [nzTooltipIcon]="tooltipIcon">{{'bp.visitorsCustomers.totalMonthlyCrowd' | translate}}</nz-form-label>
+            <nz-form-control nzErrorTip="Please, fill in data">
+              <nz-input-group>
+                <input type="number"
+                formControlName="totalMonthlyCrowd"
+                nz-input
+                placeholder="1000"/>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzMd]="{ span: 12 }" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.totalMonthlyVisitors | translate"
+                          [nzTooltipIcon]="tooltipIcon">{{'bp.visitorsCustomers.totalMonthlyVisitors' | translate}}
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Please, fill in data">
+              <nz-input-group>
+                <input type="number" formControlName="totalMonthlyVisitors" nz-input placeholder="100" />
+                <button nz-button type="button" nzType="primary" class="advanced-customer-calculation" (click)="showAdvancedCustomerCalculation()">{{tooltipTitle.advancedVisitorsCalculation| translate}}</button>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          
+          <nz-modal [(nzVisible)]="isCustomerCalcVisible" nzWidth="75%" [nzTitle]="tooltipTitle.advancedVisitorsCalculation| translate" (nzOnCancel)="advancedCustomerCalculationHandleCancel()" (nzOnOk)="advancedCustomerCalculationHandleOk()">
+            <ng-container *nzModalContent>
+              <div #spreadsheetCalculator class="modal-content"></div>
+            </ng-container>
+            <div *nzModalFooter>
+              <button nz-button nzType="default" (click)="advancedCustomerCalculationHandleCancel()">Cancel</button>
+              <button nz-button nzType="primary" (click)="advancedCustomerCalculationHandleOk()" [nzLoading]="isConfirmLoading">Save</button>
+            </div>
+          </nz-modal>
+
+        </div>
+        <div nz-col [nzMd]="{ span: 12}" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.monthlyConversionUserThatBuys | translate"
+                          [nzTooltipIcon]="tooltipIcon">{{'bp.visitorsCustomers.monthlyConversion' | translate}}</nz-form-label>
+            <nz-form-control nzErrorTip="Please, fill in data">
+              <nz-input-group nzSuffixIcon="percentage">
+                <input type="number" formControlName="monthlyConversionUserThatBuys" nz-input placeholder="10"  max="100"/>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzMd]="{ span: 12 }" [nzSm]="{ span: 12 }" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.totalMonthlyVisitors | translate"
+            [nzTooltipIcon]="tooltipIcon">{{'bp.visitorsCustomers.paidTraffic' | translate}}</nz-form-label>
+            <nz-form-control nzErrorTip="Please, fill in data">
+              <nz-input-group nzSuffixIcon="percentage">
+                <input type="number" formControlName="paidTraffic" nz-input placeholder="0"  max="100"/>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzMd]="{ span: 12 }" [nzSm]="{ span: 12 }" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.costPerVisitor | translate"
+                          [nzTooltipIcon]="tooltipIcon">{{'bp.visitorsCustomers.costPerVisitor' | translate}}</nz-form-label>
+            <nz-form-control nzErrorTip="Please, fill in data">
+              <nz-input-group>
+                <input type="number" formControlName="costPerVisitor" nz-input placeholder="0" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzMd]="{ span: 12 }" [nzSm]="{ span: 12 }" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label [nzTooltipTitle]="tooltipTitle.totalMonthlyCustomers | translate"
+                          [nzTooltipIcon]="tooltipIcon">{{'bp.visitorsCustomers.totalMonthlyCustomers' | translate}}</nz-form-label>
+            <nz-form-control>
+              <span>{{visitorsForm.value.totalMonthlyCustomers}}</span>
+              <span nz-typography nzType="secondary" *ngIf="!visitorsForm.value.totalMonthlyCustomers">Calculated</span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+
+    <div nz-col [nzLg]="{ span: 8}" [nzXs]="{ span: 24 }">
+      <div nz-row [nzGutter]="{md: 8, xl: 16 }">
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label>{{'bp.visitorsCustomers.comment' | translate}}</nz-form-label>
+            <nz-form-control>
+              <nz-textarea-count [nzMaxCharacterCount]="255">
+                <textarea formControlName="comment" rows="4" placeholder="Free text about how that was estimated" nz-input></textarea>
+              </nz-textarea-count>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div nz-row nzJustify="end">
+    <button style="width: 100px;" nz-button nzType="primary" type="submit" [disabled]="visitorsForm.untouched || visitorsForm.invalid">
+      <span *ngIf="(componentName$ | async) !== componentName">Apply</span>
+      <nz-spin *ngIf="(componentName$ | async) === componentName" nzSimple [nzSize]="'small'"></nz-spin>
+    </button>
+  </div>
+</form>

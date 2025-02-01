@@ -1,0 +1,70 @@
+.pnl_get_wrap {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+
+  .pnl_get_twins_block {
+    width: 48%;
+    padding: 0 10px;
+    border-left: rgba(192, 192, 192, 0.47) solid 1px;
+
+    [nz-radio] {
+      display: block;
+      height: 32px;
+      line-height: 32px;
+    }
+
+    input {
+      width: 100px;
+      margin-left: 10px;
+    }
+
+    ::ng-deep .ant-switch {
+      background-color: #1890ff;
+      background-image: none;
+    }
+
+    ::ng-deep .ant-radio {
+      border: solid 1px #1890ff;
+      border-radius: 50%;
+    }
+
+    .switch_btn_wrap {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .download_btn {
+      position: absolute;
+      right: 10px;
+      bottom: 0;
+    }
+  }
+}
+
+.bottom_info_block {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  .bottom_info {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px
+  }
+
+  .color_brown {
+    color: brown;
+  }
+
+  .color_darkgreen {
+    color: darkgreen;
+  }
+
+}
+

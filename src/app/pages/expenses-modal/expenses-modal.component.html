@@ -1,0 +1,844 @@
+<div class="expense__header">
+  <h3 nz-typography>Transaction type</h3>
+
+  <nz-select nzSize="large" nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="tranasctionType">
+    <nz-option nzLabel="Money" nzValue="Money"></nz-option>
+    <nz-option nzLabel="Mielage" nzValue="Mielage"></nz-option>
+    <nz-option nzLabel="Hourly Rate" nzValue="Hourly Rate"></nz-option>
+    <nz-option nzLabel="Energy" nzValue="Energy"></nz-option>
+    <nz-option nzLabel="Thing" nzValue="Thing"></nz-option>
+    <nz-option nzLabel="Crypto Currency" nzValue="CryptoCurrency"></nz-option>
+    <nz-option nzLabel="Donation" nzValue="Donation"></nz-option>
+  </nz-select>
+</div>
+
+
+<div *ngIf="tranasctionType === 'Money'">
+
+  <div class="expense__row">
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Total Expense Value</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="number"
+            [(ngModel)]="totalValueofmoney"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <div class="expense__item_flex">
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Currency</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="text"
+                [(ngModel)]="currencyType"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Quantity</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="number"
+                [(ngModel)]="amount"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Unit of Measure</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="number"
+            [(ngModel)]="uom"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Price</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="number"
+            [(ngModel)]="price"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Owned By</nz-form-label>
+        <nz-select nzSize="large" nzAllowClear nzPlaceHolder="Owned By" [(ngModel)]="vendor">
+          <nz-option *ngFor="let option of teamMembers"
+                     [nzValue]="option.username" [nzLabel]="option.username">
+          </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Description (Optional)</nz-form-label>
+        <textarea nz-input [(ngModel)]="description"></textarea>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <label nz-checkbox [(ngModel)]="moneyDonated">
+        Donated Forever
+      </label>
+    </div>
+
+    <div class="expense__item expense__itemx2">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="submit()">
+        Submit
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="closeDialog()"
+        nzDanger
+        class="ml-3">
+        Close
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="tranasctionType === 'Mielage'">
+
+  <div class="expense__row">
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Distance</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="number"
+            [(ngModel)]="distance"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Units</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="mielageUom"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Consumption</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="number"
+            [(ngModel)]="milegaeConsumption"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Price of Fuel or Energy</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="number"
+            [(ngModel)]="pricePerLiterOrWatt"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Per ({{currencyType}})</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="uomOfEnergy"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Car Name</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="carName"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Total Expense Value</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            step="any"
+            [(ngModel)]="mileageMoney"
+            value="{{(milegaeConsumption/100)*distance*pricePerLiterOrWatt}}"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Currency</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="currencyType"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item expense__itemx2">
+      <nz-form-item>
+        <nz-form-label>Description (Optional)</nz-form-label>
+        <textarea nz-input [(ngModel)]="description"></textarea>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <label nz-checkbox [(ngModel)]="mileageDonation">
+        Donated Forever
+      </label>
+    </div>
+
+    <div class="expense__item expense__itemx2">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="submit()">
+        Submit
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="closeDialog()"
+        nzDanger
+        class="ml-3">
+        Close
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="tranasctionType === 'Hourly Rate'">
+
+  <div class="expense__row">
+
+    <div class="expense__item">
+
+      <div class="expense__item_flex">
+        <div class="expense__col">
+          <nz-form-label>Start Time</nz-form-label>
+          <mat-form-field appearance="outline" style="width: 100%">
+            <input matInput #input [(ngModel)]="starttime" (ngModelChange)="onStartDateChange()"
+                   [ngxMatDatetimePicker]="picker"/>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker>
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+        </div>
+        <div class="expense__col">
+          <nz-form-label>
+            End Time
+          </nz-form-label>
+          <mat-form-field appearance="outline" style="width: 100%">
+            <input matInput #input (ngModelChange)="onDateChange()" [(ngModel)]="endtime"
+                   [ngxMatDatetimePicker]="picker1"/>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker1>
+            </ngx-mat-datetime-picker>
+
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="expense__item">
+
+      <div class="expense__item_flex">
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Hours</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="number"
+                [(ngModel)]="hours"
+                value="{{daysselected * 24}}"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Hourly Rate ({{currencyType}} per hour)</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="number"
+                [(ngModel)]="hourlyRate"
+              />
+            </nz-form-control>
+
+          </nz-form-item>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="expense__item">
+
+      <div class="expense__item_flex">
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Total Expense Value</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="number"
+                [(ngModel)]="totalValueofmoney"
+                value="{{hours*hourlyRate}}"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Currency</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="text"
+                [(ngModel)]="currencyType"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Description (Optional)</nz-form-label>
+        <textarea nz-input [(ngModel)]="description"></textarea>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <label nz-checkbox [(ngModel)]="mileageDonation">
+        Donated Forever
+      </label>
+    </div>
+
+    <div class="expense__item expense__itemx2">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="onHoursSubmit()">
+        Submit
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="closeDialog()"
+        nzDanger
+        class="ml-3">
+        Close
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="tranasctionType === 'Energy'">
+
+  <div class="expense__row">
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Amount</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="amount"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Uom</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="eneryUom"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Price</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="price"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Vendor(Supplied By)</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="enerySupplier"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+
+      <div class="expense__item_flex">
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Total Expense Value</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="number"
+                [(ngModel)]="totalValueofmoney"
+                value="{{amount*price}}"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Currency</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="text"
+                [(ngModel)]="currencyType"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Description (Optional)</nz-form-label>
+        <textarea nz-input [(ngModel)]="description"></textarea>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <label nz-checkbox [(ngModel)]="mileageDonation">
+        Donated Forever
+      </label>
+    </div>
+
+    <div class="expense__item expense__itemx2">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="submit()">
+        Submit
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="closeDialog()"
+        nzDanger
+        class="ml-3">
+        Close
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="tranasctionType === 'Thing'">
+
+  <div class="expense__row">
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Amount</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="amount"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Uom</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="uom"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Vendor(Supplied By)</nz-form-label>
+        <nz-select nzSize="large" nzAllowClear nzPlaceHolder="Owned By" [(ngModel)]="vendor">
+          <nz-option *ngFor="let option of teamMembers"
+                     [nzValue]="option.username" [nzLabel]="option.username">
+          </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+
+      <div class="expense__item_flex">
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Total Expense Value</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="number"
+                [(ngModel)]="totalValueofmoney"
+                value="{{amount*price}}"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Currency</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="text"
+                [(ngModel)]="currencyType"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Estimated Value of Thing</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="estimatedThingValue"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Description (Optional)</nz-form-label>
+        <textarea nz-input [(ngModel)]="description"></textarea>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <label nz-checkbox [(ngModel)]="mileageDonation">
+        Donated Forever
+      </label>
+    </div>
+
+    <div class="expense__item expense__itemx2">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="submit()">
+        Submit
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="closeDialog()"
+        nzDanger
+        class="ml-3">
+        Close
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="tranasctionType === 'CryptoCurrency'">
+
+  <div class="expense__row">
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Amount</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="cryptoAmount"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Uom</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="cryptoUom"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Supplied By</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="cryptoSupplier"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+
+      <div class="expense__item_flex">
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Total</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="number"
+                [(ngModel)]="cryptoTotal"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Currency</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="text"
+                [(ngModel)]="currencyType"
+                readonly
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Price</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            type="text"
+            [(ngModel)]="crpytoConversionPrice"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Description (Optional)</nz-form-label>
+        <textarea nz-input [(ngModel)]="description"></textarea>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <label nz-checkbox [(ngModel)]="mileageDonation">
+        Donated Forever
+      </label>
+    </div>
+
+    <div class="expense__item expense__itemx2">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="submit()">
+        Submit
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="closeDialog()"
+        nzDanger
+        class="ml-3">
+        Close
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="tranasctionType === 'Donation'">
+
+  <div class="expense__row">
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Mecenat or Angel Investor</nz-form-label>
+        <nz-select nzSize="large" nzAllowClear nzPlaceHolder="Owned By" [(ngModel)]="vendor">
+          <nz-option *ngFor="let option of teamMembers"
+                     [nzValue]="option.username" [nzLabel]="option.username">
+          </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+
+      <div class="expense__item_flex">
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Total</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="number"
+                [(ngModel)]="totalDonation"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="expense__col">
+          <nz-form-item>
+            <nz-form-label>Currency</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                type="text"
+                [(ngModel)]="currencyType"
+                readonly
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="expense__item">
+      <nz-form-item>
+        <nz-form-label>Description (Optional)</nz-form-label>
+        <textarea nz-input [(ngModel)]="description"></textarea>
+      </nz-form-item>
+    </div>
+
+    <div class="expense__item">
+      <label nz-checkbox [(ngModel)]="mileageDonation">
+        Donated Forever
+      </label>
+    </div>
+
+    <div class="expense__item expense__itemx2">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="submit()">
+        Submit
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="closeDialog()"
+        nzDanger
+        class="ml-3">
+        Close
+      </button>
+    </div>
+  </div>
+
+</div>

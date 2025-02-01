@@ -1,0 +1,39 @@
+<div>
+    <div style="display: flex; justify-content: center; align-items: center"><h3>{{ businessPlan.ideatitle }}</h3></div>
+    <form class="pnl_get_wrap" [formGroup]="form">
+        <div class="pnl_get_twins_block">
+            Choose a file extension:
+            <nz-radio-group formControlName="extensionType">
+                <label nz-radio nzValue="csv">CSV</label>
+                <label nz-radio nzValue="tsv">TSV</label>
+                <label nz-radio nzValue="xlsx">XLSX</label>
+                <label nz-radio nzValue="clipboard">Copy to Clipboard</label>
+            </nz-radio-group>
+        </div>
+
+        <div style="position: relative" class="pnl_get_twins_block">
+            Choose "," or "." <br> decimal separator:
+            <div class="switch_btn_wrap">
+                <i style=" margin-right: 10px">{{ form.get('decimalSeparator').value ? 'coma' : 'dot' }}=></i>
+                <nz-switch formControlName="decimalSeparator" nzCheckedChildren="," nzUnCheckedChildren="."></nz-switch>
+            </div>
+            <button class="download_btn" *ngIf="!downloadErr?.err" [disabled]="isBtnDisabled" nz-button
+                    nzType="primary" (click)="onPnlData()">Download
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="bottom_info_block">
+    <div class="bottom_info color_brown" *ngIf="downloadErr?.err">
+        <i>{{ downloadErr.message }}</i>
+    </div>
+    <div class="bottom_info color_darkgreen" *ngIf="isDone">
+        <i>Success</i>
+    </div>
+    <div class="bottom_info color_brown" *ngIf="isDone === false">
+        <i>Error</i>
+    </div>
+</div>
+
+

@@ -1,0 +1,112 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Contacts"
+  (nzOnCancel)="handleCancel()"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  [nzWidth]="800"
+  nzCentered
+>
+  <ng-template #modalContent>
+    <div class="add-contact-container">
+
+      <div class="row" style="width: calc(100% + 30px)">
+        <div class="col col-12 col-md-6 col-lg-3 mb-3">
+          <input class="add-contact-input" nz-input placeholder="Name" [(ngModel)]="contactName"/>
+        </div>
+        <div class="col col-12 col-md-6 col-lg-3 mb-3">
+          <input class="add-contact-input" nz-input placeholder="Email" [(ngModel)]="contactEmail"/>
+        </div>
+        <div class="col col-12 col-md-6 col-lg-3 mb-3">
+          <input class="add-contact-input" nz-input placeholder="Phone" [(ngModel)]="contactPhone"/>
+        </div>
+        <div class="col col-12 col-md-6 col-lg-3 mb-3">
+          <button
+            nz-button
+            nzBlock
+            nzType="primary"
+            (click)="checkedForEditId ? updateContact() : addContact()"
+            [disabled]="!contactName || !contactEmail"
+            [nzLoading]="addContactLoading">
+            {{checkedForEditId ? 'Save Contact' : 'Add Contact'}}
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="table__wrap">
+      <nz-table
+        #contactsTable
+        [nzData]="contacts"
+        [nzSize]="'small'"
+        (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+        [nzScroll]="{ y: '40vh' }"
+        [nzFooter]="tableFooter"
+        [nzPageSize]="50"
+        [nzLoading]="contactsLoading"
+        class="table"
+      >
+        <thead>
+        <tr>
+          <th
+            [nzChecked]="tableChecked"
+            [nzIndeterminate]="tableIndeterminate"
+            (nzCheckedChange)="onAllChecked($event)"
+            nzWidth="5%"
+          ></th>
+          <th nzWidth="1">Name</th>
+          <th nzWidth="1">Email</th>
+          <th nzWidth="1">Phone</th>
+          <th nzWidth="20%">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let c of contactsTable.data">
+          <td
+            [nzChecked]="setOfCheckedId.has(c.id)"
+            [nzDisabled]="setOfDisableId.has(c.id)"
+            (nzCheckedChange)="onItemChecked(c.id, $event)"
+          ></td>
+          <td>{{c.name}}</td>
+          <td>{{c.email}}</td>
+          <td>{{c.telephone}}</td>
+          <td>
+            <span class="col">
+              <a *ngIf="checkedForDeleteId !== c.id" (click)="checkedForDeleteId = c.id">Delete</a>
+              <a *ngIf="checkedForDeleteId === c.id" nz-icon nzType="close-circle" (click)="checkedForDeleteId = null"
+                    nzTheme="outline">
+
+              </a>
+              <a *ngIf="checkedForDeleteId === c.id" nz-icon nzType="check" class="margin_left"
+                    (click)="deleteContact(c.id, $event)" nzTheme="outline"></a>
+            </span>
+            <a *ngIf="checkedForEditId !== c.id" class="margin_left" (click)="onEditContact(c, $event)">Edit</a>
+            <a *ngIf="checkedForEditId === c.id" class="margin_left" (click)="cancelEditing($event)">Cancel</a>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+
+  </ng-template>
+  <ng-template #modalFooter>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="chooseContacts()"
+      [disabled]="setOfCheckedId.size === 0"
+      *ngIf="showChooseBtn"
+    >Choose Contacts
+    </button>
+    <button
+      nz-button
+      nzType="default"
+      (click)="handleCancel()"
+    >Cancel
+    </button>
+  </ng-template>
+  <ng-template #tableFooter>
+    <span>Selected {{ setOfCheckedId.size }} contacts</span>
+  </ng-template>
+</nz-modal>

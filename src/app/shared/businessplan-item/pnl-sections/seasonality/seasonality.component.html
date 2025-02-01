@@ -1,0 +1,66 @@
+<form [formGroup]="seasonalityForm" (ngSubmit)="applyChanges(seasonalityForm)" class="w-100">
+
+  <nz-table #seasonalityTable nzBordered nzSize="small" [nzData]="seasonalityProducts" [nzScroll]="{x: '1050px', y: '500px'}">
+    <thead>
+      <tr>
+        <th valign="top" nzWidth="150px"nzLeft>Product Name</th>
+        <th *ngFor="let month of monthsNames">{{month}}</th>
+        <th valign="top" nzWidth="60px" nzRight></th>
+      </tr>
+    </thead>
+    <tbody formGroupName="products">
+      <ng-container *ngFor="let product of seasonalityProducts;  let index = index; trackBy: trackByFn">
+        <tr class="editable-row" [formArrayName]="index">
+          <td nzLeft>
+           {{ product.name }}
+          </td>
+          <td *ngFor="let seasonality of product.seasonalityIndex; let monthIndex = index; trackBy: trackByFnSeasonality"
+                ngDefaultControl [formControlName]="monthIndex">
+            <div *ngIf="editRowIndex !== index">{{seasonality}} %</div>
+            <nz-input-number *ngIf="editRowIndex === index" nzMin="0"
+              [formControlName]="monthIndex"
+              type="text" class="w-100"></nz-input-number>
+            <!-- <div contenteditable *ngIf="editRowIndex === i">{{seasonality + ' %'}}</div> -->
+          </td>
+          <td nzRight>
+           <div class="action-cell">
+            <ng-container *ngIf="editRowIndex !== index">
+              <a nz-button nzType="link" title="Edit row" (click)="startEditingRow(index)" [ngClass]="{'pending': productsFormCtrl.controls[index].dirty}">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </a>
+              <a  nz-popconfirm
+                  nzPopconfirmTitle="Populate all rows?" nz-button nzType="link" title="Populate row data"
+                  (nzOnConfirm)="populateRow(product, index)">
+                <span nz-icon nzType="sync" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+             <ng-container *ngIf="editRowIndex === index">
+              <a  (click)="saveEdit(index)" nz-button nzType="link" title="Save edited"
+                  [disabled]="productsFormCtrl.controls[index].pristine"
+                  [ngClass]="{'pending': productsFormCtrl.controls[index].dirty}">
+                <span nz-icon nzType="check" nzTheme="outline"></span>
+              </a>
+              <a  nz-popconfirm nz-button nzType="link" title="Reset edited"
+                  nzPopconfirmTitle="Cancel editing?"
+                  (nzOnConfirm)="resetEdit(product, index, productsFormCtrl.controls[index].pristine)">
+                <span nz-icon nzType="close" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+
+           </div>
+
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+
+  <div nz-row nzJustify="end">
+    <button style="width: 100px;" nz-button nzType="primary" type="submit" [disabled]="seasonalityForm.pristine">
+        <span *ngIf="(componentName$ | async) !== componentName">Apply</span>
+        <nz-spin *ngIf="(componentName$ | async) === componentName" nzSimple [nzSize]="'small'"></nz-spin>
+    </button>
+  </div>
+</form>
+
+

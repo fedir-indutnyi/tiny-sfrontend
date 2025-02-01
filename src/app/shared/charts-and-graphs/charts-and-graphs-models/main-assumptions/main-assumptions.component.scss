@@ -1,0 +1,17 @@
+.main-assumptions__basic-info{
+    display: flex;
+    flex-direction: row;
+}
+
+.main-assumptions__basic-info__card{
+    flex: 1;
+}
+
+h2{
+    margin-top: 40px;
+    text-align: center;
+}
+
+hr{
+    margin: -10px 50px 10px
+}

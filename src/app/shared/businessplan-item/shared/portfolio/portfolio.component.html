@@ -1,0 +1,445 @@
+<form class="portfolio-wrap" [formGroup]="portfolioTableForm" (ngSubmit)="applyPortfolio(portfolioTableForm)">
+  <app-ai-button [AIPromtWithInputs] = "_aiButton.AIPrompts.portfolio" (saveData)="pasteFromJSON($event)" [initialData]="_emptyProduct" class="ai-button"></app-ai-button>
+  <div class="calculation-method">  Choose customer calculation method 
+    <select formControlName="customerCalculationMethod">
+      <option  [ngValue]="'each'"     nzLabel="each">{{'bp.portfolio.useEach' | translate}}</option>
+      <option  [ngValue]="'procent'"  nzLabel="procent">{{'bp.portfolio.useShareConversion' | translate }}  , %</option>
+      <option  [ngValue]="'absolute'"  nzLabel="abs"> Use absolute customer number</option>
+    </select> 
+  </div>
+
+  <h2> {{'bp.portfolio.customerVolumeSplitHeading' | translate}}</h2><hr>
+  <nz-table #portfolioTable nzBordered nzSize="small" [nzData]="products" [nzFooter]="footer">
+    <thead>
+      <tr>
+        <th valign="top" nzWidth="100px" > {{ 'bp.portfolio.brandName' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.brand | translate"></i></th>
+        <th valign="top" nzWidth="300px" nzLeft>{{ 'bp.portfolio.productName' | translate }}<i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.productName | translate"></i></th>
+        <th valign="top" [ngClass]="{calculated: customerCalculationMethod != 'each'}">{{ 'bp.portfolio.eachAndCustomerBuys' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.eachNCustomerBuys | translate"></i></th>
+        <th valign="top" [ngClass]="{calculated: customerCalculationMethod != 'procent'}">{{ 'bp.portfolio.shareConversionCustomer' | translate }}, % <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.shareCustomerThatBuy | translate"></i></th>
+        <th valign="top" [ngClass]="{calculated: customerCalculationMethod != 'absolute'}">{{ 'bp.portfolio.absoluteCountValues' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.absoluteCountValues | translate"></i></th>
+        <th valign="top" class="calculated">{{ 'bp.portfolio.customers' | translate }}<i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.monthlyCustomers | translate"></i></th>
+<!--         <th valign="top">{{ 'bp.portfolio.itemsPerOrder' | translate }}<i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.itemsPerOrder | translate"></i></th>
+ -->        <th valign="top">{{ 'bp.portfolio.ordersMonthPerCustomer' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.ordersMonthPerCustomer | translate"></i></th>
+        <th valign="top">{{ 'bp.portfolio.estimatedFailedOrders' | translate }}, % <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.estimatedFailedOrders | translate"></i></th>
+        <th valign="top" nzWidth="60px" nzRight></th>
+      </tr>
+    </thead>
+    <tbody formArrayName="products">
+      <ng-container *ngIf="productsTotalData$ | async as productsTotal">
+        <tr class="total-row">
+          <td></td>
+          <td nzLeft>{{ productsTotal.name }}</td>
+          <td [ngClass]="{calculated: customerCalculationMethod != 'each'}">{{productsTotal.eachNCustomerBuys}}</td>
+          <td [ngClass]="{calculated: customerCalculationMethod != 'procent'}">{{productsTotal.monthlyConversionUserThatBuys}}</td>  
+          <td [ngClass]="{calculated: customerCalculationMethod != 'absolute'}"></td> 
+          <td class="calculated">{{ productsTotal.customers }}</td>
+          <td></td>                               <!-- productsTotal.ordersMonthPerCustomer -->
+          <!-- <td></td> -->                               
+          <td></td>                               <!-- productsTotal.estimatedFailedOrders -->
+          <td class="text-center" nzRight></td>
+        </tr>
+      </ng-container>
+      <ng-container *ngFor=" let productForm of portfolioTableForm.controls.products.controls; index as i; trackBy: trackByFn">
+        <tr [formGroupName]="i" class="editable-row">
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl formControlName="brand">
+              {{productForm.value.brand}}
+            </div>
+            <input *ngIf="editRowIndex === i" type="text" nz-input formControlName="brand">
+          </td>
+          <td nzLeft>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="name">
+              {{ productForm.value.name }}
+            </div>
+            <input *ngIf="editRowIndex === i" type="text" nz-input formControlName="name" >
+          </td>
+          <td [ngClass]="{calculated: customerCalculationMethod != 'each'}">
+            <div *ngIf="editRowIndex !== i || customerCalculationMethod != 'each'" ngDefaultControl  formControlName="eachNCustomerBuys">
+              {{ productForm.value.eachNCustomerBuys }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i && customerCalculationMethod == 'each'" formControlName="eachNCustomerBuys" nzStep="0.1" nzMin="0"
+              type="text" class="w-100"></nz-input-number>
+          </td>
+          <td [ngClass]="{calculated: customerCalculationMethod != 'procent'}">
+            <div *ngIf="editRowIndex !== i || customerCalculationMethod != 'procent'" ngDefaultControl  formControlName="monthlyConversionUserThatBuys" nzStep="0.1" nzMin="0">
+              {{ productForm.value.monthlyConversionUserThatBuys }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i && customerCalculationMethod == 'procent'" formControlName="monthlyConversionUserThatBuys" nzStep="1" nzMin="0"
+              type="text" class="w-100"></nz-input-number>
+          </td>
+          <td [ngClass]="{calculated: customerCalculationMethod != 'absolute'}">
+            <div *ngIf="editRowIndex !== i || customerCalculationMethod != 'absolute'" ngDefaultControl  formControlName="absoluteCountValues">
+              {{ productForm.value.absoluteCountValues ?? 0}}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i && customerCalculationMethod == 'absolute'" formControlName="absoluteCountValues" nzStep="0.1" nzMin="0"
+              type="text" class="w-100"></nz-input-number>
+          </td>
+          <td nz-typography nzType="secondary" class="calculated">
+            {{ productForm.value.customers }}
+          </td>
+          <!-- <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="itemsPerOrder">
+              {{ productForm.value.itemsPerOrder }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i" formControlName="itemsPerOrder" nzStep="1" nzMin="0"
+              type="text" class="w-100"></nz-input-number>
+          </td> -->
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="ordersMonthPerCustomer">
+              {{ productForm.value.ordersMonthPerCustomer }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i" formControlName="ordersMonthPerCustomer" nzStep="0.1" nzMin="0"
+              type="text" class="w-100"></nz-input-number>
+          </td>
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="estimatedFailedOrders">
+              {{ productForm.value.estimatedFailedOrders }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i" formControlName="estimatedFailedOrders" nzMin="0" nzMax="100"
+              type="text" class="w-100"></nz-input-number>
+          </td>
+
+          <td nzRight>
+           <div class="action-cell">
+            <ng-container *ngIf="editRowIndex !== i">
+              <a (click)="startEditingRow(i)" nz-button nzType="link" title="Edit row" [ngClass]="{'pending': productForm.dirty}">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </a>
+              <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(i)" nz-button nzType="link" title="Delete row">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+
+             <ng-container *ngIf="editRowIndex === i">
+              <a [disabled]="productForm.invalid"
+                [ngClass]="{'pending': productForm.dirty}"
+                (click)="saveEdit(productForm, i)" nz-button nzType="link" title="Save edited">
+                <span nz-icon nzType="check" nzTheme="outline"></span>
+              </a>
+              <a nz-popconfirm nzPopconfirmTitle="Cancel editing?" (nzOnConfirm)="resetEdit(productForm, i)" nz-button nzType="link" title="Reset edited">
+                <span nz-icon nzType="close" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+           </div>
+
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+
+  <h2> {{'bp.portfolio.brandsProductsOfferHeading' | translate}}</h2><hr>
+  <nz-table #portfolioTable nzBordered nzSize="small" [nzData]="products" [nzScroll]="{x: '1000px'}" [nzFooter]="footer">
+    <thead>
+      <tr>
+        <th valign="top" nzWidth="100px"> {{ 'bp.portfolio.brandName' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.brand | translate"></i></th>
+        <th valign="top" nzWidth="300px" nzLeft>{{ 'bp.portfolio.productName' | translate }}<i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.productName | translate"></i></th>
+        <th valign="top">{{ 'bp.portfolio.cost' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.costPrice | translate"></i></th>
+        <th valign="top">{{ 'bp.portfolio.price' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.price | translate"></i></th>
+        <th valign="top" class="calculated">{{ 'bp.portfolio.markup' | translate }}, % <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.productMarkup | translate"></i></th>
+        <th valign="top" class="calculated">{{ 'bp.portfolio.margin' | translate }}, % <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.productMargin | translate"></i></th>
+        <th valign="top" >{{ 'bp.portfolio.UOM' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.UOM | translate"></i></th>
+        <th valign="top" class="calculated">{{ 'bp.portfolio.totalUnits' | translate }} </th>
+        <th valign="top" class="calculated">{{ 'bp.portfolio.totalMonthlyValue' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.totalMonthlyValue | translate"></i></th>
+        <th valign="top">{{ 'bp.portfolio.standardDiscount' | translate }}, % <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.standardDiscount | translate"></i></th>
+        <th valign="top" nzWidth="60px" nzRight></th>
+      </tr>
+    </thead>
+    <tbody formArrayName="products">
+      <ng-container *ngIf="productsTotalData$ | async as productsTotal">
+        <tr class="total-row">
+          <td></td>
+          <td nzLeft>{{ productsTotal.name }}</td>
+          <td></td>                               <!-- productsTotal.cost -->
+          <td></td>                               <!-- productsTotal.price -->
+          <td class="calculated"></td>            <!-- productsTotal.productMarkup -->
+          <td class="calculated"></td>            <!-- productsTotal.productMargin -->
+          <td></td>
+          <td class="calculated">{{ productsTotal.totalUnits }}</td>
+          <td class="calculated">{{ productsTotal.totalMonthlyValue }}</td>
+          <td></td>                               <!-- productsTotal.standardDiscount -->
+          <td class="text-center" nzRight></td>
+        </tr>
+      </ng-container>
+      <ng-container *ngFor=" let productForm of portfolioTableForm.controls.products.controls; index as i; trackBy: trackByFn">
+        <tr [formGroupName]="i" class="editable-row">
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl formControlName="brand">
+              {{productForm.value.brand}}
+            </div>
+            <input *ngIf="editRowIndex === i" type="text" nz-input formControlName="brand">
+          </td>
+          <td nzLeft>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="name">
+              {{ productForm.value.name }}
+            </div>
+            <input *ngIf="editRowIndex === i" type="text" nz-input formControlName="name" >
+          </td>
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="cost">
+              {{ productForm.value.cost }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i" formControlName="cost" nzStep="0.1" nzMin="0"  type="text"class="w-100"></nz-input-number>
+          </td>
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="price">
+              {{ productForm.value.price }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i" formControlName="price" nzStep="0.1" nzMin="0" type="text" class="w-100"></nz-input-number>
+          </td>
+          <td nz-typography nzType="secondary" class="calculated">
+            {{ productForm.value.productMarkup }}
+          </td>
+          <td nz-typography nzType="secondary" class="calculated">
+            {{ productForm.value.productMargin }}
+          </td>
+
+          <td [ngClass]="{'calculated': !productForm.controls.overrideFromBusinessDetails.value}">
+            <div *ngIf="editRowIndex !== i || !productForm.controls.overrideFromBusinessDetails.value" ngDefaultControl formControlName="UOM" >
+              {{productForm.value.UOM}}
+            </div>
+            <input *ngIf="editRowIndex === i && productForm.controls.overrideFromBusinessDetails.value" type="text" nz-input formControlName="UOM"
+            type="text" class="w-100">
+          </td>
+          <td nz-typography nzType="secondary" class="calculated">
+            {{ productForm.value.totalUnits }}
+          </td>
+          <td nz-typography nzType="secondary" class="calculated">
+            {{ productForm.value.totalMonthlyValue }}
+          </td>
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="standardDiscount">
+              {{ productForm.value.standardDiscount }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i" formControlName="standardDiscount" nzMin="0" nzMax="100"
+              type="text" class="w-100"></nz-input-number>
+          </td>
+
+
+          <td nzRight>
+           <div class="action-cell">
+            <ng-container *ngIf="editRowIndex !== i">
+              <a (click)="startEditingRow(i)" nz-button nzType="link" title="Edit row" [ngClass]="{'pending': productForm.dirty}">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </a>
+              <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(i)" nz-button nzType="link" title="Delete row">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+
+             <ng-container *ngIf="editRowIndex === i">
+              <a [disabled]="productForm.invalid"
+                [ngClass]="{'pending': productForm.dirty}"
+                (click)="saveEdit(productForm, i)" nz-button nzType="link" title="Save edited">
+                <span nz-icon nzType="check" nzTheme="outline"></span>
+              </a>
+              <a nz-popconfirm nzPopconfirmTitle="Cancel editing?" (nzOnConfirm)="resetEdit(productForm, i)" nz-button nzType="link" title="Reset edited">
+                <span nz-icon nzType="close" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+           </div>
+
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+
+  <h2> {{'bp.portfolio.initialStockHeading' | translate}}</h2><hr>
+  <nz-table #portfolioTable nzBordered nzSize="small" [nzData]="products" [nzScroll]="{x: '1000px'}" [nzFooter]="footer" >
+    <thead style="overflow: hidden !important; padding-right: 5px">
+      <tr>
+        <th valign="top" nzWidth="100px" > {{ 'bp.portfolio.brandName' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.brand | translate"></i></th>
+        <th valign="top" nzWidth="300px"  nzLeft>{{ 'bp.portfolio.productName' | translate }}<i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.productName | translate"></i></th>
+        <th valign="top" nzWidth="100px">{{ 'bp.portfolio.onFirstInitialStock' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.onFirstInitialStock | translate"></i></th>
+        <th valign="top" nzWidth="100px">{{ 'bp.portfolio.amortizationApplied' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]=""></i></th>
+        <th valign="top" class="calculated">{{ 'bp.portfolio.totalAssetValue' | translate }}<i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.totalAssetValue | translate"></i></th>
+        <th valign="top">{{ 'bp.portfolio.beginningMonth' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.beginningMonths | translate"></i></th>
+        <th valign="top" class="calculated">{{ 'bp.portfolio.endingMonth' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]=""></i></th>
+        <th valign="top">{{ 'bp.portfolio.numberOfMonths' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.numberOfMonthsForInitialStock | translate"></i></th>
+        <th valign="top">{{ 'bp.portfolio.ammortisationOrDepreciation' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.ammortisationOrDepreciation | translate"></i></th>
+        <th valign="top" nzWidth="60px" nzRight>Action</th>
+      </tr>
+    </thead>
+    <tbody formArrayName="products">
+      <ng-container *ngFor=" let productForm of portfolioTableForm.controls.products.controls; index as i; trackBy: trackByFn">
+        <tr [formGroupName]="i" class="editable-row">
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl formControlName="brand">
+              {{productForm.value.brand}}
+            </div>
+            <input *ngIf="editRowIndex === i" type="text" nz-input formControlName="brand">
+          </td>
+          <td nzLeft>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="name">
+              {{ productForm.value.name }}
+            </div>
+            <input *ngIf="editRowIndex === i" type="text" nz-input formControlName="name" >
+          </td>
+          <td nzAlign="center">
+            <nz-checkbox-wrapper>
+              <label nz-checkbox [nzDisabled]="editRowIndex !== i" formControlName="onFirstInitialStock" > </label>
+            </nz-checkbox-wrapper>
+          </td>
+          <td nzAlign="center">
+            <nz-checkbox-wrapper>
+              <label nz-checkbox [nzDisabled]="editRowIndex !== i" formControlName="ammortizationApplied"> </label>
+            </nz-checkbox-wrapper>
+          </td>
+          <td nz-typography nzType="secondary" class="calculated">
+            {{ productForm.value.totalAssetValue }}
+          </td>
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="beginningMonths">
+              {{ productForm.value.beginningMonths }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i" formControlName="beginningMonths" nzMin="0"
+              type="text" (blur)="stopEdit()" class="w-100"></nz-input-number>
+          </td>
+          <td nz-typography nzType="secondary" class="calculated">
+            {{ productForm.value.ammortizationApplied ? productForm.value.endingMonth : "never"  }}  
+          </td>
+
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl formControlName="numberOfMonthsForInitialStock" >
+              {{productForm.value.numberOfMonthsForInitialStock}}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i" type="text" nz-input formControlName="numberOfMonthsForInitialStock" nzStep="0.1" nzMin="0"
+            type="text" class="w-100">
+            </nz-input-number>
+          </td>
+
+          <td [ngClass]="{'calculated': !productForm.value.ammortizationApplied}" >
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="endingMonth">
+              {{ productForm.value.ammortizationApplied ? productForm.value.endingMonth : "never"  }}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i && productForm.value.ammortizationApplied " 
+              formControlName="endingMonth" nzMin="0" type="text" (blur)="stopEdit()" class="w-100"></nz-input-number>
+          </td>
+
+          <td nzRight>
+           <div class="action-cell">
+            <ng-container *ngIf="editRowIndex !== i">
+              <a (click)="startEditingRow(i)" nz-button nzType="link" title="Edit row" [ngClass]="{'pending': productForm.dirty}">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </a>
+              <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(i)" nz-button nzType="link" title="Delete row">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+
+             <ng-container *ngIf="editRowIndex === i">
+              <a [disabled]="productForm.invalid"
+                [ngClass]="{'pending': productForm.dirty}"
+                (click)="saveEdit(productForm, i)" nz-button nzType="link" title="Save edited">
+                <span nz-icon nzType="check" nzTheme="outline"></span>
+              </a>
+              <a nz-popconfirm nzPopconfirmTitle="Cancel editing?" (nzOnConfirm)="resetEdit(productForm, i)" nz-button nzType="link" title="Reset edited">
+                <span nz-icon nzType="close" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+           </div>
+
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+
+  <h2> {{'bp.portfolio.inflationOverrideHeading' | translate}}</h2><hr>
+  <nz-table #portfolioTable nzBordered nzSize="small" [nzData]="products" [nzFooter]="footer">
+    <thead>
+      <tr>
+        <th valign="top" nzWidth="150px"> {{ 'bp.portfolio.brandName' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.brand | translate"></i></th>
+        <th valign="top" nzWidth="400px" nzLeft>{{ 'bp.portfolio.productName' | translate }}<i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.productName | translate"></i></th>
+        <th valign="top">{{ 'bp.portfolio.inflation' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.yearlyInflationRate | translate"></i></th>
+        <th valign="top">{{ 'bp.portfolio.priceIncrease' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.yearlyPriceIncrease | translate"></i></th>
+        <th valign="top">{{ 'bp.portfolio.overrideValues' | translate }} <i nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="tooltipTitle.overrideFromBusinessDetails | translate"></i></th>
+        <th valign="top" nzWidth="60px" nzRight></th>
+      </tr>
+    </thead>
+    <tbody formArrayName="products">
+      <ng-container *ngFor=" let productForm of portfolioTableForm.controls.products.controls; index as i; trackBy: trackByFn">
+        <tr [formGroupName]="i" class="editable-row">
+          <td>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl formControlName="brand">
+              {{productForm.value.brand}}
+            </div>
+            <input *ngIf="editRowIndex === i" type="text" nz-input formControlName="brand">
+          </td>
+          <td nzLeft>
+            <div *ngIf="editRowIndex !== i" ngDefaultControl  formControlName="name">
+              {{ productForm.value.name }}
+            </div>
+            <input *ngIf="editRowIndex === i" type="text" nz-input formControlName="name" >
+          </td>
+
+          <td [ngClass]="{'calculated': !productForm.controls.overrideFromBusinessDetails.value}">
+            <div *ngIf="editRowIndex !== i || !productForm.controls.overrideFromBusinessDetails.value" ngDefaultControl formControlName="yearlyInflationRate" >
+              {{productForm.value.yearlyInflationRate}}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i && productForm.controls.overrideFromBusinessDetails.value" type="text" nz-input formControlName="yearlyInflationRate" nzStep="1" nzMin="0"
+            type="text" class="w-100">
+            </nz-input-number>
+          </td>
+
+          <td [ngClass]="{'calculated': !productForm.controls.overrideFromBusinessDetails.value}">
+            <div *ngIf="editRowIndex !== i || !productForm.controls.overrideFromBusinessDetails.value" ngDefaultControl formControlName="yearlyPriceIncrease">
+              {{productForm.value.yearlyPriceIncrease}}
+            </div>
+            <nz-input-number *ngIf="editRowIndex === i && productForm.controls.overrideFromBusinessDetails.value" type="text" nz-input formControlName="yearlyPriceIncrease" nzStep="1" nzMin="0"
+            type="text" class="w-100">
+            </nz-input-number>
+          </td>
+
+          <td  nzAlign="center">
+            <nz-checkbox-wrapper >
+                <label ngDefaultControl nz-checkbox formControlName="overrideFromBusinessDetails" [nzDisabled]="editRowIndex !== i"></label>
+            </nz-checkbox-wrapper>
+          </td>
+
+          <td nzRight>
+           <div class="action-cell">
+            <ng-container *ngIf="editRowIndex !== i">
+              <a (click)="startEditingRow(i)" nz-button nzType="link" title="Edit row" [ngClass]="{'pending': productForm.dirty}">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </a>
+              <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(i)" nz-button nzType="link" title="Delete row">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+
+             <ng-container *ngIf="editRowIndex === i">
+              <a [disabled]="productForm.invalid"
+                [ngClass]="{'pending': productForm.dirty}"
+                (click)="saveEdit(productForm, i)" nz-button nzType="link" title="Save edited">
+                <span nz-icon nzType="check" nzTheme="outline"></span>
+              </a>
+              <a nz-popconfirm nzPopconfirmTitle="Cancel editing?" (nzOnConfirm)="resetEdit(productForm, i)" nz-button nzType="link" title="Reset edited">
+                <span nz-icon nzType="close" nzTheme="outline"></span>
+              </a>
+             </ng-container>
+           </div>
+
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+
+  <div> {{ 'bp.portfolio.decimalSeparator' | translate }} <b>"."</b> &nbsp; <nz-switch [formControl]="decimalSeparatorCommaControl"></nz-switch> &nbsp; <b>","</b></div>
+  <!-- <button nz-button (click)="addRow()" nzType="primary" type="button">Add row</button> -->
+  <button nz-button (click)="copyToClipboard()" nzType="primary" type="button">{{ 'bp.portfolio.copyTable' | translate }}</button>
+  <button nz-button (click)="pasteFromClipboard()" nzType="primary" type="button">{{ 'bp.portfolio.pasteTable' | translate }}</button>
+
+  <ng-template #footer>
+    <button nz-button (click)="addRow()" nzType="primary" type="button">Add row</button>
+  </ng-template>
+
+  <div nz-row nzJustify="end">
+    <button style="width: 100px;" nz-button nzType="primary" type="submit" [disabled]="portfolioTableForm.invalid || (portfolioTableForm.pristine && portfolioTableForm.untouched)">
+      <span *ngIf="(componentName$ | async) !== componentName">Apply</span>
+      <nz-spin *ngIf="(componentName$ | async) === componentName" nzSimple [nzSize]="'small'"></nz-spin>
+    </button>
+  </div>
+</form>

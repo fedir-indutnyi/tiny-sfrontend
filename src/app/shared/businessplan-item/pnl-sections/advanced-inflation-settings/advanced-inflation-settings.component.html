@@ -1,0 +1,85 @@
+<div nz-row class="advanced-settings">
+    <div nz-col [nzSm]="{ span: 24 }" [nzXs]="{ span: 24 }">
+        <form nz-form nzLayout="vertical" [formGroup]="inflationMultipliersForm" (ngSubmit)="applyOptions(inflationMultipliersForm)">
+            <nz-table nzData="{{selectedData?.inflationMultipliers}}" class="inflationMultipliers" [nzFrontPagination]="false">
+                <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <ng-container *ngFor="let year of yearsList; index as i">
+                      <th class="inflationMultipliers__header">
+                        <div class="text-center">{{year}}</div>
+                        <button nz-button nzType="link" class="inflaton-multiplier__button"
+                        (click)="_applyMultipleInflationMultipliers(i, 'left')" type="button">
+                          <span nz-icon nzType="arrow-left" nzTheme="outline"></span>
+                        </button>
+                        <button nz-button nzType="link" class="inflaton-multiplier__button"
+                        (click)="_applyMultipleInflationMultipliers(i, 'right')" type="button">
+                          <span nz-icon nzType="arrow-right" nzTheme="outline"></span>
+                        </button>
+                      </th>
+                    </ng-container>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td> {{'bp.advancedInflationSettings.inflationMultiplier' | translate}} </td>
+                    <ng-container formArrayName="inflationMultipliers">
+                      <ng-container *ngFor="let multiplierFrom of inflationMultipliersForm.controls.inflationMultipliers.controls; index as i">
+                        <td class="inflaton-multiplier__container" >
+                          <nz-form-item>
+                            <nz-form-control nzErrorTip="Please, fill in data">
+
+                                <nz-input-number nz-input formControlName="{{i}}" nzStep="0.1" class="w-100" type="text"></nz-input-number>
+
+                            </nz-form-control>
+                          </nz-form-item>
+                        </td>
+                      </ng-container>
+                    </ng-container>
+                  </tr>
+                    <tr>
+                      <td class="inflaton-multiplier__row-title"> {{'bp.advancedInflationSettings.yearlyInflationRate' | translate}} </td>
+                      <td *ngFor="let yearlyValues of acceleration">{{ yearlyValues.yearlyInflationRate | percent }}</td>
+                    </tr>
+                    <tr>
+                      <td class="inflaton-multiplier__row-title"> {{'bp.advancedInflationSettings.earlyPriceIncrease' | translate}} </td>
+                      <td *ngFor="let yearlyValues of acceleration">{{ yearlyValues.yearlyPriceIncrease | percent }}</td>
+                    </tr>
+                    <tr>
+                      <td class="inflaton-multiplier__row-title"> {{'bp.advancedInflationSettings.earlySalaryIncrease' | translate}} </td>
+                      <td *ngFor="let yearlyValues of acceleration">{{ yearlyValues.yearlySalaryIncrease | percent }}</td>
+                    </tr>
+                </tbody>
+              </nz-table>
+
+              <div nz-row [nzGutter]="[16, 24]">
+                    <div nz-col [nzSm]="{ span: 24 }" >
+                      <nz-form-label> {{'bp.advancedInflationSettings.inflationAppliedPerProduct' | translate}} </nz-form-label>
+                      <app-wbr-pivot #inflationPivot [toolbar]="false" height="400px"></app-wbr-pivot>
+                    </div>
+
+                    <div nz-col [nzSm]="{ span: 24 }" >
+                      <nz-form-label> {{'bp.advancedInflationSettings.priceIncreaseAppliedPerProduct' | translate}} </nz-form-label>
+                      <app-wbr-pivot #pricePivot [toolbar]="false" height="400px"></app-wbr-pivot>
+                    </div>
+
+                    <div nz-col [nzSm]="{ span: 24 }" >
+                      <nz-form-label> {{'bp.advancedInflationSettings.inflationAccumulatedPerProduct' | translate}} </nz-form-label>
+                      <app-wbr-pivot #inflationAccumulatedPivot [toolbar]="false" height="400px"></app-wbr-pivot>
+                    </div>
+
+                    <div nz-col [nzSm]="{ span: 24 }">
+                      <nz-form-label> {{'bp.advancedInflationSettings.priceIncreaseAccumulatedPerProduct' | translate}} </nz-form-label>
+                      <app-wbr-pivot #priceAccumulatedPivot [toolbar]="false" height="400px" (ready)="onPivotReady()"></app-wbr-pivot>
+                    </div>
+              </div>
+
+              <div nz-row nzJustify="end" class="apply-button">
+                <button style="width: 100px;" nz-button nzType="primary" type="submit" [disabled]="inflationMultipliersForm.untouched || inflationMultipliersForm.invalid">
+                    <span *ngIf="(componentName$ | async) !== componentName">Apply</span>
+                    <nz-spin *ngIf="(componentName$ | async) === componentName" nzSimple [nzSize]="'small'"></nz-spin>
+                </button>
+              </div>
+        </form>
+    </div>
+</div>

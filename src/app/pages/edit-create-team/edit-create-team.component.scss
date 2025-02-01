@@ -1,0 +1,80 @@
+.registration {
+  &__change_avatar {
+    position: absolute;
+    left: 46%;
+    bottom: -2px;
+    z-index: 999999;
+    background: white;
+    padding: 3px;
+    border-radius: 50%;
+  }
+
+  &__change_avatar:hover {
+    color: brown;
+    cursor: pointer;
+    scale: 1.1;
+    transition: .3s;
+  }
+
+  &__avatar {
+    display: block;
+    max-width: 200px;
+    width: 100%;
+
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+
+    margin: 0 auto 20px;
+
+    & div {
+      display: block;
+      width: 100%;
+      height: 0;
+      padding-top: 100%;
+    }
+
+    & img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+      border-radius: 50%;
+
+      left: 0;
+      top: 0;
+
+      object-position: center;
+    }
+
+  }
+
+
+  &__confirm {
+    display: flex;
+    width: 100%;
+    font-weight: 400;
+    margin-bottom: 15px;
+  }
+
+  &__link {
+    color: #1890ff;
+  }
+}
+
+.add-idea-title, .add-idea-location, .add-idea-description {
+  max-width: 100%;
+}
+
+.demo-infinite-container {
+  height: 260px;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+
+  nz-list {
+    padding: 24px;
+  }
+}
+
+

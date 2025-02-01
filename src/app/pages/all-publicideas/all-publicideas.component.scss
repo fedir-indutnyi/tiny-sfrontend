@@ -1,0 +1,46 @@
+:host {
+  //overflow: hidden;
+  //display: block;
+}
+
+.checkbox__wrap {
+  margin: 5px 0 2px 35px;
+}
+
+.tab__container {
+  padding: 24px;
+  background-color: #fff;
+}
+
+.card-container ::ng-deep p {
+  margin: 0;
+}
+
+.card-container ::ng-deep > .ant-tabs-card .ant-tabs-content {
+  height: 120px;
+  margin-top: -16px;
+}
+
+.card-container ::ng-deep > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
+  background: #fff;
+  padding: 16px;
+}
+
+.card-container ::ng-deep > .ant-tabs-card > .ant-tabs-nav::before {
+  display: none;
+}
+
+.card-container ::ng-deep > .ant-tabs-card .ant-tabs-tab {
+  border-color: transparent;
+  background: transparent;
+}
+
+.card-container ::ng-deep > .ant-tabs-card .ant-tabs-tab-active {
+  border-color: #fff;
+  background: #fff;
+}
+
+.search-results {
+  max-height: 100%;
+  overflow: scroll;
+}

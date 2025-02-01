@@ -1,0 +1,45 @@
+@import '../../../theme/conf.scss';
+
+.action-cell {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+:host {
+
+  ::ng-deep {
+    .ant-input-number-input{
+      padding: 0 5px;
+    }
+  }
+  .ant-input-number{
+    width: 100%;
+    &.ng-touched.ng-invalid{
+      border: 1px solid $danger;
+    }
+    &.ng-dirty{
+      border: 1px solid $success;
+    }
+  }
+
+
+  .pending {
+    color: $success;
+  }
+
+  [ngdefaultcontrol].ng-dirty {
+    color: $success;
+  }
+
+  [formcontrolname]:not([ngdefaultcontrol]){
+    &.ng-touched.ng-invalid{
+      border: 1px solid $danger;
+    }
+    &.ng-dirty{
+      border: 1px solid $success;
+    }
+
+  }
+
+}

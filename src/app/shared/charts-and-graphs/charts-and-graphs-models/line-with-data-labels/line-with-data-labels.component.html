@@ -1,0 +1,22 @@
+<div style="display: flex; justify-content: center; align-items: center; margin-top: 40px  ">
+    <h3 style="color: #007bbd"><i>{{title}}</i></h3>
+</div>
+<div id="chart">
+    <apx-chart *ngIf="chartOptions"
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [xaxis]="chartOptions.xaxis"
+            [stroke]="chartOptions.stroke"
+            [colors]="chartOptions.colors"
+            [dataLabels]="chartOptions.dataLabels"
+            [legend]="chartOptions.legend"
+            [markers]="chartOptions.markers"
+            [grid]="chartOptions.grid"
+            [yaxis]="chartOptions.yaxis"
+            [title]="chartOptions.title"
+
+            [fill]="chartOptions.fill"
+            [tooltip]="chartOptions.tooltip"
+            [autoUpdateSeries]="true"
+    ></apx-chart>
+</div>

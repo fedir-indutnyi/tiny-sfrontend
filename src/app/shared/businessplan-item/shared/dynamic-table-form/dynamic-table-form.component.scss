@@ -1,0 +1,35 @@
+.form-row {
+  margin-bottom: 24px;
+  &.ant-list-item {
+    padding: 6px 8px;
+    gap: 8px;
+  }
+
+  .ant-input-number{
+    width: 100%;
+    padding: 4px;
+  }
+  .ant-input  {
+    width: 100%;
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  .ant-select {
+    width: 100%;
+    font-size: unset;
+    padding: 4px;
+  }
+
+  .ant-list-item-action {
+    margin-left: 12px;
+  }
+
+  .action-space {
+    width: 40px;
+  }
+
+  td:has(.ant-checkbox-wrapper) {
+    text-align: center;
+  }
+}

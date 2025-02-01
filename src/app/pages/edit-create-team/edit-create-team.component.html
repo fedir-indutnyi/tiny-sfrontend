@@ -1,0 +1,156 @@
+<div class="container">
+    <nz-card
+            [nzTitle]="team ? 'Edit Team' : 'Add new team'">
+        <div class="row">
+            <div class="col col-12 col-md-3 mb-4">
+                <div class="registration__avatar mb-3">
+                    <span class="registration__change_avatar" nz-icon [nzType]="profileAvatar ? 'edit' : 'upload'"
+                          nzTheme="outline" (click)="fileInput.click();"></span>
+
+
+                    <div>
+                        <img [src]="profileAvatar || '/assets/images/no-avatar.png'" alt="">
+                    </div>
+                </div>
+
+                <input
+                        type="file"
+                        style="display: none;"
+                        (change)="onFileChange($event)"
+                        #fileInput
+                >
+
+                <!--                <button-->
+                <!--                        nz-button-->
+                <!--                        nzType="primary"-->
+                <!--                      -->
+                <!--                        class="d-flex m-auto">-->
+                <!--                    {{ profileAvatar ? 'Change avatar' : 'Choose avatar' }}-->
+                <!--                </button>-->
+            </div>
+
+            <!--            <div class="ant-row">-->
+            <form [formGroup]="form" *ngIf="team || username">
+                <div class="ant-row">
+                    <div class="ant-col ant-col-xs-24 ant-col-md-12">
+                        <div class="mb-4">
+
+                            <label for="name" class="control-label">
+                                Team Name:
+                            </label>
+
+                            <input
+                                    nz-input
+                                    type="text"
+                                    class="form-control custom-input"
+                                    id="name"
+                                    placeholder="Name of team, e.g. DreamTeam of Violine Players?"
+                                    formControlName="teamname"
+                                    name="name"
+                                    maxlength="40"
+                            >
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="location" class="regular">Team Location:</label>
+
+                            <input
+                                    nz-input
+                                    type="text"
+                                    class="form-control custom-input"
+                                    id="location"
+                                    placeholder="City or Address of Team HeadQuaters"
+                                    formControlName="location"
+                                    maxlength="40"
+                            >
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="comment" class="control-label">
+                                Description:
+                            </label>
+                            <textarea nz-input class="form-control custom-input"
+                                      id="comment"
+                                      placeholder="Type what team is used for, e.g. Guys who do our work properly!"
+                                      formControlName="commentmemo"
+                                      name="comment"
+                                      maxlength="400" nzAutosize></textarea>
+                        </div>
+                    </div>
+
+                    <div class="ant-col ant-col-xs-24 ant-col-md-12" style="padding-left: 20px;">
+                        <div class="mb-4">
+
+                            <label class="control-label">Members:</label>
+                            <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
+                                <nz-list>
+                                    <nz-list-item *ngFor="let item of team?.members; let i=index">
+                                        <nz-skeleton *ngIf="!item" [nzAvatar]="true"
+                                                     [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+
+                                        <nz-list-item-meta
+                                                *ngIf="item"
+                                                nzAvatar="{{item.userId ? (convertPlaceholderPathToUrl(item?.user?.picture) ||
+                                                     '/assets/images/no-avatar.png') : '/assets/images/no-avatar.png'}}"
+                                                nzDescription="{{item.userId ? 'user' : 'contact'}}">
+                                            <nz-list-item-meta-title style="position: relative">
+                                                <a href="#" *ngIf="item.userId">{{ item?.user?.username }}</a>
+                                                <a href="#" style="color: silver"
+                                                   *ngIf="!item.userId">{{ item.contact.name }}</a>
+                                                <mat-icon style="position: absolute; right: 5px; top: -25px"
+                                                          *ngIf="(item.userId !== accountId) && isCancelItem !== i"
+                                                          (click)="isCancelItem = i">cancel
+                                                </mat-icon>
+                                                <span style="position: absolute; right: 5px; top: -25px"><a
+                                                        *ngIf="isCancelItem === i"
+                                                        [nz-tooltip]="'confirm'"
+                                                        (click)="onRemove(i)">
+                                                    <span class="on_cancel_icon" nz-icon nzType="check"
+                                                          nzTheme="outline"></span>
+                                                </a>
+                                                    <a *ngIf="isCancelItem === i"
+                                                       style="margin-left: 5px"
+                                                       [nz-tooltip]="'cancel'"
+                                                       (click)="isCancelItem = null">
+                                                        <span class="on_cancel_icon" nz-icon nzType="close"
+                                                              nzTheme="outline"></span>
+                                                    </a></span>
+                                            </nz-list-item-meta-title>
+                                        </nz-list-item-meta>
+                                    </nz-list-item>
+                                </nz-list>
+                            </cdk-virtual-scroll-viewport>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; display:flex;" class="ant-col ant-col-xs-24">
+                    <button
+                            [disabled]="!form.valid"
+                            nz-button
+                            nzType="primary"
+                            style="margin-right: 20px"
+                            class="btn-control-wraper"
+                            (click)="team ? saveTeam() : createTeam()">
+                        {{ team ? 'Save' : 'Create' }}
+                    </button>
+
+                    <button
+                            nz-button
+                            nzType="dashed"
+                            class="btn-control-wraper"
+                            (click)="isShowContacts = true">
+                        {{ team ? 'Edit Contacts' : 'Add Contacts' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </nz-card>
+</div>
+
+<app-contacts-modal
+        *ngIf="isShowContacts"
+        (onCancel)="isShowContacts = false"
+        (onUpdateContact)="onUpdateContact($event)"
+        (onChooseContacts)="onChooseContacts($event)"
+        [setOfDisableId]="setOfDisableId"
+></app-contacts-modal>

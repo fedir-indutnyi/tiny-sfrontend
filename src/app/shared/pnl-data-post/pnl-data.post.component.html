@@ -1,0 +1,31 @@
+<businessplan-item style="display: none"></businessplan-item>
+
+<nz-descriptions
+        [nzTitle]="initialLoadingState === false ? (isPnlDataLoaded ? 'Uploaded' : 'Data is ready for upload') : 'Compiling . . . . . . .'">
+    <nz-descriptions-item nzTitle="Business plan name" [nzSpan]="24">{{businessPlan.ideatitle}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Created by"
+                          [nzSpan]="24">{{businessPlan?.createdByProfile?.username}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Business plan ID" [nzSpan]="24">{{businessPlan.id}}</nz-descriptions-item>
+</nz-descriptions>
+
+<nz-progress
+        [nzPercent]="commonLoader.value === unknownError ? (commonLoader?.previousValue || 0) : commonLoader.value "
+        [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }"
+        [nzStatus]="(commonLoader.value === unknownError) && 'exception'"
+        [nzWidth]="150"
+></nz-progress>
+
+<div class="bottom_info_block">
+    <div class="bottom_info color_brown" *ngIf="uploadErr?.err">
+        <i>{{uploadErr.message}}</i>
+    </div>
+    <div class="bottom_info color_darkgreen" *ngIf="isDone">
+        <i>Success</i>
+    </div>
+    <button class="save_btn" *ngIf="!uploadErr?.err && !isDone" [disabled]="isDisabledSaveButton" nz-button
+            nzType="primary" (click)="onPostPnl()">Save
+    </button>
+</div>
+
+
+

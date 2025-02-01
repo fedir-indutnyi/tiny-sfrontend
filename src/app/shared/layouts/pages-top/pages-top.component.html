@@ -1,0 +1,189 @@
+<div class="header__right">
+
+    <div class="edition-badge__text"
+         [ngStyle]="{'display': displayBadge? 'block' : 'none'}">{{ badgeText }}
+        <div class="blinking-dot"></div>
+    </div>
+
+    <ng-container *ngIf="currentUser">
+        <a routerLink="/create-post" class="text-white fw-semibold">
+            {{ 'pagesTop.addIdeaOrDream'|translate }}
+        </a>
+
+        <a routerLink="/my-expenses" class="text-white fw-semibold">
+            {{ 'pagesTop.logExpenses'|translate }}
+        </a>
+
+        <span class="p-h-10 pointer" nz-dropdown [nzDropdownMenu]="profile" [nzTrigger]="'click'"
+              [nzPlacement]="'bottomRight'">
+
+      <nz-avatar [nzIcon]="'user'"
+                 *ngIf="currentUser?.picture; else textAvatar"
+                 [nzSrc]="currentUser?.picture" class="pointer">
+      </nz-avatar>
+
+      <nz-dropdown-menu #profile="nzDropdownMenu">
+
+        <ul nz-menu>
+
+          <li nz-menu-item routerLink="/profile" nz-row nzAlign="middle">
+            <i nz-icon nzType="user" theme="outline"></i>
+            <span>Welcome, {{ currentUser.username }}</span>
+
+          </li>
+
+          <li nz-menu-item routerLink="/notifications" nz-row nzAlign="middle">
+            <i nz-icon nzType="notification" theme="outline"></i>
+            <span>Notifications</span>
+            <nz-badge nz-col nzStandalone [nzCount]="unreadNotifications" class=" badge-success">
+            </nz-badge>
+          </li>
+
+          <li nz-menu-item routerLink="/my-items" nz-row nzAlign="middle">
+            <i nz-icon nzType="ordered-list" theme="outline"></i>
+            <span>Dreams and Ideas</span>
+            <nz-badge nzStandalone [nzCount]="11" class="badge-success">
+            </nz-badge>
+          </li>
+
+          <li nz-menu-item routerLink="/profile" nz-row nzAlign="middle">
+            <i nz-icon nzType="user" theme="outline"></i>
+            <span>{{ 'pagesTop.myProfile'|translate }}</span>
+              <!-- <i class="font-size-10" nz-icon nzType="right" theme="outline"></i> -->
+          </li>
+
+          <li nz-menu-item nz-row nzAlign="middle">
+            <div nz-row nzAlign="middle" nz-dropdown [nzDropdownMenu]="language" [nzTrigger]="'hover'"
+                 [nzPlacement]="'bottomRight'">
+              <i nz-icon nzType="form" theme="outline"></i>
+              <span>Languages</span>
+            </div>
+            <i nz-icon nzType="right" theme="outline"></i>
+
+            <nz-dropdown-menu #language="nzDropdownMenu">
+              <ul nz-menu>
+                <li *ngFor="let lang of languageList" (click)="changeLang(lang.code)" nz-menu-item>
+                  <span nz-icon [nzType]="lang.code === selectedLang ? 'check-circle' : 'minus-square'"
+                        nzTheme="outline">
+                  </span>
+                  <span>
+                    {{ lang.label }}
+                  </span>
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+          </li>
+
+          <li nz-menu-item routerLink="/contact-us" nz-row nzAlign="middle">
+            <i nz-icon nzType="form" theme="outline"></i>
+            <span>{{ 'pagesTop.helpAndContactUs'|translate }}</span>
+              <!-- <i class="font-size-10" nz-icon nzType="right" theme="outline"></i> -->
+          </li>
+
+          <li nz-menu-item routerLink="/" (click)="singOut()" nz-row nzAlign="middle">
+            <i nz-icon nzType="logout" theme="outline"></i>
+            <span>Logout</span>
+              <!-- <i class="font-size-10" nz-icon nzType="right" theme="outline"></i> -->
+          </li>
+
+          <li nz-menu-item *ngIf="isLoginAsVisible" routerLink="/" (click)="singOutAs()" nz-row nzAlign="middle">
+            <i nz-icon nzType="logout" theme="outline"></i>
+            <span>Logout as {{ currentUser.username }}</span>
+              <!-- <i class="font-size-10" nz-icon nzType="right" theme="outline"></i> -->
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+
+    </span>
+    </ng-container>
+
+    <ng-container *ngIf="!currentUser">
+        <a routerLink="/add-ideaunregistered" class="text-white fw-semibold header-top__desk">
+            {{ 'pagesTop.addIdea'|translate }}
+        </a>
+
+        <button routerLink="/login" nz-button nzType="default" class="header-top__button header-top__desk">
+            {{ 'pagesTop.login'|translate }}
+        </button>
+
+        <button routerLink="/sign-up" nz-button nzType="default" class="header-top__button header-top__desk">
+            {{ 'pagesTop.register'|translate }}
+        </button>
+
+        <button nz-button nzType="default" nz-dropdown [nzDropdownMenu]="language" [nzTrigger]="'hover'"
+                [nzPlacement]="'bottomRight'" nzShape="circle" class="header-top__desk">
+            <span nz-icon nzType="form"></span>
+
+            <nz-dropdown-menu #language="nzDropdownMenu">
+
+                <ul nz-menu>
+                    <li *ngFor="let lang of languageList" (click)="changeLang(lang.code)" nz-menu-item>
+
+            <span nz-icon [nzType]="lang.code === selectedLang ? 'check-circle' : 'minus-square'" nzTheme="outline">
+            </span>
+                        <span>
+              {{ lang.label }}
+            </span>
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+        </button>
+
+        <i nz-dropdown [nzDropdownMenu]="menu" nz-icon nzType="appstore" class="toggler header-top__mob">
+        </i>
+
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item routerLink="/add-ideaunregistered" nz-row nzAlign="middle">
+                    <i nz-icon nzType="edit" theme="outline"></i>
+                    <span>{{ 'pagesTop.addIdea'|translate }}</span>
+                    <!-- <i class="font-size-10" nz-icon nzType="right" theme="outline"></i> -->
+                </li>
+
+                <li nz-menu-item routerLink="/login" nz-row nzAlign="middle">
+                    <i nz-icon nzType="user" theme="outline"></i>
+                    <span>{{ 'pagesTop.login'|translate }}</span>
+                    <!-- <i class="font-size-10" nz-icon nzType="right" theme="outline"></i> -->
+                </li>
+
+                <li nz-menu-item routerLink="/sign-up" nz-row nzAlign="middle">
+                    <i nz-icon nzType="user-add" theme="outline"></i>
+                    <span>{{ 'pagesTop.register'|translate }}</span>
+                    <!-- <i class="font-size-10" nz-icon nzType="right" theme="outline"></i> -->
+                </li>
+
+                <li nz-menu-item nz-row nzAlign="middle">
+                    <div nz-dropdown [nzDropdownMenu]="language" [nzTrigger]="'click'" [nzPlacement]="'topRight'">
+                        <i nz-icon nzType="form" theme="outline"></i>
+                        <span>Languages</span>
+                    </div>
+
+                    <nz-dropdown-menu #language="nzDropdownMenu">
+
+                        <ul nz-menu>
+
+                            <li *ngFor="let lang of languageList" (click)="changeLang(lang.code)" nz-menu-item>
+
+                <span nz-icon [nzType]="lang.code === selectedLang ? 'check-circle' : 'minus-square'" nzTheme="outline">
+                </span>
+
+                                <span>
+                  {{ lang.label }}
+                </span>
+
+                            </li>
+
+                        </ul>
+                    </nz-dropdown-menu>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+    </ng-container>
+
+</div>
+
+<ng-template #textAvatar>
+    <div class="text-avatar" [style.background-color]="getBackgroundColor(currentUser.username)">
+        {{ getInitials(currentUser.username) }}
+    </div>
+</ng-template>

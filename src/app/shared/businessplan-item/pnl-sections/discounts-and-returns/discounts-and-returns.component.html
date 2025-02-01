@@ -1,0 +1,5 @@
+<app-dynamic-table-form [config]="dataConfig"
+                        [dataSource]="dataSource$ | async"
+                        [componentName]="componentName"
+                        (onApply)="onApply($event)"
+></app-dynamic-table-form>

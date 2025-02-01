@@ -1,0 +1,22 @@
+<div class="table-container">
+    <table>
+      <!-- Table header -->
+      <thead>
+        <tr>
+          <th>{{ 'bp.importantDisclaimer.indicator' | translate }}</th>
+          <th>{{ 'bp.importantDisclaimer.formula' | translate }}</th>
+          <th>{{ 'bp.importantDisclaimer.description' | translate }}</th>
+          <th>{{ 'bp.importantDisclaimer.references' | translate }}</th>
+        </tr>
+      </thead>
+      <!-- Table body -->
+      <tbody>
+        <tr *ngFor="let item of glossaryData">
+          <td>{{ item.Indicator | translate }}</td>
+          <td>{{ item.Formula | translate}}</td>
+          <td>{{ item.Description | translate}}</td>
+          <td>{{ item.References | translate}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

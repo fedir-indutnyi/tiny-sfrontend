@@ -1,0 +1,241 @@
+<div class="single_wrap">
+    <div style="margin-top: 5px; display: flex"
+         class="btn-control-wraper container-fluid">
+        <div *ngIf="post.recordtype !== 'businessplan'"
+             style="width: 50%; display:flex;">
+            <a (click)="goBack()"
+               class="btn btn-primary btn-add-idea green">
+                <mat-icon>arrow_back</mat-icon>
+                <span>Go Back</span>
+            </a>
+        </div>
+
+        <div *ngIf="post.recordtype === 'businessplan'"
+             style="width: 50%; display:flex;">
+            <a [routerLink]="'/post/'+post.parentcode"
+               class="btn btn-primary btn-add-idea green">
+                <mat-icon>domain</mat-icon>
+                <span>Go To Parent Element</span>
+            </a>
+        </div>
+        <div style="width: 50%; text-align: right">
+            <span *ngIf="post.recordtype === 'businessplan' && !isNeedCalculate && isNeedCalculate !== null">
+                <nz-ribbon nzText="Calculated" nzColor="darkgreen">
+                </nz-ribbon>
+            </span>
+            <span *ngIf="post.recordtype === 'businessplan' && isNeedCalculate && post.status !== null">
+                <nz-ribbon nzText="Calculated*" nzColor="darkgreen">
+                </nz-ribbon>
+            </span>
+            <span *ngIf="post.recordtype === 'businessplan' && isNeedCalculate && post.status === null">
+                <nz-ribbon nzText="Need to calculate" nzColor="brown">
+                </nz-ribbon>
+            </span>
+            <span *ngIf="post.recordtype === 'businessplan' && isNeedCalculate === null && post.status === null">
+                <nz-ribbon nzText="No business plan data is available" nzColor="cornflowerblue">
+                </nz-ribbon>
+            </span>
+        </div>
+    </div>
+
+    <post-item *ngIf="post" [postData]="post" [isSingleElement]="true"></post-item>
+    <div *ngIf="isAccess" class="bottom_button_wrap">
+        <button [routerLink]="businessPlans ? ['/edit-post/', post?.id] :['/edit-businessplan/', post?.id]"
+                class="_button"
+                nz-button
+                nzType="primary">
+            Edit
+        </button>
+        <button class="_button"
+                (click)="deletePost()"
+                nz-button
+                nzType="default"
+                nzDanger>
+            Delete
+        </button>
+        <button *ngIf="post.recordtype === 'businessplan'"
+                class="_button"
+                (click)="onClonePlan(post)"
+                nz-button
+                nzType="primary">
+            Clone Business Plan
+        </button>
+        <button
+                *ngIf="post.recordtype === 'businessplan' && isNeedCalculate"
+                class="_button"
+                (click)="onPnlDataPost()"
+                nz-button
+                nzType="dashed"
+                [disabled]="isLocalDraft"
+                [nz-tooltip]="isLocalDraft && 'You have unsaved business plan data. Click the edit button to confirm or cancel changes.'">
+            <span nz-icon nzType="database" nzTheme="outline"></span>
+            Calculate
+        </button>
+        <button
+                *ngIf="post.recordtype === 'businessplan'"
+                class="_button"
+                routerLink="/view-analytics/{{post.id}}"
+                nz-button
+                nzType="dashed"
+                [nz-tooltip]="isLocalDraft && 'You have unsaved business plan data. Click the edit button to confirm or cancel changes.'">
+            <span style="position: relative" nz-icon nzType="line-chart" nzTheme="outline"></span>
+            View Analytics <span style="color: red; font-size: 8px; position: absolute; left: 5px; top:-3px">c<b>oming soon coming soon comin</b>g</span>
+            <span style="color: red; font-size: 8px; position: absolute; left: 5px; bottom:-3px">c<b>oming soon coming soon comin</b>g</span>
+        </button>
+        <button
+                *ngIf="post.recordtype === 'businessplan' && !isNeedCalculate"
+                class="_button"
+                (click)="onPnlDataGet()"
+                nz-button
+                nzType="dashed">
+            <span nz-icon nzType="database" nzTheme="outline"></span>
+            Download
+        </button>
+        <button
+                *ngIf="post.recordtype === 'businessplan' && isNeedCalculate && post.status !== null"
+                class="_button"
+                (click)="onDiscardDraft()"
+                nz-button
+                nzType="dashed"
+                [disabled]="isLocalDraft"
+                [nz-tooltip]="isLocalDraft && 'You have unsaved business plan data. Click the edit button to confirm or cancel changes.'">
+            <span nz-icon nzType="rollback" nzTheme="outline"></span>
+            Discard Draft*
+        </button>
+        <button nz-button nz-dropdown nzTrigger="click" *ngIf="post.recordtype === 'businessplan'"
+                [nzDropdownMenu]="advancedMenuEditPlan" nzType="default" class="_button">
+            <span nz-icon nzType="more" nzTheme="outline"></span>
+        </button>
+        <nz-dropdown-menu #advancedMenuEditPlan="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item>
+                    <a (click)="downloadPlan()" class="advanced-menu-option">
+                        Download your plan in JSON format
+                        <span nz-icon nzType="download" nzTheme="outline"></span>
+                    </a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+
+    </div>
+
+    <div *ngIf="businessPlans" class="plans_list_wrap">
+        <div>
+            <h2>Business Plans</h2>
+            <nz-table [nzData]="businessPlans" [nzFrontPagination]="false">
+                <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Name Of Plan</th>
+                    <th>Created By User</th>
+                    <th>Created At</th>
+                    <th>Last Modified By User</th>
+                    <th>Last Modified At</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let plan of businessPlans; index as i">
+                    <td>{{ i + 1 }}.</td>
+                    <td>{{ plan.ideatitle }}</td>
+                    <td>{{ plan.createdByProfile.username }}</td>
+                    <td>{{ formatStringDate(plan.createdAt) }}</td>
+                    <td>{{ plan.updatedByProfile?.username ?? "Not modified yet" }}</td>
+                    <td>{{ formatStringDate(plan.updatedAt) }}</td>
+                    <td>
+                        <button mat-button (click)="(plan.ispublic || isAccess) && goToPlan(plan.id)"
+                                class="edit-plan btn">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <div *ngIf="isAccess && post.recordtype !== 'businessplan'" class="add_plan_wrap">
+        <a mat-button (click)="onPlanCreate()" class="btn btn-primary btn-add-idea green">
+            <mat-icon aria-hidden="false" aria-label="add circle icon" fontIcon="add_circle"></mat-icon>
+            <span>Create Business Plan for {{ post?.ideatitle }}</span>
+        </a>
+
+        <button nz-button nz-dropdown nzTrigger="click" [nzDropdownMenu]="advancedMenuCreatePlan" nzType="default"
+                class="_button">
+            <span nz-icon nzType="more" nzTheme="outline"></span>
+        </button>
+        <nz-dropdown-menu #advancedMenuCreatePlan="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item>
+                    <button nz-button [nzType]="'link'" (click)="showUploadModal()">
+                        <span>Upload your plan via JSON </span>
+                        <span nz-icon nzType="upload" nzTheme="outline"></span>
+                    </button>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+        <nz-modal [(nzVisible)]="isUploadModalVisible" nzTitle="Upload your plan in JSON format"
+                  (nzOnCancel)="handleUploadCancel()" (nzOnOk)="handleUploadOk()">
+            <ng-container *nzModalContent>
+                <nz-upload
+                        nzType="drag"
+                        nzAction="https://splatform-backend-sandbox.herokuapp.com/files/"
+                        (nzChange)="handleFileUpload($event)"
+                        nzShowUploadList="false"
+                >
+                    <p class="ant-upload-drag-icon">
+                        <span nz-icon nzType="inbox"></span>
+                    </p>
+                    <p class="ant-upload-text">Click or drag file to this area to upload your file </p>
+                </nz-upload>
+            </ng-container>
+        </nz-modal>
+    </div>
+
+    <div *ngIf="!post.commentsDisabled" class="row">
+        <div class="col-xs-12">
+            <h3 style="margin-top:40px; color: goldenrod" class="form-label">Leave your comment</h3>
+            <label class="control-label">Comment:</label>
+            <textarea id="textarea" rows="4" nz-input [formControl]="commenttext"></textarea>
+            <div class="form-group" style="display: flex; padding: 10px; justify-content: flex-end">
+                <button class="btn btn-primary" [disabled]="!commenttext.valid" (click)="saveComment($event)">Send
+                </button>
+            </div>
+        </div>
+    </div>
+    <nz-list [nzDataSource]="comments" [nzRenderItem]="comment" [nzItemLayout]="'horizontal'">
+        <ng-template #comment let-comment>
+            <nz-comment [nzAuthor]="comment.userprofile?.username "
+                        [nzDatetime]="comment?.createdAt?.split('.')[0].split('T').join(' ')">
+                <nz-avatar nz-comment-avatar nzIcon="user"
+                           [nzSrc]="convertPlaceholderPathToUrl( comment.userprofile?.picture) || noAvatar"></nz-avatar>
+                <nz-comment-content>
+                    <p [ngStyle]="(comment.isdeleted === null || comment.isdeleted === 0) ? {} : {'font-style': 'italic', 'font-size': 'smaller'}">{{
+                            (comment.isdeleted === null || comment.isdeleted === 0)
+                                ? comment.commenttext
+                                : 'Comment has been deleted'
+                        }}</p>
+                </nz-comment-content>
+                <nz-comment-action *ngIf="comment.isdeleted === null || comment.isdeleted === 0">
+                    <span (click)="onReply(comment)">Reply to</span>
+                </nz-comment-action>
+                <nz-comment-action
+                        *ngIf="(comment.isdeleted === null || comment.isdeleted === 0) && (comment.userprofileId === currentUserId)">
+                    <span (click)="onDeleteComment(comment.id)">Delete</span>
+                </nz-comment-action>
+            </nz-comment>
+        </ng-template>
+    </nz-list>
+</div>
+
+<nz-modal
+        [nzVisible]="isPnlDataPost || isPnlDataGet"
+        nzTitle="PNL DATA"
+        nzMaskClosable="false"
+        (nzOnCancel)="nzOnCancel()"
+>
+    <div *nzModalContent>
+        <app-pnl-data-post *ngIf="isPnlDataPost" [businessPlan]="post"></app-pnl-data-post>
+        <app-pnl-data-get *ngIf="isPnlDataGet" [businessPlan]="post"></app-pnl-data-get>
+    </div>
+    <div *nzModalFooter>The process may take several minutes</div>
+</nz-modal>

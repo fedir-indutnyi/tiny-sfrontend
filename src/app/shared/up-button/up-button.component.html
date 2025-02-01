@@ -1,0 +1,5 @@
+<button *ngIf="showButton"
+        (click)="onClick()"
+        class="button__up" [class.clicked]="buttonClicked">
+  <span nz-icon nzType="caret-up" nzTheme="outline"></span>
+</button>

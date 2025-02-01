@@ -1,0 +1,124 @@
+
+
+
+<!---->
+
+<app-main-assumptions [ideaId]="businessPlanId"></app-main-assumptions>
+
+<div style="background: #ECECEC;padding:30px; margin-bottom: 40px">
+    <div nz-row [nzGutter]="12">
+        <div nz-col [nzSpan]="12">
+            <nz-card nzTitle="Operating Profit">
+                <h2 style="color: #1d39c4; margin-left: 5%"><span>{{ operatingProfitEbitSum }}</span>, Operating Profit
+                    EBIT</h2>
+            </nz-card>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-card nzTitle="Total Investment">
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center"><h3
+                        style="color: #0b685b">Total Investment Required</h3>
+                    <h3 style="color: #0d8c7f"><span><b>{{ totalInvestmentRequiredSum }}</b></span>, Investments & CAPEX
+                    </h3>
+                </div>
+            </nz-card>
+        </div>
+    </div>
+</div>
+<!---->
+<app-column-with-data-labels (switchEmitter)="el1Data($event)" [chartOptions]="chartOptionsColumnEl1"
+                             [title]="chartOptionsColumnTitleEl1"></app-column-with-data-labels>
+
+<app-simple-pie [chartOptions]="chartOptionsEl2" [title]="chartOptionsColumnTitleEl2"></app-simple-pie>
+
+<div *ngIf="monthlyCustomersMaxFactValue" style=" background: #eaebeb; padding: 20px">
+    <nz-card [nzTitle]="titleEl3">
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber(totalNetSales) }}</p>
+            <p style="color: gray">Net Sales Revenue</p>
+        </div>
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber(totalGrossProfit) }}</p>
+            <p style="color: gray">Gross profit</p>
+
+        </div>
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber((totalGrossProfit / totalNetSales) * 100) }}, %</p>
+            <p style="color: gray">Gross Margin, %</p>
+
+        </div>
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber(totalVolume) }}</p>
+            <p style="color: gray">Volume</p>
+        </div>
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber(monthlyCustomersMaxFactValue) }}</p>
+            <p style="color: gray">Max Monthly Customers</p>
+        </div>
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber(totalMonthlyCustomers) }}</p>
+            <p style="color: gray">Monthly Orders/Customers</p>
+        </div>
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber(totalAverageCustomers) }}</p>
+            <p style="color: gray">Average Order</p>
+        </div>
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber(operatingProfitEbitSumNum) }}</p>
+            <p style="color: gray">Operating Profit EBIT</p>
+        </div>
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber((operatingProfitEbitSumNum / totalNetSales) * 100) }}, %</p>
+            <p style="color: gray">Operating Profit Margin - EBIT to Net Sales, %</p>
+        </div>
+        <div nz-card-grid [ngStyle]="gridStyle">
+            <p style="font-weight: 600">{{ formattedNumber(Math.abs(totalInvestmentAndCapex)) }}</p>
+            <p style="color: gray">Investment & CAPEX</p>
+        </div>
+    </nz-card>
+</div>
+
+<app-line-with-data-labels *ngIf="summarizedOperatingProfitByPeriod" [chartOptions]="chartOptionsEl4" [title]="titleEl4"></app-line-with-data-labels>
+
+
+<app-plate *ngIf="rowDataEl5" [rowData]="rowDataEl5" [years]="yearsEl5" [tableTitle]="titleEl5"
+           [includeRowTotals]="true"></app-plate>
+
+<app-plate *ngIf="rowDataEl5"  [tableTitle]="titleEl5"
+           [includeRowTotals]="true"></app-plate>
+<!--el6-->
+<!--<app-plate [columns]="getColumnsConfig3()" [data]="generateData3()"-->
+<!--           [tableTitle]="tableTitle3" [calculateTotals]="calculateTotals3"></app-plate>-->
+<!--<app-wbr-pivot #pivot [toolbar]="false" height="300px"></app-wbr-pivot>-->
+
+<!--el7-->
+
+<app-line-with-data-labels [chartOptions]="chartOptionsEl7" [title]="titleEl7"></app-line-with-data-labels>
+<!---->
+<app-plate *ngIf="rowDataEl8" [rowData]="rowDataEl8" [years]="yearsEl8" [tableTitle]="titleEl8"
+           [includeRowTotals]="true"></app-plate>
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--<app-column-with-data-labels [chartOptions]="chartOptionsColumnNegative" [title]="chartOptionsColumnNegativeTitle"></app-column-with-data-labels>-->
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--<app-plate [columns]="getColumnsConfig5()" [data]="generateData5()" [setStyle]="setStyle5"-->
+<!--           [tableTitle]="tableTitle5"></app-plate>-->
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--<app-line-with-data-labels [chartOptions]="initChartData3" [title]="chartOptionsTitle3"></app-line-with-data-labels>-->
+
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--<app-column-with-data-labels [chartOptions]="chartOptionsColumnMarketingBudget" [title]="columnMarketingBudgetTitle"></app-column-with-data-labels>-->
+<!--<nz-card nzType="inner" style="text-align: center;" >-->
+<!--    <h2>26.1K Marketing Budget</h2>-->
+<!--</nz-card>-->
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--<app-column-with-data-labels [chartOptions]="chartOptionsColumnExpensesByYear" [title]="columnExpensesByYearTitle"></app-column-with-data-labels>-->
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--<app-column-with-data-labels [chartOptions]="chartOptionsVendor" [title]="vendorTitle"></app-column-with-data-labels>-->
+<!--&lt;!&ndash;&ndash;&gt;-->
+
+<br/>
+<br/>
+<br/>
+
+
+

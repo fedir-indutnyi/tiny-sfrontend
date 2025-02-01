@@ -1,0 +1,91 @@
+#chart1 {
+  max-width: 650px;
+  margin: 35px auto;
+}
+
+#chart2 {
+  max-width: 650px;
+  margin: 35px auto;
+}
+
+#chart3 {
+  max-width: 380px;
+  margin: 35px auto;
+  padding: 0;
+}
+
+#chart4 {
+  max-width: 380px;
+  margin: 35px auto;
+  padding: 0;
+}
+
+#chart6 {
+  max-width: 650px;
+  margin: 35px auto;
+}
+
+#chart7 {
+  max-width: 450px;
+  margin: 35px auto;
+}
+
+
+.row {
+  overflow: hidden;
+  max-width: 890px;
+  margin: 30px auto;
+  display: flex;
+}
+
+.col-md-4 {
+  width: 33.33%;
+  padding: 0 25px;
+}
+
+table {
+  width: 100%;
+}
+
+tbody tr {
+  border-top: 1px solid #e7e7e7;
+}
+
+th {
+  font-weight: bold;
+  font-family: Helvetica;
+  padding-bottom: 20px;
+}
+
+td,
+th {
+  width: 25%;
+  text-align: center;
+  height: 65px;
+}
+
+td div {
+  margin: 0 auto;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+@media only screen and (max-width: 480px) {
+  th:first-child,
+  td:first-child {
+    display: none;
+  }
+  .row {
+    display: block;
+  }
+  .col-md-4 {
+    padding: 0;
+    width: 100%;
+  }
+}

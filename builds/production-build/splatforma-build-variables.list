@@ -1,0 +1,12 @@
+k8sNode=robuha-pvk8s01.kendart-systems.com
+k8sBackendPort=3000
+tennant=splatforma
+appServiceIndex=1
+appServiceType=splatforma
+appServiceTypeB=splatforma-backend
+appServiceTypeF=splatforma-frontend
+appServiceLimitCPU=1
+appServiceLimitMemory=2g
+appServiceReserveCPU=0.5
+appServiceReserveMemory=1g
+dockerPrivateRegistryServer=hub

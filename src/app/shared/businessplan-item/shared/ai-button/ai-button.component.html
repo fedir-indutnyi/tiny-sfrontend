@@ -1,0 +1,17 @@
+<button nz-button nzType="text" class="ai-button" (click)="toggleModal()"
+    nz-tooltip nzTooltipTitle="Here you can generate text for ai chatbot for collecting data for this section">
+    Ask AI 
+    <span nz-icon nzType="bulb" nzTheme="outline"></span>
+</button>
+
+<nz-modal [(nzVisible)]="isModalVisible" nzTitle="Ask Help from AI" 
+(nzOnCancel)="toggleModal()" (nzOnOk)="toggleModal()" [nzFooter]="modalFooter" nzWidth="75vw">
+    <ng-container *nzModalContent>
+        <p nz-typography nzCopyable [(nzContent)]="AIPromptText" class="ai-prompt-text"></p>
+        <hr>
+        <textarea nz-input placeholder="Paste your result here" rows="4" nzAutosize nzWidth="100%" [(ngModel)]="AIAnswer"></textarea>
+    </ng-container>
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" (click)="applyAnswer()">Apply answer</button>
+    </ng-template>
+  </nz-modal>

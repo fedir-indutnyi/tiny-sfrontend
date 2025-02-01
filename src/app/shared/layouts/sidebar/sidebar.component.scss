@@ -1,0 +1,7 @@
+::ng-deep .ant-menu {
+  background: transparent;
+}
+
+::ng-deep .ant-menu:not(.ant-menu-dark) a {
+  color: #fff;
+}

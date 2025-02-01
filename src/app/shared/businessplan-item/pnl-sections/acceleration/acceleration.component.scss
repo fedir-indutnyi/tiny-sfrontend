@@ -1,0 +1,7 @@
+:host {
+  ::ng-deep {
+    .ant-form-item-label > label {
+      height: 32px;
+    }
+  }
+}

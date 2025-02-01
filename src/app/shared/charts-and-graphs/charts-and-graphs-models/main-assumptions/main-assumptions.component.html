@@ -1,0 +1,46 @@
+<div class="main-assumptions">
+    <div class="main-assumptions__container">
+        <h2 class="main-assumptions__header">
+            Main assumptions
+        </h2><hr>
+        <div class="main-assumptions__body">
+            <section class="main-assumptions__basic-info">
+                <nz-card class="main-assumptions__basic-info__card">
+                    <p><i>Currency: </i> <b>{{ plan?.businessplanSetting.currency }}</b></p>
+                    <p><i>UOM: </i> <b>{{ plan?.businessplanSetting.UOM }}</b></p>
+                    <p><i>Business Plan Period: </i> <b>{{plan?.businessplanSetting.periods }}</b> <i> months </i></p>
+                    <p><i>Inflation: </i> <b>{{ plan?.businessplanSetting.yearlyInflationRate }}</b> <i> % </i></p>
+                    <p><i>Name of Consumers: </i> <b>{{plan?.businessplanSetting?.actualConsumer ?? "bp.details.consumersList.customers" | translate}}</b></p>
+                </nz-card>
+                <nz-card class="main-assumptions__basic-info__card">
+                    <p><i>Monthly (Targeted Audience/Unregistered/Crowd/Traffic): </i> <b>{{ plan?.aboutVisitorsCustomers.totalMonthlyCrowd }}</b></p>
+                    <p><i>Monthly (Targeted Audience/Registered Users/Offline Visitors):  </i> <b>{{ plan?.aboutVisitorsCustomers.totalMonthlyVisitors }}</b></p>
+                    <p><i>Monthly Conversion of {{ plan?.businessplanSetting?.actualConsumer ?? "bp.details.consumersList.customers" | translate}} That Buys : </i> <b>{{ plan?.aboutVisitorsCustomers.monthlyConversionUserThatBuys }}</b></p>
+                    <p><i>Total Monthly {{plan?.businessplanSetting?.actualConsumer ?? "bp.details.consumersList.customers" | translate}}: </i> <b>{{ plan?.aboutVisitorsCustomers.totalMonthlyCustomers }}</b></p>
+                </nz-card>
+            </section>
+            <section class="main-assumptions__portfolio">
+                <app-plate [rowData]="portfolioTableData" [years]="portfolioTableHeaders" [tableTitle]="'Portfolio'">
+                </app-plate>
+                <app-plate [rowData]="seasonalityTableData" [years]="seasonalityTableHeaders" [tableTitle]="'Seasonality'" [colomnWidth] ="50">
+                </app-plate>
+                <app-plate [rowData]="headcountTableData" [years]="headcountTableHeaders" [tableTitle]="'Headcount'" >
+                </app-plate>
+                <app-plate [rowData]="discountTableData" [years]="discountTableHeaders" [tableTitle]="'Discount'" >
+                </app-plate>
+                <app-plate [rowData]="otherCogsTableData" [years]="otherCogsTableHeaders" [tableTitle]="'Other COGS'" >
+                </app-plate>
+                <app-plate [rowData]="investmentsTableData" [years]="investmentsTableHeaders" [tableTitle]="'Investments'" >
+                </app-plate>
+                <app-plate [rowData]="marketingTableData" [years]="marketingTableHeaders" [tableTitle]="'Marketing'" >
+                </app-plate>
+                <app-plate [rowData]="operatingExpencesTableData" [years]="operatingExpencesTableHeaders" [tableTitle]="'Operating expences'" >
+                </app-plate>
+                <app-plate *ngIf="rndTableData" [rowData]="rndTableData" [years]="rndTableHeaders" [tableTitle]="'Research and Development Expedentures (RnD)'" >
+                </app-plate>
+                <app-plate *ngIf="otherIncomeAndLossTableData" [rowData]="otherIncomeAndLossTableData" [years]="otherIncomeAndLossTableHeaders" [tableTitle]="'Other Operating Income & Loss'" >
+                </app-plate>
+            </section> 
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="admin_tools_wrap">
+  <nz-tabset>
+    <nz-tab nzTitle="Users">
+      <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
+        <thead>
+        <tr>
+          <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.compare"
+              [nzSortPriority]="column.priority">
+            {{ column.title }}
+            <nz-filter-trigger *ngIf="column.title === 'User Name'" [(nzVisible)]="visible"
+                               [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+              <span nz-icon nzType="search"></span>
+            </nz-filter-trigger>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of sortTable.data">
+          <td>{{ data.username }}</td>
+          <td>{{ data.id }}</td>
+          <td>{{ data.email }}</td>
+          <td>{{ data?.createdAt?.split('T')[0] }}</td>
+          <td style="display: flex; flex-direction: column">
+            <a style="color: navy"
+               [style.display]=" (loginAsId || originId || +whoAmIId === +data.id) && 'none'"
+               (click)="loginAs(data)">Login as <span style="font-weight: 500">{{ data.username}}</span></a>
+            <a *ngIf="loginAsId === data.id"
+               style="color: rebeccapurple"
+               (click)="logoutAs()">Logout as <i>{{ data.username}}</i></a>
+            <a style="color: brown"
+               [style.display]=" (+whoAmIId === +data.id) && 'none'"
+            >Delete</a>
+            <h6 [style.display]=" (+whoAmIId !== +data.id) && 'none'" style="color: #7f1bbf">Admin</h6>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <div class="ant-table-filter-dropdown custom-dropdown">
+          <div class="search-box">
+            <input type="text" nz-input placeholder="Search name" (keyup)="search()" [(ngModel)]="searchValue"/>
+            <button nz-button nzSize="small" nzType="primary" (click)="visible= false" class="search-button">Close
+            </button>
+          </div>
+        </div>
+      </nz-dropdown-menu>
+    </nz-tab>
+    <nz-tab nzTitle="Common">Content of Common Functionality</nz-tab>
+  </nz-tabset>
+</div>

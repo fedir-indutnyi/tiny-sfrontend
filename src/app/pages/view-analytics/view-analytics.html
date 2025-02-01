@@ -1,0 +1,38 @@
+<div class="_header">
+    <h1>Business Plan Visualization</h1>
+        <div class="coming_soon">
+            <img [src]="'/assets/images/comingSoon.png'" alt="coming_soon.jpg" width="150px">
+        </div>
+    <div class="sub_header">
+        <div class="_left">
+            <nz-card style="width:300px;">
+                <p><i>ID: </i> <b>{{ businessPlan?.id }}</b></p>
+                <p><i>Business plan name: </i> <b>{{ businessPlan?.ideatitle }}</b></p>
+                <p><i>Created by: </i> <b>{{ businessPlan?.createdByProfile }}</b></p>
+                <p><i>Created at: </i> <b>{{ businessPlan?.createdAt.split('T')[0] }}</b></p>
+                <p><i>Industry: </i> <b>{{ businessPlan?.settingsIndustry }}</b></p>
+                <p><i>Category: </i> <b>{{ businessPlan?.settingsCategory }}</b></p>
+                <p><i>Last calculated: </i> <b>{{ businessPlan?.planLastCalculatedAt }}</b></p>
+            </nz-card>
+        </div>
+        <div class="_right"><h4><i>This page presents the key metrics of your business plan in the form of charts,
+            diagrams,
+            and tables. You can
+            review projected financial figures, analyze growth, and see a detailed breakdown of expenses and revenues,
+            helping you make informed decisions for your business development.</i></h4>
+        </div>
+
+    </div>
+</div>
+<app-charts-and-graphs [businessPlanId]="businessPlanId"></app-charts-and-graphs>
+<footer class="_footer">
+    <p><i><h4>Customer conversion and portfolio planning</h4> Customer conversion and portfolio offer planning will help you to find and estimate the perfect offer for your future customers, including retail price</i></p>
+    <p><i><h4>Rump up acceleration timeline estimating</h4> Rump up acceleration timeline - will help you by using publicly available data - to make decisions on how much time is needed to scale up similar businesses from zero to 100% working business. </i></p>
+    <p><i><h4> Sales Volume Planning</h4> Sales Volume Planning will help you to estimate your realistic Sales Volume </i></p>
+    <p><i><h4>Headcount or dream team</h4> Headcount section will help you to set assumptions about a dream team for your business, specifying salaries, taxes, extra payments, as well as time-range when new employee comes in.</i></p>
+    <p><i><h4>Fixed assets</h4>Fixed assets will help my customers to estimate funds required to settle initial assets and investments</i></p>
+    <p><i><h4>Reconcile Income & Expenses</h4>Income/Expenses will help my customers to estimate gross margin and the majority of operating cost expenses</i></p>
+    <p><i><h4>Adjusting customer to sales conversion, gross margin and operating profit</h4>Adjusting customer to sales conversion, gross margin and operating profit will help you to set the best settings to estimate an optimal level of net sales and gross margin</i></p>
+    <p><i><h4>Review EBIT-Operating Profit</h4>Review EBIT-Operating Profit will help you to estimate Detailed Operating Profit in a realistic data-driven manner and outline business profitability before taxation</i></p>
+    <p><i><h4>Investments amounts</h4>Investment amounts section will help you to make assumptions on Total level of pre-opening funds and investments needed for business opening</i></p>
+</footer>

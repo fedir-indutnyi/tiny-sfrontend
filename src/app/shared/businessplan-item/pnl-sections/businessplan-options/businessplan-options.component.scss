@@ -1,0 +1,55 @@
+.ant-picker {
+  width: 100%;
+}
+
+.ant-input-number {
+  @extend .ant-picker
+}
+
+.custom-dropdown {
+
+  .ant-btn-link {
+    padding: 0;
+  }
+
+}
+
+nz-divider {
+  margin: 4px 0;
+}
+
+.custom-dropdown-wrap {
+  margin: 5px 10px;
+}
+
+.user-upgrade{
+  font-size: small;
+  padding: 7px;
+  background: orange;
+  color: #000000;
+  font-weight: 800;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.ant-notification-notice-description{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-item {
+  flex: 0 0 auto;
+  padding: 8px;
+  display: block;
+  transition: .5s;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: 8px;
+  align-items: center;
+  transition: .5s;
+}

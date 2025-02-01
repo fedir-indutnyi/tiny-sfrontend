@@ -1,0 +1,10 @@
+<div>
+  <label for="monthsShift">Number of months to shift Net Sales:</label>
+  <input type="number" id="monthsShift" [(ngModel)]="monthsShift"/>
+  <app-wbr-pivot #pivot [toolbar]="false" height="300px"></app-wbr-pivot>
+  <div nz-row nzJustify="end" style="margin-top: 25px">
+    <button (click)="applyMonthsShift()" style="width: 100px;" nz-button nzType="primary" type="submit">
+      <span>Apply</span>
+    </button>
+  </div>
+</div>

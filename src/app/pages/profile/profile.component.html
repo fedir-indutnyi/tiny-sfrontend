@@ -1,0 +1,134 @@
+<div class="profile-container">
+  <!-- Cover and Profile Section -->
+  <nz-ribbon [nzText]="userStatus" nzColor="green">
+    <nz-card class="profile-header">
+      <div class="cover-photo">
+        <img [src]="currentUser.picture || '/assets/images/no-avatar.png'" alt="cover">
+        
+        <!-- Profile Photo with Upload -->
+        <div class="profile-photo-container">
+          <img [src]="currentUser.picture || '/assets/images/no-avatar.png'" alt="profile">
+          <div class="photo-actions">
+            <button nz-button nzType="primary" nzShape="circle" (click)="onProfilePhotoClick()">
+              <i nz-icon nzType="camera"></i>
+            </button>
+            <button nz-button nzDanger nzShape="circle" (click)="removeProfilePhoto()">
+              <i nz-icon nzType="delete"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Info -->
+      <div class="user-info">
+        <div class="user-main">
+          <h2>{{currentUser.username}}</h2>
+          <div class="user-meta">
+            <span *ngIf="currentUser?.realm">
+              <i nz-icon nzType="cluster"></i> {{currentUser.realm}}
+            </span>
+            <span *ngIf="currentUser?.location">
+              <i nz-icon nzType="environment"></i> {{currentUser.location}}
+            </span>
+            <span>
+              <i nz-icon nzType="calendar"></i> {{'profile.joined'|translate}} {{userJoinDate}}
+            </span>
+          </div>
+        </div>
+
+        <!-- Profile Action Buttons -->
+        <div class="profile-actions">
+          <button *ngIf="!isEditMode" 
+                  nz-button 
+                  nzType="default" 
+                  (click)="onProfilePhotoClick()">
+            <i nz-icon nzType="camera"></i>
+            {{'profile.updatePhoto'|translate}}
+          </button>
+          <button *ngIf="!isEditMode" 
+                  nz-button 
+                  nzType="primary" 
+                  (click)="editProfileData()">
+            <i nz-icon nzType="edit"></i>
+            {{'profile.editProfile'|translate}}
+          </button>
+        </div>
+      </div>
+    </nz-card>
+  </nz-ribbon>
+
+  <!-- Profile Content -->
+  <div class="profile-content">
+    <!-- Left Column -->
+    <div class="profile-sidebar">
+      <!-- Subscription Card -->
+      <nz-card>
+        <div *ngIf="userSubscription?.name === 'pro'" class="subscription-pro">
+          <img src="assets/images/pro-subsctiption.png" alt="PRO">
+          <p>Pro user until {{userSubscription?.validUntil ?? "forever"}}</p>
+        </div>
+        <div *ngIf="!userSubscription?.name || userSubscription?.name === 'free'" 
+             class="subscription-free">
+          <p>Free subscription</p>
+          <a nz-button nzType="primary" href="https://wlasnasprawa.com/pricing/">
+            Upgrade to Pro
+          </a>
+        </div>
+      </nz-card>
+
+      <!-- Contacts Card -->
+      <nz-card>
+        <button nz-button nzBlock (click)="isShowContacts = true">
+          <i nz-icon nzType="contacts"></i>
+          {{'profile.showContacts'|translate}}
+        </button>
+      </nz-card>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="profile-main">
+      <ng-container *ngIf="!isEditMode">
+        <nz-card>
+          <nz-descriptions [nzTitle]="'profile.information'|translate" [nzColumn]="1">
+            <nz-descriptions-item [nzTitle]="'profile.fullName'|translate">
+              {{currentUser.username}}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="'profile.email'|translate">
+              {{currentUser.email}}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="'profile.phone'|translate">
+              {{currentUser.phone || ('profile.notProvided'|translate)}}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="'profile.country'|translate">
+              {{currentUser.location || ('profile.country'|translate)}}
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="'profile.aboutMe'|translate">
+              {{currentUser.commentmemo || ('profile.commentmemo'|translate)}}
+            </nz-descriptions-item>
+          </nz-descriptions>
+        </nz-card>
+      </ng-container>
+
+      <app-edit-profile *ngIf="isEditMode"
+        [data]="currentUser"
+        (onCancelEvent)="cancelFormEditting()"
+        (onSaveEvent)="updateCurrentUser($event)"
+        (onDeleteEvent)="showDeleteConfirm()">
+      </app-edit-profile>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden file input for photo upload -->
+<upload-profile-photo 
+  (onPhotoChangeEvent)="onProfilePhotoChange($event)" 
+  [photoPath]="currentUser.picture"
+  class="hidden-upload">
+</upload-profile-photo>
+
+<!-- Contacts Modal -->
+<app-contacts-modal 
+  *ngIf="isShowContacts" 
+  (onCancel)="isShowContacts = false"
+  [showChooseBtn]="false">
+</app-contacts-modal>

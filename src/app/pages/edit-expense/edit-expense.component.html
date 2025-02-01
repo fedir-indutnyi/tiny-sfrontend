@@ -1,0 +1,125 @@
+<div *ngIf="expense" class="container-fluid">
+  <nz-card>
+
+    <div class="expense__header">
+      <h3 nz-typography>Edit Expense or Transaction </h3>
+    </div>
+
+    <div class="expense__row">
+
+      <div class="expense__item">
+        <nz-form-item>
+          <nz-form-label>Startups</nz-form-label>
+          <nz-select nzSize="large" nzAllowClear nzPlaceHolder="Owned By" [(ngModel)]="startupId">
+            <nz-option *ngFor="let item of list"
+                       [nzValue]="item.id" [nzLabel]="item.ideatitle">
+            </nz-option>
+          </nz-select>
+        </nz-form-item>
+      </div>
+
+      <div class="expense__item">
+        <nz-form-item>
+          <nz-form-label>Title</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              type="text"
+              class="input_bg"
+              [(ngModel)]="title"
+            />
+
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div class="expense__item">
+        <div class="expense__flex">
+          <mat-chip-list #chipList aria-label="Fruit selection">
+            <mat-chip
+              *ngIf="teams"
+              style="width: fit-content"
+              [selectable]="selectable"
+              [removable]="removable"
+            >
+              {{ teams?.username }}
+              <mat-icon matChipRemove *ngIf="removable" (click)="onRemove()">cancel</mat-icon>
+            </mat-chip>
+            <input
+              type="text"
+              style="background: #fff;
+          border: 1px solid #e2dcdc;"
+              placeholder="Etner Team Member"
+              aria-label="Number"
+              #teamInput
+              class="form-control"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [formControl]="myControl"
+              [matAutocomplete]="auto"
+              (matChipInputTokenEnd)="add($event)"
+            />
+          </mat-chip-list>
+
+          <mat-autocomplete
+            (optionSelected)="onReset($event)"
+            autoActiveFirstOption
+            #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let option of filteredOptions | async"
+              [value]="option"
+            >
+              {{ option.username }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+      <div class="expense__item">
+        <nz-form-item>
+          <nz-form-label>Pnl Row</nz-form-label>
+          <nz-select nzSize="large" nzAllowClear nzPlaceHolder="Owned By" [(ngModel)]="pnlRow">
+            <nz-option *ngFor="let item of row"
+                       [nzValue]="item" [nzLabel]="item">
+            </nz-option>
+          </nz-select>
+        </nz-form-item>
+      </div>
+
+      <div class="expense__item">
+        <nz-form-item>
+          <nz-form-label>Date</nz-form-label>
+        </nz-form-item>
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput [(ngModel)]="date" [matDatepicker]="picker" (dateChange)="dateChange($event)"/>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="expense__item">
+        <div class="textarea-replace textarea-replace_100"
+             contenteditable="false"
+        >
+          <ng-container *ngIf="(obj | json) != '{}'">
+            <ng-container>Donated {{obj.valueofmoney}} {{obj.currency}}</ng-container>
+          </ng-container>
+
+        </div>
+
+        <button nz-button nzType="primary" (click)="openModal()">Edit</button>
+      </div>
+
+      <div class="expense__item expense__itemx2">
+        <button
+          nz-button
+          nzType="primary"
+          (click)="saveexpense()">
+          Submit
+        </button>
+      </div>
+    </div>
+
+  </nz-card>
+</div>

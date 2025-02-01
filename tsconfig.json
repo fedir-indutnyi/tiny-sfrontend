@@ -1,0 +1,36 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": false,
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "ES2022",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "module": "es2020",
+    "baseUrl": "./",
+    "useDefineForClassFields": false,
+    "resolveJsonModule": true,
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@businessplan-item/store/*": ["src/app/shared/businessplan-item/store/*"],
+      "@businessplan-item/shared/*": ["src/app/shared/businessplan-item/shared/*"],
+      "@businessplan-item/sections/*": ["src/app/shared/businessplan-item/pnl-sections/*"],
+      "@businessplan-item/*": ["src/app/shared/businessplan-item/*"],
+
+      // Add more aliases for your directories as needed
+    }
+  }
+}

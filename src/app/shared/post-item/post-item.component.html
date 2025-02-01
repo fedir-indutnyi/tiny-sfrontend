@@ -1,0 +1,134 @@
+<nz-ribbon [nzText]="postData?.recordtype || '-'" nzColor="green" class="post-type-tag" style="position: absolute; top: 16px; right: 16px; z-index: 3;"></nz-ribbon>
+<nz-card class="post-card" *ngIf="postData">
+  <!-- Header Section -->
+  <div class="post-header">
+    <div class="user-info">
+      <div class="avatar-wrapper">
+        <img 
+          [src]="getUserAvatar()" 
+          [alt]="postData?.createdByProfile?.username"
+          class="avatar-image"
+          (error)="handleAvatarError($event)">
+      </div>
+      
+      <div class="user-details">
+        <div class="username-wrapper">
+          <span class="username">{{postData?.createdByProfile?.username || '-'}}</span>
+        </div>
+        <div class="post-meta">
+          <span>{{getDayFromDate(postData?.createdAt) ?? 'The date is uncertain'}}</span>
+          <div class="visibility-info">
+            <nz-tag [nzColor]="getVisibilityColor()">
+              <i nz-icon [nzType]="getVisibilityIcon()"></i>
+              {{getVisibilityText()}}
+            </nz-tag>
+            <ng-container *ngIf="sharedTeamName">
+              <span>•</span>
+              <span>{{sharedTeamName}}</span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty div for spacing -->
+    <div style="height: 10px;"></div>
+
+    <!-- Title Overlay in Header -->
+    <div class="title-overlay">
+      <h1 class="post-title" [class.clickable]="!isSingleElement">
+        {{postData.ideatitle || '-'}}
+      </h1>
+    </div>
+
+  </div>
+
+  <!-- Combined Title and Cover Section -->
+  <div class="post-cover-section" [class.image-only]="hasImage()">
+    <div class="post-cover" [class.with-image]="hasImage()">
+      <!-- Cover Image (only if exists) -->
+      <a [href]="'/post/' + postData.id" 
+         class="post-link"
+         (click)="!isSingleElement && handleClick($event)">
+        <img *ngIf="hasImage()" 
+             [src]="postData.image" 
+             [alt]="postData.ideatitle || '-'"
+             (error)="onImageError($event)"/>
+      </a>
+    </div>
+  </div>
+
+  <!-- Business Plan Info -->
+  <div *ngIf="postData.recordtype === 'businessplan'" class="business-info">
+    <nz-descriptions [nzColumn]="2">
+      <nz-descriptions-item nzTitle="Industry">
+        {{postData.settingsIndustry || 'unknown'}}
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Category">
+        {{postData.settingsCategory || 'unknown'}}
+      </nz-descriptions-item>
+    </nz-descriptions>
+  </div>
+
+  <!-- Content Section -->
+  <div class="post-content">
+    <!-- Rich Text Content -->
+    <div class="rich-text-content">
+      <div *ngIf="toggle" class="truncated-content">
+        <div class="ql-editor" [innerHTML]="postData.ideadescription.substr(0,3000)"></div>
+        <div class="fade-overlay"></div>
+        <button nz-button 
+                nzType="link" 
+                class="expand-button"
+                (click)="showMore()">
+          <i nz-icon nzType="down"></i>
+          See more
+        </button>
+      </div>
+      <div *ngIf="!toggle" class="expanded-content">
+        <div class="ql-editor" [innerHTML]="postData.ideadescription"></div>
+        <!-- Only show the "See less" button if the text was initially long -->
+        <button *ngIf="postData.ideadescription.length > 3000" 
+                nz-button 
+                nzType="link" 
+                class="expand-button collapse-button"
+                (click)="showLess()">
+          <i nz-icon nzType="up"></i>
+          See less
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <div class="post-footer">
+    <div class="footer-content">
+      <div class="footer-info">
+        <div class="info-row">
+          <span class="info-label">Created by:</span>
+          <span class="info-value">{{postData.createdByProfile?.username}}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Last modified by:</span>
+          <span class="info-value">{{postData.updatedByProfile?.username ?? "Not modified yet"}}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Last modified at:</span>
+          <span class="info-value">{{getDayFromDate(postData?.updatedAt)}}</span>
+        </div>
+      </div>
+      
+      <!-- View Comments button -->
+      <div class="post-meta">
+        <a *ngIf="!isSingleElement" 
+           class="comments-link"
+           nz-button 
+           nzType="link" 
+           (click)="goToSingleComponent()">
+          <i nz-icon nzType="comment"></i>
+          View Comments
+        </a>
+      </div>
+    </div>
+  </div>
+</nz-card>

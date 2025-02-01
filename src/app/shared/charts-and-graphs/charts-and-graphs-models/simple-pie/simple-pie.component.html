@@ -1,0 +1,11 @@
+<div style="display: flex; justify-content: center; align-items: center; margin-top: 40px  ">
+    <h3 style="color: #007bbd"><i>{{title}}</i></h3>
+</div>
+<div id="chart">
+    <apx-chart *ngIf="chartOptions"
+            [series]="chartOptions?.series"
+            [chart]="chartOptions?.chart"
+            [labels]="chartOptions?.labels"
+            [responsive]="chartOptions?.responsive"
+    ></apx-chart>
+</div>

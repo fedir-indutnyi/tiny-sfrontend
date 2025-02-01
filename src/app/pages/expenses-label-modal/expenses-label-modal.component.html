@@ -1,0 +1,34 @@
+<div class="container" style="width: fit-content;">
+    <div style="font-size: 18px">       
+    <mat-form-field appearance="outline" class="ml-4" style="width: fit-content;">
+        <mat-label>Fact</mat-label>
+        <input matInput [(ngModel)]="planfact" style="width: 12px;background: #a1dca1;" readonly>
+    </mat-form-field>
+</div>
+    
+    <mat-form-field appearance="outline" class="ml-4">
+        <mat-label>LabelName:</mat-label>
+        <input matInput [(ngModel)]="labelcontent" style="width: 120px;background: #a1dca1;height: 56px;" >
+    </mat-form-field><br>
+    <!-- <mat-form-field appearance="outline" class="ml-4">
+        <input matInput [(ngModel)]="year"  [matDatepicker]="picker" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker> 
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="ml-4">
+        <mat-label>Label</mat-label>
+        <textarea matInput [(ngModel)]="text"></textarea>
+    </mat-form-field><br> -->
+
+    <button mat-raised-button color="primary" (click)="submitLabelEditDialog()">
+        Submit
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        class="ml-3"
+        (click)="closeLabelEditDialog()"
+      >
+        Close
+    </button>
+</div>

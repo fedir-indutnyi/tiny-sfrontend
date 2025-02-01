@@ -1,0 +1,11 @@
+:host {
+  ::ng-deep{
+    .ant-table-cell{
+      padding: 8px 4px !important;
+    }
+  }
+}
+
+td{
+  overflow-wrap: normal;
+}

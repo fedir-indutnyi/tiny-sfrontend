@@ -1,0 +1,12 @@
+{
+    "envName": "demo",
+    "production": false,
+    "baseUrl": "https://3332222211111111api.wlasnasprawa.com",
+    "fileDynamicPlaceholder": "##sPlatformFileStorage##/",
+    "fileDynamicPlaceholderUrl": "https://api.wlasnasprawa.com/files/",
+    "autologinTestUser": false,
+    "ImportantNoticeEnabled": true,
+    "autologinTestUserCredentials": {},
+    "environmentBadgeLabel": "ext",
+    "environmentBadgeDisplay": true
+}

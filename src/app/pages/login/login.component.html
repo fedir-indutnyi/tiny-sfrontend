@@ -1,0 +1,53 @@
+<div class="login _login">
+    <div class="edition-badge__text"
+         [ngStyle]="{'display': displayBadge? 'block' : 'none'}">{{ badgeText }}
+        <div class="blinking-dot"></div>
+    </div>
+    <div class="background-image"></div>
+    <div class="login__block">
+        <a href="https://wlasnasprawa.com/">
+          <span class="arrow_left"
+                nz-icon nzType="arrow-left"
+                nzTheme="outline"></span></a>
+        <h3 nz-typography class="text-center">{{ 'log.login'|translate }}</h3>
+
+        <form nz-form [formGroup]="loginForm" class="login__form">
+            <nz-form-item>
+                <nz-form-label>{{ 'log.email'|translate }}</nz-form-label>
+                <nz-form-control [nzErrorTip]="emailErrorMessage">
+                    <input nz-input required="required" formControlName="login" placeholder="example@ex.com"
+                           type="email"
+                           name="login"/>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>{{ 'log.password'|translate }}</nz-form-label>
+                <nz-form-control [nzErrorTip]="passwordErrorMessage">
+                    <input nz-input required="required" formControlName="password" type="password" name="password"/>
+                </nz-form-control>
+            </nz-form-item>
+
+            <div class="login__wrap">
+                <a routerLink="/reset-password"> {{ 'log.forgotPassword'|translate }} </a>
+                <a routerLink="/sign-up" class="text-center"> {{ 'log.registerNow'|translate }} </a>
+            </div>
+            <button nz-button nzType="primary" nzBlock (click)="login(null)">
+                {{ 'log.login'|translate }}
+            </button>
+            <br/>
+
+            <!-- only for non production: -->
+            <button [class]=" envInfo.production ? 'off' : 'on' " nz-button nzType="primary" nzBlock
+                    (click)="loginAsTestUser()" class="test-login-btn">
+                Login as John Doe
+            </button>
+
+            <div class="login__footer" *ngIf="errorMessage.length">
+        <span *ngFor="let item of errorMessage">
+          {{ item }}
+        </span>
+            </div>
+        </form>
+    </div>
+</div>

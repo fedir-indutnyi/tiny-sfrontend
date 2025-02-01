@@ -1,0 +1,85 @@
+.textarea {
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid transparent;
+  height: auto;
+  width: auto;
+}
+
+.list-group {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.list-group-item {
+  border: 1px solid rgba(0, 0, 0, .125) !important;
+}
+
+.add-team__button {
+  margin-left: 0 !important;
+}
+
+[nz-button] {
+  margin-right: 8px;
+  min-width: 86px;
+}
+
+.edit-team__button {
+  color: #fff;
+  position: relative;
+  top: 0;
+  padding: 5px 0 !important;
+
+  & span {
+    display: flex;
+    align-items: center;
+    min-height: 43px;
+
+  }
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.wrap__team {
+  position: relative;
+
+  .team__location {
+    position: absolute;
+    top: 20px;
+    right: 34px;
+    display: inline-block;
+    padding: 6px 30px;
+    font-size: 13px;
+    text-transform: uppercase;
+    z-index: 10;
+  }
+
+  ._img {
+    max-height: 250px;
+    width: 80%;
+    margin-top: 14px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  ._description {
+    margin: 15px 0;
+
+    ._input {
+      padding: 5px 10px;
+      background: #f8f8f8;
+    }
+  }
+
+  .demo-infinite-container {
+    height: 260px;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+
+    nz-list {
+      padding: 24px;
+    }
+  }
+
+}

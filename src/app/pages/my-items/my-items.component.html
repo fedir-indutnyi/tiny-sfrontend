@@ -1,0 +1,80 @@
+<div class="search-results"
+     id="search-myitems-results"
+     infiniteScroll
+     [infiniteScrollDistance]="1"
+     [infiniteScrollThrottle]="100"
+     (scrolled)="getDataIfNotEnd(tabs[selectedTab].value)"
+     [scrollWindow]="false"
+>
+  <nz-tabset class="wrap_tabs" [nzSelectedIndex]="selectedTab">
+    <nz-tab *ngFor="let tab of tabs, index as i" [nzTitle]="tab.label | translate" (nzClick)="clickTab(tab.value, i)">
+      <div class="">
+        <div class="btn-control-wraper container-fluid">
+          <a mat-button [routerLink]="['/create-post/']" class="btn btn-primary btn-add-idea green">
+            <mat-icon aria-hidden="false" aria-label="add circle icon" fontIcon="add_circle"></mat-icon>
+            <span>{{'myItems.createPost'|translate}}</span>
+          </a>
+        </div>
+
+        <div>
+          <div class="row" *ngFor="let item of postList; index as i">
+            <div class="col-xs-12">
+
+              <div class="card">
+                <post-item [postData]="item" [teams]="teams"></post-item>
+              </div>
+
+              <div class="button__wrap">
+                <button [routerLink]="['/edit-post/', item.id]"
+                        nz-button
+                        nzType="primary">
+                  {{'myItems.edit'|translate}}
+                </button>
+                <!--                <button [routerLink]="['/share']" [queryParams]="{'ideaid': item.id}" nz-button nzType="primary">{{'myItems.share'|translate}}</button>-->
+
+                <button routerLink="/my-expenses"
+                        nz-button
+                        nzType="primary">
+                  {{'myItems.logExpenses'|translate}}
+                </button>
+
+                <button (click)="deletePost(i)"
+                        nz-button
+                        nzType="default"
+                        nzDanger>
+                  {{'myItems.delete'|translate}}
+                </button>
+
+                <button (click)="showShareModal(item)"
+                        nz-button
+                        nzType="primary">
+                  {{'myItems.share'|translate}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</div>
+
+<nz-modal [(nzVisible)]="isSharedVisible"
+          nzTitle="Choose the team"
+          (nzOnCancel)="this.isSharedVisible = false"
+          [nzOkDisabled]="teamId === teamCheckedId"
+          (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <nz-radio-group [(ngModel)]="teamCheckedId"
+                    style="display: flex; flex-direction: column">
+      <label nz-radio [nzValue]="0"><span style="font-weight: 600">None</span></label>
+      <label *ngFor="let team of teams" nz-radio
+             [nzValue]="team.teamId"
+             [nzDisabled]="teamId === team.teamId"
+      >{{team.team?.teamname || "id " + team.teamId}}
+      </label>
+    </nz-radio-group>
+  </ng-container>
+</nz-modal>
+
+<app-up-button [targetId]="'search-myitems-results'"></app-up-button>

@@ -1,0 +1,24 @@
+<div style="display: flex; justify-content: center; align-items: center; margin-top: 40px ">
+    <h3 style="color: #007bbd"><i>{{title}}</i></h3>
+</div>
+<div>
+    <div id="chart">
+    <nz-switch *ngIf="chartOptions" [(ngModel)]="isMonthly" (click)="switchEmitter.emit(isMonthly)" nzCheckedChildren="Yearly" nzUnCheckedChildren="Mountly"></nz-switch>
+        <apx-chart *ngIf="chartOptions"
+                [series]="chartOptions?.series"
+                [chart]="chartOptions?.chart"
+                [yaxis]="chartOptions?.yaxis"
+                [xaxis]="chartOptions?.xaxis"
+                [labels]="chartOptions?.labels"
+                [stroke]="chartOptions?.stroke"
+                [title]="chartOptions?.title"
+                [plotOptions]="chartOptions?.plotOptions"
+                [subtitle]="chartOptions?.subtitle"
+                [colors]="chartOptions?.colors"
+                [states]="chartOptions?.states"
+                [dataLabels]="chartOptions?.dataLabels"
+                [fill]="chartOptions?.fill"
+                [tooltip]="chartOptions?.tooltip"
+        ></apx-chart>
+    </div>
+</div>

@@ -1,0 +1,220 @@
+<form nz-form nzLayout="vertical" [formGroup]="optionsForm" (ngSubmit)="applyOptions(optionsForm)">
+  <nz-form-item>
+    <nz-form-label nzRequired>{{'bp.details.name' | translate }}</nz-form-label>
+    <nz-form-control nzErrorTip="Please, fill in data">
+      <nz-input-group>
+        <input type="text" nz-input formControlName="name" placeholder="Type your business plan name" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div nz-row [nzGutter]="{ lg: 30, xl: 50 }">
+    <div nz-col [nzLg]="{ span: 12 }" [nzXs]="{ span: 24 }">
+      <div nz-row [nzGutter]="{md: 8, xl: 16 }">
+        <div nz-col [nzSm]="{ span: 12 }" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.currency | translate"
+              [nzTooltipIcon]="tooltipIcon">{{'bp.details.currency' | translate }}</nz-form-label>
+            <nz-form-control nzErrorTip="Please, fill in data">
+              <nz-select formControlName="currency" [nzDropdownRender]="currencyTemplate"
+                nzPlaceHolder="Select currency">
+                <nz-option *ngFor="let currency of currencyList" [nzValue]="currency" [nzLabel]="currency"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <ng-template #currencyTemplate>
+            <div class="custom-dropdown custom-dropdown-wrap">
+              <nz-divider></nz-divider>
+              <div nz-row>
+                <input type="text" nz-input #inputEl nz-col nzSpan="12" />
+                <a nz-button nzType="link" (click)="addCurrency(inputEl)" nz-col nzSpan="12">
+                  <span nz-icon nzType="plus">
+                  </span>
+                  Add
+                </a>
+              </div>
+              <span *ngIf="showCurrencyValidationMessage" nz-typography nzType="warning">
+                Value already exists
+              </span>
+            </div>
+          </ng-template>
+        </div>
+
+        <div nz-col [nzSm]="{ span: 12 }" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.uom | translate"
+              [nzTooltipIcon]="tooltipIcon">{{'bp.details.uom' | translate }}</nz-form-label>
+            <nz-form-control nzErrorTip="Please, fill in data">
+              <nz-input-group>
+                <input nz-input formControlName="uom" placeholder="EACH" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSm]="{ span: 12 }" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.consumersOfGoodsAndServices | translate"
+              [nzTooltipIcon]="tooltipIcon">{{'bp.details.consumers' | translate }}</nz-form-label>
+            <nz-form-control nzErrorTip="Please, fill in data">
+              <div style="display: flex; flex-direction: column">
+                  <nz-select nzShowSearch nzAllowClear
+                             id="actualCustomer"
+                             [nzDropdownRender]="industryTemplate"
+                             nzPlaceHolder="Choose"
+                             formControlName="actualConsumer"
+                             >
+                      <nz-option *ngFor="let item of selectedData.consumersList i as index"
+                                 [nzLabel]="item | translate" 
+                                 [nzValue]="item"
+                      ></nz-option>
+                  </nz-select>
+
+                  <ng-template #industryTemplate>
+                      <nz-divider></nz-divider>
+                      <div class="container">
+                          <input type="text" nz-input #inputElement/>
+                          <a *ngIf="inputElement.value.length > 1" class="add-item" (click)="addIndustry(inputElement)">
+                              <span>Add to List <span nz-icon nzType="file-add" nzTheme="outline"></span></span>
+                          </a>
+                      </div>
+                  </ng-template>
+
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label>{{'bp.details.desc' | translate }}</nz-form-label>
+            <nz-form-control>
+              <nz-textarea-count>
+                <textarea formControlName="description" rows="4" placeholder="Short description of your business"
+                  nz-input></textarea>
+              </nz-textarea-count>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+    </div>
+
+    <div nz-col [nzLg]="{ span: 12}" [nzXs]="{ span: 24 }">
+      <div nz-row [nzGutter]="{md: 8, xl: 16 }">
+        <div nz-col [nzMd]="{ span: 16}" [nzXs]="{ span: 24 }">
+          <div nz-row [nzGutter]="{md: 8, xl: 16 }" formGroupName="period">
+            <div nz-col [nzLg]="{ span: 12}" [nzSm]="{ span: 12 }" [nzXs]="{ span: 24 }">
+              <nz-form-item>
+                <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.startDate | translate" [nzTooltipIcon]="tooltipIcon">{{'bp.details.startDate' | translate }}</nz-form-label>
+                <nz-form-control nzErrorTip="Please, fill in data">
+                  <nz-date-picker nzMode="month" formControlName="startDate"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col [nzLg]="{ span: 12}" [nzSm]="{ span: 12 }" [nzXs]="{ span: 24 }">
+              <nz-form-item>
+                <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.periodMonths | translate"
+                  [nzTooltipIcon]="tooltipIcon">{{'bp.details.period' | translate }}</nz-form-label>
+                <nz-form-control nzErrorTip="Please, fill in data">
+                  <nz-input-number nz-input nzMin="1" nzMax="120" formControlName="months" nzPlaceHolder="1"></nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <ng-template #notification>
+              <div class="ant-notification-notice-content">
+                <div class="ant-notification-notice-with-icon">
+                  <span class="ant-notification-notice-icon">
+                    <span nz-icon nzType="info-circle" style="color: rgb(16, 142, 233);"></span>
+                  </span>
+                  <div class="ant-notification-notice-message">Unlock feature</div>
+                  <div class="ant-notification-notice-description">
+                    <p>Only pro users can set period longer then 12 months</p>
+                    <a href="https://wlasnasprawa.com/pricing/" class="user-upgrade" >Upgrade to Pro</a>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            
+          </div>
+        </div>
+        <div nz-col [nzMd]="{ span: 8}" [nzXs]="{ span: 24 }">
+          <nz-form-item>
+            <nz-form-label>{{'bp.details.endDate' | translate }}</nz-form-label>
+            <nz-form-control>
+              <span> {{optionsForm.value.periodEndDate | date:'yyyy-MM'}}</span>
+              <span nz-typography nzType="secondary" *ngIf="!optionsForm.value.periodEndDate">Calculated</span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="{md: 8, xl: 16 }">
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label>{{'bp.details.address' | translate }}</nz-form-label>
+            <nz-form-control>
+              <nz-textarea-count [nzMaxCharacterCount]="255">
+                <textarea formControlName="address" rows="4" placeholder="Country, town, district, street"
+                  nz-input></textarea>
+              </nz-textarea-count>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="{ lg: 30, xl: 50 }">
+    <div nz-col [nzSm]="{ span: 6 }" [nzXs]="{ span: 24 }">
+      <nz-form-item>
+        <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.yearlyInflationRate | translate"
+          [nzTooltipIcon]="tooltipIcon">{{'bp.details.yearlyInflationRate' | translate }}</nz-form-label>
+        <nz-form-control nzErrorTip="Please, fill in data">
+          <nz-input-number formControlName="yearlyInflationRate" [nzMax]="100" [nzDisabled]="!optionsForm.controls.isInflation.value" nzLabel="%"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSm]="{ span: 6 }" [nzXs]="{ span: 24 }">
+      <nz-form-item>
+        <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.yearlyPriceIncrease | translate"
+          [nzTooltipIcon]="tooltipIcon">{{'bp.details.yearlyPriceIncrease' | translate }}</nz-form-label>
+        <nz-form-control nzErrorTip="Please, fill in data">
+          <nz-input-number formControlName="yearlyPriceIncrease" [nzMax]="100" [nzDisabled]="!this.optionsForm.controls.isInflation.value" nzLabel="%"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSm]="{ span: 6 }" [nzXs]="{ span: 24 }">
+      <nz-form-item>
+        <nz-form-label nzRequired [nzTooltipTitle]="tooltipTitle.yearlySalaryIncrease | translate"
+          [nzTooltipIcon]="tooltipIcon">{{'bp.details.yearlySalaryIncrease' | translate }}</nz-form-label>
+        <nz-form-control nzErrorTip="Please, fill in data">
+          <nz-input-number formControlName="yearlySalaryIncrease" [nzMax]="100" [nzDisabled]="!this.optionsForm.controls.isInflation.value" nzLabel="%"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSm]="{ span: 6 }" [nzXs]="{ span: 24 }">
+      <nz-form-item>
+        <nz-form-label>{{'bp.details.turnInflation' | translate }}</nz-form-label>
+        <nz-form-control>
+          <nz-switch (click)="toggleInflation()" formControlName="isInflation"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+  </div>
+
+
+  <div nz-row nzJustify="end">
+    <button style="width: 100px" nz-button nzType="primary" type="submit" [disabled]="optionsForm.untouched || optionsForm.invalid">
+      <span *ngIf="(componentName$ | async) !== componentName">Apply</span>
+      <nz-spin *ngIf="(componentName$ | async) === componentName" nzSimple [nzSize]="'small'"></nz-spin>
+    </button>
+  </div>
+</form>
+

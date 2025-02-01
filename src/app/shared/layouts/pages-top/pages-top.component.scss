@@ -1,0 +1,168 @@
+@import '../../theme/conf';
+
+$darkGrey: #3b3c40;
+$lightGrey: #f2f2f2;
+$darkOcean: #014040;
+$medOcean: #0d8c7f;
+$lightAqua: #23d9c7;
+
+.pointer {
+  cursor: pointer;
+}
+
+.header {
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 64px;
+
+    @media screen and (max-width: 991px) {
+      & a {
+        display: none;
+      }
+    }
+    .edition-badge__text {
+      position: fixed;
+      top: 21px;
+      left: 0;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 25px;
+      background-color: greenyellow;
+      font-weight: 600;
+      border-radius: 0 5px 5px 0;
+      padding: 0 20px;
+      color: inherit;
+      z-index: 9999;
+
+        .blinking-dot {
+          position: absolute;
+          margin: 8px 0 0 6px;
+          top: 0;
+          left: 0;
+          width: 10px;
+          height: 10px;
+          background-color: firebrick;
+          border-radius: 50%;
+          animation: blink 1s infinite;
+
+
+        @keyframes blink {
+          0%, 50%, 100% {
+            opacity: 1;
+          }
+          25%, 75% {
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
+
+  &-top {
+    &__desk {
+      @media screen and (max-width: 767px) {
+        display: none;
+      }
+    }
+
+    &__mob {
+      display: none!important;
+
+      @media screen and (max-width: 767px) {
+        display: block!important;
+      }
+    }
+
+    &__button {
+      &:hover {
+        background: #40a9ff;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.toggler {
+  padding: 10px 15px;
+  font-size: 18px;
+  color: #fff;
+  display: block;
+  transition: background-color .3s;
+  -webkit-transition: background-color .3s;
+  -moz-transition: background-color .3s;
+  -o-transition: background-color .3s;
+  -ms-transition: background-color .3s;
+  border-radius: 0.25rem;
+
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.35);
+  }
+}
+
+nz-select {
+  margin: 0 8px 10px 0;
+  width: 120px;
+}
+
+[nz-button] {
+  margin-right: 8px;
+}
+
+.avatar__image {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 40px;
+  color: #f4f4f4;
+  font-size: 16px;
+
+  .mat-icon {
+    font-size: inherit;
+    width: auto;
+    height: auto;
+  }
+
+  @media screen and (max-width: 991px) {
+    padding: 10px 0;
+  }
+}
+
+
+::ng-deep {
+    .ant-dropdown-menu-item {
+      min-height: 42px;
+
+      & > * {
+         margin-right: 8px;
+      }
+
+      & [nz-icon] {
+        margin-right: 8px ;
+      }
+
+    }
+  }
+
+.text-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  font-size: 17px;
+  font-weight: 500;
+}

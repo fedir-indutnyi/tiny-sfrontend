@@ -1,0 +1,6 @@
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Message" [nzFooter]="null">
+  <ng-container *nzModalContent>
+    <p>{{message}}</p>
+    <button style="justify-content: right" nz-button nzType="primary" (click)="handleOk()">Ok</button>
+  </ng-container>
+</nz-modal>

@@ -1,0 +1,121 @@
+.off {
+  visibility: hidden;
+  display: none;
+}
+
+.on {
+  visibility: visible;
+  display: block;
+}
+
+.test-login-btn {
+  margin-top: 10px;
+}
+
+.login__block {
+  position: relative;
+
+  .arrow_left {
+    position: absolute;
+    left: 8%;
+    top: 30px;
+    text-decoration: none;
+    color: silver;
+    transition: .3s;
+  }
+
+  .arrow_left:hover {
+    color: black;
+    scale: 1.1;
+    transition: .3s;
+  }
+
+  .arrow_left:active {
+    scale: 1.2;
+  }
+}
+
+.edition-badge__text {
+  position: fixed;
+  top: 21px;
+  left: 0;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 25px;
+  background-color: greenyellow;
+  font-weight: 600;
+  border-radius: 0 5px 5px 0;
+  padding: 0 20px;
+  color: inherit;
+  z-index: 9999;
+
+  .blinking-dot {
+    position: absolute;
+    margin: 8px 0 0 6px;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: firebrick;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+
+
+    @keyframes blink {
+      0%, 50%, 100% {
+        opacity: 1;
+      }
+      25%, 75% {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+
+._login {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Висота обгортки становитиме весь висоту вікна переглядача */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Щоб фонові зображення не виходили за межі обгортки */
+  background: silver;
+}
+
+._login::before,
+._login::after,
+._login > .background-image {
+  content: "";
+  position: absolute;
+  background: url("/assets/images/logo/logo-with-shadow.svg") no-repeat center/contain;
+}
+
+._login::before {
+  top: -5%;
+  left: -10%;
+  width: 60%;
+  height: 60%;
+  transform: rotate(-20deg);
+  filter: blur(3px)
+}
+
+._login::after {
+  bottom: 59%;
+  right: -10%;
+  width: 48%;
+  height: 60%;
+  transform: rotate(20deg);
+  filter: blur(2px)
+}
+
+._login > .background-image {
+  top: 32%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  transform: rotate(-1deg);
+  filter: blur(3px)
+}
+

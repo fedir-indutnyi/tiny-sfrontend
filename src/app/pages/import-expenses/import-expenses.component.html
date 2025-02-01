@@ -1,0 +1,23 @@
+<div class="container" style="width: fit-content;">
+  <mat-label>Copy-Paste ready data from Excel:</mat-label>
+  <mat-label>Here is example. <a href="../../../assets//sampleformats/ExampleImportExpenses.xlsx" download>Example Excel file</a></mat-label>
+  <br> 
+  <mat-form-field appearance="outline" class="ml-4">
+      <mat-label>Paste data to import:</mat-label>
+      <br>
+      <textarea matInput [(ngModel)]="inputTSV" (change)="onChangeTextArea($event)"></textarea>
+  </mat-form-field> 
+
+<br>
+<mat-label>Or upload prepared excel file: :</mat-label>
+<br>
+    <input #fileInput    (click)="fileInput.value = null" 
+      type="file" (change)="onChangeFile($event)" hidden>
+    <button (click)="fileInput.click()" mat-raised-button color="green" >Browse SpreadSheet file</button>
+    <br>
+
+    <mat-label>You will be loading {{data.length}} rows of data as expenses :</mat-label>
+    <br>
+    <button (click)="uploadSheet()" mat-raised-button color="primary" >Load {{data.length}} rows</button>
+    <button (click)="closeDialog()" class="ml-3" mat-raised-button color="warn" >Close</button>
+</div>

@@ -1,0 +1,13 @@
+<div class="form-row">
+    <div class="mb-2 d-flex">
+        <button type="button" class="btn btn-info" (click)="showAccelerationCurve()">Fill from first to last</button>
+        <button type="button" class="btn btn-danger ml-2" (click)="closeAcceleration()">Clear all</button>
+    </div>
+    <div class="form-group col-md-2" *ngFor="let curve of data; let i = index;">
+        <div >
+            <input *ngIf="isEditPage" class="form-control" type="number" [(ngModel)]="curve.accelerationValue">
+            <input *ngIf="!isEditPage" class="form-control" type="number" [(ngModel)]="curve.value.item">
+        </div>
+    </div>
+
+</div>

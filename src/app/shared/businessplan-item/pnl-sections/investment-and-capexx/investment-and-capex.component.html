@@ -1,0 +1,18 @@
+<div class="investment-and-capex">
+    <app-dynamic-table-form [config]="investmentAndCapexTableConfig" [dataSource]="investmentAndCapexSource | async"
+    (onApply)="onApply($event)" [componentName]="componentName"></app-dynamic-table-form>
+    <div class="ammortization">
+        {{'bp.investmentAndCapex.typeOfAmortisation' | translate}}
+        <nz-select ngModel="linear">
+            <nz-option nzValue="linear" nzLabel="Linear"></nz-option>
+        </nz-select>
+    </div>
+    <h2> {{'bp.investmentAndCapex.assetsAvailability' | translate}}</h2><hr>
+    <app-wbr-pivot #assetsAvaliabilityPivot [toolbar]="false"></app-wbr-pivot>
+    <h2> {{'bp.investmentAndCapex.monthlyCAPEX' | translate}}</h2><hr>
+    <app-wbr-pivot #montlyCapexInvestmentPivot [toolbar]="false"></app-wbr-pivot>
+    <h2> {{'bp.investmentAndCapex.assetsDeprecation' | translate}}</h2><hr>
+    <app-wbr-pivot #assetsDepriciationPivot [toolbar]="false"></app-wbr-pivot>
+    <h2> {{'bp.investmentAndCapex.inventoryIncrease' | translate}}</h2><hr>
+    <app-wbr-pivot #inventoryIncreasePivot [toolbar]="false" (ready)="onPivotReady()"></app-wbr-pivot>
+</div>

@@ -1,0 +1,45 @@
+<nz-layout
+        class="layout"
+        [ngClass]="isCollapsed ? 'is-folded' : ''">
+
+
+    <nz-sider
+            nzCollapsible
+            [(nzCollapsed)]="isCollapsed"
+            nzWidth="280"
+            [ngStyle]="isDonationMessage&&{'top':'130px'}"
+            [nzTrigger]="null">
+        <sidebar></sidebar>
+    </nz-sider>
+
+    <nz-layout>
+        <nz-header [ngStyle]="isDonationMessage && {'position': 'fixed','top':'60px'}" class="header">
+            <div class="logo">
+                <a routerLink="/">
+                    <img style=" filter: invert(100%); width: 60%; margin-left: 30px"
+                         src="/assets/images/logo/logo-with-shadow.svg" alt="logo">
+                    <img style=" filter: invert(100%); width: 60%" src="/assets/images/logo/logo-with-shadow.svg"
+                         alt="logo-fold" class="logo-fold">
+                </a>
+            </div>
+
+            <div class="nav-wrap _content">
+                <i class="trigger"
+                   nz-icon
+                   [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+                   (click)="isCollapsed = !isCollapsed"></i>
+                <pages-top></pages-top>
+                <h2 class="_title">{{ routeTitle|translate }}</h2>
+            </div>
+        </nz-header>
+
+        <nz-content class="content-container"
+                    [style]="isDonationMessage
+                ? 'max-height: calc(100vh - 130px); margin-top: 130px'
+                : 'max-height: calc(100vh - 70px); margin-top: 70px'">
+            <router-outlet></router-outlet>
+        </nz-content>
+    </nz-layout>
+</nz-layout>
+
+<loading [loading]="false"></loading>

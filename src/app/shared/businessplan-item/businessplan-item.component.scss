@@ -1,0 +1,59 @@
+::ng-deep {
+  .modal-dialog {
+    width: max-content !important;
+  }
+}
+
+.plan_wrapper {
+  position: relative;
+
+  .fold_button {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    padding-left: 10px;
+    padding-bottom: 10px;
+  }
+
+  .fn_button {
+    margin-right: 30px;
+  }
+
+  .nav_block {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.nav_list {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 10px;
+  color: white;
+}
+
+.nav_list:hover {
+  text-shadow: 0 0 12px;
+}
+
+.section-status {
+  position: absolute;
+  right: 16px;
+  top: 13px;
+}
+
+.ant-collapse {
+  position: relative;
+}
+
+.card-content {
+  h2{
+    margin-top: 40px;
+    text-align: center;
+  }
+  
+  hr{
+      margin: -10px 50px 10px
+  }
+}

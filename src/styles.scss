@@ -1,0 +1,28 @@
+@import 'ng-zorro-antd/ng-zorro-antd';
+@import 'app/shared/theme/ng-zorro';
+@import 'app/shared/theme/flags';
+@import 'app/shared/theme/custom';
+
+@import 'quill/dist/quill.core.css';
+@import 'quill/dist/quill.bubble.css';
+@import 'quill/dist/quill.snow.css';
+
+@import 'boxicons';
+@import '@webdatarocks/webdatarocks/webdatarocks.min.css' ;
+
+$darkGrey: #3b3c40;
+$lightGrey: #f2f2f2;
+$darkOcean: #014040;
+$medOcean: #0d8c7f;
+$lightAqua: #23d9c7;
+
+.ql-container .ql-editor {
+  min-height: 200px;
+
+  span {
+    img {
+      width: 100% !important;
+    }
+  }
+}
+

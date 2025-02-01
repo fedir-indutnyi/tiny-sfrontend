@@ -1,0 +1,60 @@
+.button__up {
+  width: 45px;
+  height: 45px;
+  border: 1px solid #465293;
+  border-radius: 50%;
+  color: whitesmoke;
+  position: fixed;
+  right: 10px;
+  background: #465293;
+  animation: button__appear 0.3s ease-in-out forwards;
+  transition: transform 0.3s ease-in-out;
+}
+
+@keyframes button__appear {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+  }
+  100% {
+    bottom: 45px;
+    opacity: 1;
+  }
+}
+
+@keyframes button__wait {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.button__up:hover {
+  transform: scale(0.95);
+  cursor: pointer;
+}
+
+.button__up:active {
+  transform: scale(1);
+  border: 1px solid darkblue;
+}
+
+.button__up.clicked {
+  animation: button_hide 0.3s ease-in-out forwards;
+}
+
+@keyframes button_hide {
+  0% {
+    bottom: 45px;
+    opacity: 1;
+  }
+  100% {
+    bottom: -100px;
+    opacity: 0;
+  }
+}

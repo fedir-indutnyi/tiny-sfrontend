@@ -1,0 +1,45 @@
+<div *ngIf="formConfig?.config && formConfig?.form">
+  <form [formGroup]="formConfig.form" (ngSubmit)="onSubmit(formConfig.form)">
+
+    <nz-table  #dynamicTable nzBordered nzSize="small" [nzData]="formConfig.form.value"  [nzScroll]="{x: tableWidth + 'px', y: '500px'}" [nzFooter]="footer">
+      <thead>
+        <tr>
+          <th [nzWidth]="controlConfig.value.width + 'px' " *ngFor="let controlConfig of formConfig.config.controls | keyvalue : comparatorFn; let i=index">
+            {{controlConfig.value.label | translate}}
+            <nz-divider nzType="vertical"></nz-divider>
+          </th>
+          <th valign="top" nzWidth="48px" nzRight></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="form-row" [formArrayName]="dataItemIndex"
+          *ngFor="let dataItem of formConfig.form.controls; let dataItemIndex=index; trackBy: trackByFn">
+          <td *ngFor="let controlConfig of formConfig.config.controls | keyvalue : comparatorFn; let controlIndex=index; trackBy: trackByFn"
+            [ngStyle]="{width: controlConfig.value.width + 'px'}">
+            <ng-container [ngComponentOutlet]="controlResolver.resolve(controlConfig.value.controlType) | async"
+              [ngComponentOutletInjector]="controlConfig.key | controlInjector: controlConfig.value : dataSource[dataItemIndex]!">
+            </ng-container>
+          </td>
+          <td nzRight>
+            <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(dataItemIndex)" nz-button
+              nzType="link" title="Delete row">
+              <span nz-icon nzType="delete" nzTheme="outline"></span>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+    <ng-template #footer>
+      <button nz-button (click)="addRow()" nzType="primary" type="button">Add row</button>
+    </ng-template>
+
+    <div nz-row nzJustify="end">
+      <button style="width: 100px;" nz-button nzType="primary" type="submit">
+        <span *ngIf="(componentName$ | async) !== componentName">Apply</span>
+        <nz-spin *ngIf="(componentName$ | async) === componentName" nzSimple [nzSize]="'small'"></nz-spin>
+      </button>
+    </div>
+
+  </form>
+</div>

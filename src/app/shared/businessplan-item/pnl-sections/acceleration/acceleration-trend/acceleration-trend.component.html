@@ -1,0 +1,16 @@
+<nz-table #trendTable [nzShowPagination]="false" nzBordered nzSize="small" [nzData]="values" [nzScroll]="{x: tableWidth + 100 + 'px', y: '300px'}">
+  <thead>
+    <tr>
+      <th valign="top" nzWidth="100px" nzLeft>{{'bp.acceleration.trendType' | translate}}</th>
+      <th *ngFor="let period of periods">{{period}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th valign="top" nzWidth="100px" nzLeft>{{trendType}}</th>
+      <td *ngFor="let value of values; trackBy: trackByFn">
+        {{value}}
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

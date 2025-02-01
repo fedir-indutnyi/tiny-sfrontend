@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <card>
+        <a routerLink="../add-expense" class="btn btn-primary">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          Add new Expense or Transaction
+        </a>
+        <a class="btn btn-success ml-3" (click)="deleteLabel()">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          Delete by label
+        </a>
+        <a class="btn btn-success ml-3" (click)="importExpenses()">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          Import Expenses
+        </a>
+        
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <card>
+     
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="position: relative;right: 37px;">datehappened</th>
+              <th style="position: relative;right: 37px;">description</th>
+              <th style="position: relative;right: 37px;">quantity</th>
+              <th style="position: relative;right: 37px;">valueofmoney</th>
+              <th style="position: relative;right: 74px;">pnlrow</th>
+              <th style="position: relative;right: 37px;" colspan="2">Actions</th>
+              <th style="position: relative;right: 30px;" colspan="2">Updated Label</th>
+          <th></th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let item of list">
+            <td  [ngClass]="{'underline':item.isdeleted ==true }">{{item.datehappened|date}}</td>
+            <td [ngClass]="{'underline':item.isdeleted ==true }">{{item.description}}</td>
+            <td [ngClass]="{'underline':item.isdeleted ==true }">{{item.quantity}}</td>
+            <td [ngClass]="{'underline':item.isdeleted ==true}">{{item.valueofmoney}} {{item.currency}}</td>
+            <td [ngClass]="{'underline':item.isdeleted ==true}">{{item.pnlrow}}</td>
+            <td  (click)="onEdit(item.id)">
+              <mat-icon style="cursor: pointer;">edit</mat-icon>
+            </td>
+            <td  *ngIf="item.isdeleted !=true">
+              <mat-icon (click)="onDelete(item)" style="cursor: pointer;">delete</mat-icon>
+            </td>
+           <td  *ngIf="item.isdeleted ==true">
+             <button (click)="onDelete(item)" class="btn btn-danger" >Undo delete</button>
+           </td>
+            <td [ngClass]="{'underline':item.isdeleted ==true}">{{item.datalabel}} </td>
+            <td><mat-icon style="cursor: pointer;" (click)="editLabel(item.id)">edit</mat-icon></td>
+          </tbody>
+        </table>
+        
+      </card>
+    </div>
+  </div>
+</div>

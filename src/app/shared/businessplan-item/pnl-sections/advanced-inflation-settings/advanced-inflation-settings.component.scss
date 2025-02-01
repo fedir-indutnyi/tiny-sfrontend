@@ -1,0 +1,38 @@
+.advanced-settings{
+  margin: 24px 0px;
+}
+
+.inflaton-multiplier__container{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.inflaton-multiplier__button{
+  width: 50%;
+  height: 50%;
+}
+
+.inflaton-multiplier__row-title{
+  min-width: 190px;
+}
+
+.inflationMultipliers__header{
+  min-width: 70px;
+  text-align: center;
+}
+
+.inflationMultipliers{
+  overflow: scroll;
+}
+
+.inflationMultipliers nz-form-item {
+  margin: 0px !important;
+}
+
+.inflationMultipliers td{
+  text-align: center;
+}
+
+.apply-button{
+  margin-top: 30px;
+}

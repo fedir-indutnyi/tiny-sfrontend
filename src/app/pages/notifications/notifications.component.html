@@ -1,0 +1,77 @@
+<div class="notification_wrap">
+  <div [@fadeAnimation]="setOfCheckedId.size !== 0 ? 'visible' : 'hidden'" class="buttons_block">
+    <button (click)="changeField('isRead')" nz-button nzType="primary"
+            nzGhost>{{'notification.markAsRead'|translate}}</button>
+    <button [@fadeAnimation]="isConfirmDelete ? 'hidden' : 'visible'" (click)="isConfirmDelete = true" nz-button
+            nzType="default" nzDanger>{{'notification.delete'|translate}}
+    </button>
+
+    <span class="is_confirm" [@fadeAnimation]="isConfirmDelete ? 'visible' : 'hidden'"
+          style="color: green"
+          nz-icon nzType="check"
+          (click)="changeField('isDeleted')"
+          nzTheme="outline"></span>
+    <span class="is_confirm" [@fadeAnimation]="isConfirmDelete ? 'visible' : 'hidden'"
+          style=" color:red"
+          nz-icon nzType="close"
+          (click)="isConfirmDelete = false"
+          nzTheme="outline"></span>
+  </div>
+
+  <div [@fadeAnimation]="setOfCheckedId.size == 0 ? 'visible' : 'hidden'">
+    <h4 style="color: #1d39c4">{{'notification.notifications'|translate}}</h4>
+  </div>
+
+  <nz-table
+    #rowSelectionTable
+    nzShowSizeChanger
+    [nzData]="list"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+  >
+    <thead>
+    <tr>
+      <th
+        [nzSelections]="listOfSelection"
+        [(nzChecked)]="checked"
+        [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="onAllChecked($event)"
+
+      ></th>
+      <th>{{'notification.notifications'|translate}}</th>
+      <th>{{'notification.created'|translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr (click)="showMessage(template, data)" *ngFor="let data of rowSelectionTable.data">
+      <td [nzChecked]="setOfCheckedId.has(data.id)"
+          (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+      <td style="cursor: pointer"
+          [style]="!data.isRead && 'font-weight: bolder'">{{convertPlaceholderToTitle(data?.notificationtext)|translate}}</td>
+      <td style="cursor: pointer"
+          [style]="!data.isRead && 'font-weight: bolder'">{{ data?.createdAt?.split('.')[0]?.split('T').join(' ')}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<ng-template #template let-data="data">
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+          <span class="ant-notification-notice-icon">
+            <span nz-icon nzType="smile" style="color: rgb(16, 142, 233);"></span>
+          </span>
+      <h2 class="ant-notification-notice-message"
+          style="color: #1d39c4">{{convertPlaceholderToTitle(data?.notificationtext)|translate}}</h2>
+      <div class="ant-notification-notice-description">
+        <p>{{convertPlaceholderToNotification(data?.notificationtext)|translate}}</p>
+        <p
+          style="color: #8BC34A">{{'notification.created'|translate}} {{data?.createdAt?.split('.')[0]?.split('T').join(' ')}}</p>
+        <h6 style="color: #2b542c">Notification ID: {{data.id}}</h6>
+        <h6
+          style="color: #2b542c">{{data?.ideaid ? 'Post ID:' : 'Team ID:'}} {{data?.ideaid ? data.ideaid : data.teamid}}</h6>
+        <a *ngIf="data?.ideaid" routerLink="/post/{{data.ideaid}}">Click to view...</a>
+      </div>
+    </div>
+  </div>
+</ng-template>
+

@@ -1,0 +1,309 @@
+@import '../../shared/theme/conf.scss';
+
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile-header {
+  position: relative;
+  margin-bottom: 24px;
+
+  .cover-photo {
+    position: relative;
+    height: 160px;
+    border-radius: 8px 8px 0 0;
+    z-index: 1;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .profile-photo-container {
+    position: absolute;
+    left: 24px;
+    bottom: -50px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid white;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-actions {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 101;
+    }
+
+    &:hover .photo-actions {
+      opacity: 1;
+    }
+  }
+}
+
+.user-info {
+  padding: 80px 24px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .user-main {
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .user-meta {
+      margin-top: 8px;
+      display: flex;
+      gap: 16px;
+      color: #666;
+      font-size: 14px;
+
+      span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+    }
+  }
+}
+
+.profile-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+}
+
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .subscription-pro {
+    text-align: center;
+    
+    img {
+      max-width: 70px;
+      margin-bottom: 8px;
+    }
+    
+    p {
+      margin: 0;
+      font-weight: 500;
+    }
+  }
+
+  .subscription-free {
+    text-align: center;
+    
+    p {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.hidden-upload {
+  display: none;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .profile-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Override any ng-zorro card styles that might interfere
+::ng-deep {
+  .ant-card {
+    .ant-card-body {
+      position: relative;
+      z-index: 1;
+    }
+  }
+}
+
+.user-photo-wrap {
+  display: flex;
+  gap: 30px;
+}
+
+.user-photo {
+  margin-top: -60px;
+}
+
+.user-info {
+
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: #3F4254;;
+  font-size: 12px;
+  font-weight: 400;
+
+  i {
+    font-size: 1.3em;
+    color: $primary;
+  }
+}
+
+.user-name,
+.user-post {
+  display: block;
+}
+
+.user-name {
+  line-height: 1;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.card-cover {
+  height: 200px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(15px);
+  position: relative;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, .2);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.view-data-wrap {
+  .ant-row {
+    margin-bottom: 16px;
+  }
+}
+
+.data {
+  &-title {
+    // --bs-text-muted: #A1A5B7;
+  color: #A1A5B7;
+  font-weight: 500
+  }
+
+  &-info {
+    // --bs-text-gray-800: #3F4254;
+    color: #3F4254;
+    font-weight: 400;
+    font-size: 14px ;
+  }
+}
+
+::ng-deep {
+  .setting-btn-wrap {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    height: fit-content;
+  }
+  .ant-btn-circle {
+    // TODO: create mixin for btn
+    box-shadow: 0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075);
+  }
+  .ant-ribbon.ant-ribbon-placement-end {
+    z-index: 100;
+  }
+}
+
+
+.contacts-card-wrap {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.user-data{
+  display: flex;
+}
+
+.user-info-main{
+  flex-basis: 80%;
+}
+
+.user-pro-subscription-image{
+  max-width: 70%;
+  max-height: 70%;
+}
+
+.user-pro-label{
+  text-align: center;
+  font-weight: 700;
+  font-size: small;
+  margin: 0;
+}
+
+.user-pro-subscription{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100px;
+}
+
+.user-free-subscription{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 130px;
+  margin-top: 20px;
+}
+
+.user-upgrade{
+  font-size: small;
+  padding: 7px;
+  background: orange;
+  color: #000000;
+  font-weight: 800;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.user-free-label{
+  text-align: center;
+  font-weight: 700;
+  font-size: small;
+  margin: 0;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

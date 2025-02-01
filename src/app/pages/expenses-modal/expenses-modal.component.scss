@@ -1,0 +1,20 @@
+.common-style {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.common-style1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error-color {
+  background: green !important;
+}
+
+nz-select,
+nz-form-control {
+  width: 100%;
+}

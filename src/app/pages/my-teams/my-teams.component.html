@@ -1,0 +1,105 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+</style>
+
+<div class="btn-control-wraper">
+    <button mat-button routerLink="../add-team" class="btn btn-primary btn-add-idea green add-team__button">
+        <mat-icon aria-hidden="false" aria-label="add circle icon" fontIcon="add_circle"></mat-icon>
+        <span>{{ 'myTeams.addTeam'|translate }}</span>
+    </button>
+</div>
+
+
+<div class="row" *ngFor="let item of list; index as i">
+    <div class="col-xs-12 mb-5 wrap__team">
+
+        <div *ngIf="item?.location" class="team__location">
+            <span nz-icon nzType="environment"></span>
+            {{ item.location }}
+        </div>
+        <nz-card>
+            <form>
+                <div class="row col-12" style="flex-direction: column; justify-content: center">
+
+                    <div class="col col-12">
+                        <label class="control-label col-12">
+                            id:
+                            <nz-badge nzStandalone
+                                      [nzCount]="item.id"
+                                      [nzOverflowCount]="9999"
+                                      [nzStyle]="{ backgroundColor: '#52c41a' }">
+                            </nz-badge>
+                            <br>
+                            {{ 'myTeams.created'|translate }} {{ item?.createdAt?.split('T')[0] }}
+                            by {{ item?.teamOwner?.username }}
+                        </label>
+                        <div id="title" class="custom-input col-12">
+                            <h2
+                                    style="font-weight: bold; font-family: 'Comfortaa', cursive; letter-spacing: .5rem; text-align: center">
+                                {{ item.teamname }}
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="" style="display: flex; flex-wrap: wrap;">
+
+                        <div class="ant-col-xs-24 ant-col-md-12">
+                            <img class="_img" [src]="item.picture || '/assets/images/no-img.png'" alt="">
+                        </div>
+
+                        <div class="ant-col-xs-24 ant-col-md-12">
+                            <label class="control-label">Members:</label>
+                            <div>
+                                <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
+                                    <nz-list>
+                                        <nz-list-item *ngFor="let item of item.members; let i=index">
+                                            <nz-skeleton *ngIf="!item" [nzAvatar]="true"
+                                                         [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+                                            <nz-list-item-meta
+                                                    *ngIf="item"
+                                                    nzAvatar="{{item.userId ? (convertPlaceholderPathToUrl(item?.user?.picture) ||
+                                                     '/assets/images/no-avatar.png') : '/assets/images/no-avatar.png'}}"
+                                                    nzDescription="{{item.userId ? 'user' : 'contact'}}">
+                                                <nz-list-item-meta-title>
+                                                    <a href="#" *ngIf="item.userId">{{ item?.user?.username }}</a>
+                                                    <a href="#" style="color: silver"
+                                                       *ngIf="!item.userId">{{ item.contact.name }}</a>
+                                                </nz-list-item-meta-title>
+                                            </nz-list-item-meta>
+                                        </nz-list-item>
+                                    </nz-list>
+                                </cdk-virtual-scroll-viewport>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_description">
+                        <label for="description" class="control-label">
+                            {{ 'myTeams.description'|translate }}:
+                        </label>
+                        <textarea id="description" cols="30" disabled rows="10"
+                                  class="form-control custom-input _input">{{
+                                item.commentmemo
+                            }}</textarea>
+                    </div>
+                    <div class="btn-control-wrapper">
+
+                        <button nz-button nzType="default" routerLink="/assign-team?ideaid={{item.id}}">
+                            {{ 'myTeams.assingToStartup'|translate }}
+                        </button>
+
+                        <button type="button" nz-button nzType="dashed" (click)="redirectToTeam(item.id)">
+                            {{ 'myTeams.edit'|translate }}
+                        </button>
+
+                        <button type="button" nz-button nzType="default" nzDanger (click)="deleteTeam(i)">
+                            {{ 'myTeams.delete'|translate }}
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+        </nz-card>
+    </div>
+</div>
+
+<app-up-button></app-up-button>

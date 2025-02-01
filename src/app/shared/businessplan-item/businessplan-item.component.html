@@ -1,0 +1,616 @@
+<div class="plan_wrapper" id="plan_wrapper" nz-row nzJustify="center">
+    <div class="fold_button">
+        <button (click)="onCheckAll()" nz-button nzType="default" nzShape="circle">
+            <span *ngIf="!isActiveAll" nz-icon nzType="schedule" nzTheme="outline"></span>
+            <span *ngIf="isActiveAll" nz-icon nzType="minus" nzTheme="outline"></span>
+        </button>
+    </div>
+
+    <ng-template #pivotIcon let-status="status">
+        <div [appSectionStatus]="status" class="section-status">
+            <span nz-icon nzType="table" nzTheme="outline" (click)="$event.stopPropagation()"></span>
+        </div>
+    </ng-template>
+
+    <ng-template #inputIcon let-status="status">
+        <div [appSectionStatus]="status" class="section-status">
+            <span nz-icon nzType="form" nzTheme="outline" (click)="$event.stopPropagation()"></span>
+        </div>
+    </ng-template>
+
+
+    <nz-space nzDirection="vertical" nz-col [nzSpan]="24">
+
+        <nz-collapse id="plan_disclaimer" [style]="getBoxShadow('#808080')" nzAccordion>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'plan_disclaimer'"
+                               nzHeader="{{'bp.importantDisclaimer.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>Important Disclaimer</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.disclaimer | translate">
+                        {{ sectionsDescription.disclaimer | translate }}
+                    </p>
+                    <br>
+                    <app-businessplan-disclaimer></app-businessplan-disclaimer>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="plan_details" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).settings}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'plan_details'"
+                               [style]="getBoxShadow('#eb7c31')"
+                               nzHeader="{{'bp.details.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.details | translate">
+                        {{ sectionsDescription.details | translate }}
+                    </p>
+                    <br>
+                    <businessplan-options></businessplan-options>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="customers" [style]="getBoxShadow('#eb7c31')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).visitors}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'customers'"
+                               nzHeader="{{'bp.visitorsCustomers.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.visitorsCustomers | translate">
+                        {{ sectionsDescription.visitorsCustomers | translate }}
+                    </p>
+                    <br>
+                    <visitors-customers></visitors-customers>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="portfolio" [style]="getBoxShadow('#eb7c31')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).portfolio}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'portfolio'"
+                               nzHeader="{{'bp.portfolio.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.portfolio | translate">
+                        {{ sectionsDescription.portfolio | translate }}
+                    </p>
+                    <br>
+                    <app-portfolio></app-portfolio>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse [ngStyle]="{'display': trigger.isInflationSettings.value ? 'block' : 'none'}"
+                     id="advanced_inflation_settings" [style]="getBoxShadow('#eb7c31')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).portfolio}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'advanced_inflation_settings'"
+                               nzHeader="{{'bp.advancedInflationSettings.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.advancedInflationSettings | translate">
+                        {{ sectionsDescription.advancedInflationSettings | translate }}
+                    </p>
+                    <br>
+                    <app-advanced-inflation-settings></app-advanced-inflation-settings>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="cost_list" [style]="getBoxShadow('#eb7c31')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="pivotIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).costPrices}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'cost_list'"
+                               nzHeader="{{'bp.costPrice.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.costPrice | translate">
+                        {{ sectionsDescription.costPrice | translate }}
+                    </p>
+                    <br>
+                    <div class="card-content">
+                        <h2> {{'bp.costPrice.costHeader' | translate}}</h2><hr>
+                        <app-cost-price></app-cost-price>
+                        <h2> {{'bp.costPrice.priceHeader' | translate}}</h2><hr>
+                        <app-prices></app-prices>
+                    </div>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="seasonality" [style]="getBoxShadow('#91d04f')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).seasonality}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'seasonality'"
+                               nzHeader="{{'bp.seasonality.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.seasonality | translate">
+                        {{ sectionsDescription.seasonality | translate }}
+                    </p>
+                    <br>
+                    <app-seasonality></app-seasonality>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="acceleration" [style]="getBoxShadow('#91d04f')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).acceleration}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'acceleration'"
+                               nzHeader="{{'bp.acceleration.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.acceleration | translate">
+                        {{ sectionsDescription.acceleration | translate }}
+                    </p>
+                    <br>
+                    <app-acceleration></app-acceleration>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="headcounts" [style]="getBoxShadow('#65b011')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).headcount}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'headcount'"
+                               nzHeader="{{'bp.headcount.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.headcount | translate">
+                        {{ sectionsDescription.headcount | translate }}
+                    </p>
+                    <br>
+                    <app-headcount-and-payroll></app-headcount-and-payroll>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="crowd_customers" [style]="getBoxShadow('#91d04f')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="pivotIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).crowdCustomers}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'crowd_customers'"
+                               nzHeader="{{'bp.crowd_customers.title' | translate}}">
+                <nz-card>
+                    <h5 nz-typography>{{ 'bp.crowd_customers.crowdTargetedAudience.title' | translate }}</h5>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.crowdTargetedAudience | translate">
+                        {{ sectionsDescription.crowdTargetedAudience | translate }}
+                    </p>
+                    <br>
+                    <app-targeted-audience></app-targeted-audience>
+                    <br>
+
+                    <h5 nz-typography>{{ 'bp.crowd_customers.visitors.title' | translate }}</h5>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.visitors | translate">
+                        {{ sectionsDescription.visitors | translate }}
+                    </p>
+                    <br>
+                    <app-visitors></app-visitors>
+                    <br>
+
+                    <h5 nz-typography>{{ 'bp.crowd_customers.customers.sectionDescription' | translate }}</h5>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.customers | translate">
+                        {{ sectionsDescription.customers | translate }}
+                    </p>
+                    <br>
+
+                    <app-customers></app-customers>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="monthly_volume" [style]="getBoxShadow('#91d04f')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="pivotIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).volume}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'monthly_volume'"
+                               nzHeader="{{'bp.volume.title' | translate}}">
+                <nz-card nzTitle="Monthly Volume">
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.volume | translate">
+                        {{ sectionsDescription.volume | translate }}
+                    </p>
+                    <br>
+                    <app-volume></app-volume>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="discounts_rebates" [style]="getBoxShadow('#8ca8dc')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).discountsAndReturns}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'discounts_rebates'"
+                               nzHeader="{{'bp.discountsAndReturns.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.discountsAndReturns | translate">
+                        {{ sectionsDescription.discountsAndReturns | translate }}
+                    </p>
+                    <br>
+                    <app-discounts-and-returns></app-discounts-and-returns>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="net_sales" [style]="getBoxShadow('#8ca8dc')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="pivotIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).netSales}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'net_sales'"
+                               nzHeader="{{'bp.netSales.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.netSales | translate">
+                        {{ sectionsDescription.netSales | translate }}
+                    </p>
+                    <br>
+                    <app-net-sales></app-net-sales>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="other_cogs" [style]="getBoxShadow('#abb8c9')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).otherCogs}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'other_cogs'"
+                               nzHeader="{{'bp.otherCogs.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.otherCogs | translate">
+                        {{ sectionsDescription.otherCogs | translate }}
+                    </p>
+                    <br>
+                    <app-cogs></app-cogs>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="gross_margin" [style]="getBoxShadow('#abb8c9')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="pivotIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).grossMargin}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'gross_margin'"
+                               nzHeader="{{'bp.grossMargin.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.grossMargin | translate">
+                        {{ sectionsDescription.grossMargin | translate }}
+                    </p>
+                    <br>
+                    <app-gross-margin></app-gross-margin>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="investments_and_CAPEX" [style]="getBoxShadow('#be8e00')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).investmentAndCapex}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'investments_and_CAPEX'"
+                               nzHeader="{{'bp.investmentAndCapex.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.investmentAndCapex | translate">
+                        {{ sectionsDescription.investmentAndCapex | translate }}
+                    </p>
+                    <br>
+                    <app-investment-and-capex></app-investment-and-capex>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="marketing" [style]="getBoxShadow('#be8e00')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).marketing}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'marketing'"
+                               nzHeader="{{'bp.marketing.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.marketing | translate">
+                        {{ sectionsDescription.marketing | translate }}
+                    </p>
+                    <br>
+                    <app-marketing></app-marketing>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="opex" [style]="getBoxShadow('#be8e00')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).opex}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'opex'"
+                               nzHeader="{{'bp.opex.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.opex | translate">
+                        {{ sectionsDescription.opex | translate }}
+                    </p>
+                    <br>
+                    <app-opex></app-opex>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="rnd" [style]="getBoxShadow('#be8e00')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).rnd}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'rnd'"
+                               nzHeader="{{'bp.rnd.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.rnd | translate">
+                        {{ sectionsDescription.rnd | translate }}
+                    </p>
+                    <br>
+                    <app-rnd></app-rnd>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="other_operating_income_loss" [style]="getBoxShadow('#be8e00')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="inputIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).otherOperatingIncomeLoss}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'other_operating_income_loss'"
+                               nzHeader="{{'bp.otherincomeloss.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.otherincomeloss | translate">
+                        {{ sectionsDescription.otherincomeloss | translate }}
+                    </p>
+                    <br>
+                    <app-other-operating-income-loss></app-other-operating-income-loss>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="ebit_operating_profit" [style]="getBoxShadow('#8c6a00')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="pivotIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).ebitOperatingProfit}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'ebit_operating_profit'"
+                               nzHeader="{{'bp.ebidta.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.ebidta | translate">
+                        {{ sectionsDescription.ebidta | translate }}
+                    </p>
+                    <br>
+                    <app-ebit-operating-profit></app-ebit-operating-profit>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+
+        <nz-collapse id="investments_required" [style]="getBoxShadow('#914be1')" nzAccordion>
+            <ng-container
+                    [ngTemplateOutlet]="pivotIcon"
+                    [ngTemplateOutletContext]="{status: (sectionsStatuses$ | async).investmentsRequired}">
+            </ng-container>
+            <nz-collapse-panel [nzActive]="isActiveAll || activeTabName === 'investments_required'"
+                               nzHeader="{{'bp.investmentsRequired.title' | translate}}">
+                <nz-card>
+                    <h6 nz-typography>About section</h6>
+                    <p nz-typography
+                       nzType="secondary"
+                       nzEllipsis
+                       nzExpandable
+                       [nzEllipsisRows]="2"
+                       [attr.title]="sectionsDescription.investmentsRequired | translate">
+                        {{ sectionsDescription.investmentsRequired | translate }}
+                    </p>
+                    <br>
+                    <app-investments-required></app-investments-required>
+                </nz-card>
+            </nz-collapse-panel>
+        </nz-collapse>
+        <footer style="width: 100%; height: 40px"></footer>
+    </nz-space>
+
+    <div class="nav_block" [style]="isFixed && 'position:fixed; top:70px; right:5px'">
+        <a nz-dropdown [nzDropdownMenu]="menu">
+            <span *ngIf="!isFixed">Scroll to</span>
+            <span *ngIf="isFixed" nz-icon nzType="unordered-list" nzTheme="outline"></span>
+        </a>
+        <nz-dropdown-menu class="dropdown_menu" #menu="nzDropdownMenu">
+            <ul style="list-style-type: none;">
+                <li class="nav_list" style="background: #eb7c31" (click)="scrollToEl('plan_details')">Plan Details</li>
+                <li class="nav_list" style="background: #eb7c31" (click)="scrollToEl('customers')">Customers</li>
+                <li class="nav_list" style="background: #eb7c31" (click)="scrollToEl('portfolio')">Portfolio</li>
+                <li class="nav_list" style="background: #eb7c31" (click)="scrollToEl('advanced_inflation_settings')"
+                    *ngIf="trigger.isInflationSettings.value">
+                    Advanced Inflation settings
+                </li>
+                <li class="nav_list" style="background: #eb7c31" (click)="scrollToEl('cost_list')">Cost List</li>
+                <li class="nav_list" style="background: #eb7c31" (click)="scrollToEl('price_list')">Price List</li>
+                <li class="nav_list" style="background: #91d04f" (click)="scrollToEl('seasonality')">Seasonality</li>
+                <li class="nav_list" style="background: #91d04f" (click)="scrollToEl('acceleration')">Acceleration</li>
+                <li class="nav_list" style="background: #65b011" (click)="scrollToEl('headcounts')">Headcount</li>
+                <li class="nav_list" style="background: #91d04f" (click)="scrollToEl('crowd_customers')">Crowd &amp;
+                    Customers
+                </li>
+                <li class="nav_list" style="background: #91d04f" (click)="scrollToEl('monthly_volume')">Monthly Volume
+                </li>
+                <li class="nav_list" style="background: #8ca8dc" (click)="scrollToEl('discounts_rebates')">Discounts
+                    &amp; Rebates
+                </li>
+                <li class="nav_list" style="background: #8ca8dc" (click)="scrollToEl('net_sales')">Net Sales Revenue
+                </li>
+                <li class="nav_list" style="background: #abb8c9" (click)="scrollToEl('other_cogs')">Other Cogs</li>
+                <li class="nav_list" style="background: #abb8c9" (click)="scrollToEl('gross_margin')">Gross Margin</li>
+                <li class="nav_list" style="background: #be8e00" (click)="scrollToEl('investments_and_CAPEX')">
+                    Investments & CAPEX
+                </li>
+                <li class="nav_list" style="background: #be8e00" (click)="scrollToEl('marketing')">Marketing</li>
+                <li class="nav_list" style="background: #be8e00" (click)="scrollToEl('opex')">Opex</li>
+                <li class="nav_list" style="background: #be8e00" (click)="scrollToEl('rnd')">RnD</li>
+                <li class="nav_list" style="background: #be8e00" (click)="scrollToEl('other_operating_income_loss')">
+                    Operating Income Loss
+                </li>
+                <li class="nav_list" style="background: #8c6a00" (click)="scrollToEl('ebit_operating_profit')">EBIT</li>
+                <li class="nav_list" style="background: #914be1" (click)="scrollToEl('investments_required')">
+                    Investments Required
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+    </div>
+</div>
+
+<app-up-button></app-up-button>
+
+

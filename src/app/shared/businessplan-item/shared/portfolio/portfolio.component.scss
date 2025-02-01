@@ -1,0 +1,97 @@
+@import "../../../theme/conf.scss";
+
+:host {
+  .ant-input-number {
+    width: 100%;
+  }
+}
+
+.portfolio-wrap {
+  margin-bottom: 16px;
+
+  ::ng-deep {
+    ::-webkit-scrollbar {
+      height: 12px;
+    }
+  }
+
+  .calculated {
+    background: #d9d9d9;
+  }
+
+  .total-row {
+    td {
+      background: #fafafa;
+      font-weight: bold;
+      &:hover {
+        cursor: default;
+      }
+      &.calculated {
+        @extend .calculated;
+      }
+    }
+  }
+
+  ::ng-deep {
+    .ant-table-pagination.ant-pagination {
+      margin-bottom: 0;
+    }
+  }
+
+  td {
+    &:hover {
+      // cursor: pointer;
+    }
+  }
+}
+
+::ng-deep {
+  .ant-table.ant-table-small {
+    font-size: 12px;
+  }
+}
+
+.action-cell {
+  display: flex;
+  justify-content: space-around;
+}
+
+:host {
+  .pending {
+    color: $success;
+  }
+  td {
+    [ngdefaultcontrol].ng-dirty {
+      color: $success;
+    }
+  }
+  [formcontrolname]:not([ngdefaultcontrol]) {
+    &.ng-touched.ng-invalid {
+      border: 1px solid $danger;
+    }
+    &.ng-dirty {
+      border: 1px solid $success;
+    }
+  }
+
+  [nz-button] {
+    margin-top: 10px;
+    margin-right: 8px;
+  }
+}
+
+.calculation-method {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+h2{
+  margin-top: 40px;
+  text-align: center;
+}
+
+hr{
+  margin: -10px 50px 10px
+}

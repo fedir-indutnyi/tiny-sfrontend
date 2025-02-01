@@ -1,0 +1,8 @@
+`<div class="headcount-and-payroll">
+    <app-dynamic-table-form [config]="headcountTableConfig" [dataSource]="headcountSource | async"
+    (onApply)="onApplyHeadcount($event)" [componentName]="componentName"></app-dynamic-table-form>
+    <app-wbr-pivot #pivotNumberOfPeople [toolbar]="false" ></app-wbr-pivot>
+    <app-dynamic-table-form [config]="payrollTableConfig" [dataSource]="payrollSource | async"
+    (onApply)="onApplyPayroll($event)" [componentName]="componentName"></app-dynamic-table-form>
+    <app-wbr-pivot #pivotOthers [toolbar]="false" (ready)="onPivotReady()"></app-wbr-pivot>
+</div>

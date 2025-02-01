@@ -1,0 +1,17 @@
+<div class="edit-avatar-wrap">
+  <button *ngIf="photoPath"
+          (click)="clearProfilePhoto()"
+          nz-button nzShape="circle"
+          nz-tooltip
+          nzTooltipTitle="Remove avatar"
+          class="remove-photo-icon">
+          <i nz-icon nzType="close"></i>
+  </button>
+  <label for="avatar-input" class="avatar-wrap">
+    <img src="{{userPictrue}}" alt="avatar">
+    <span class="edit-photo-icon ant-btn" nz-tooltip nzTooltipTitle="Change avatar">
+      <i nz-icon nzType="camera" nzTheme="outline"></i>
+    </span>
+  </label>
+  <input id="avatar-input" type="file" name="file" (change)="onFileChange($event)">
+</div>

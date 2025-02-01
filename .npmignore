@@ -1,0 +1,7 @@
+.gitlab-ci.yml
+sonar-project.properties
+splatforma-build-variables.list
+KS_CA1_G2
+Dockerfile
+.idea
+frontendprod.iml.iml

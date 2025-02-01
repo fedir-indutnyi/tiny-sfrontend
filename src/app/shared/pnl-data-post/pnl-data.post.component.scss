@@ -1,0 +1,26 @@
+.bottom_info_block {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  .bottom_info {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px
+  }
+
+  .color_brown {
+    color: brown;
+  }
+
+  .color_darkgreen {
+    color: darkgreen;
+  }
+
+  .save_btn {
+    margin-top: 10px
+  }
+}

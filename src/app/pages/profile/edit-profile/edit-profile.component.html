@@ -1,0 +1,81 @@
+<nz-card>
+  <div class="setting-btn-wrap">
+    <button
+      (click)="cancelEditing()"
+      nz-button nzShape="circle"
+      nz-tooltip
+      [nzTooltipTitle]="'editProfile.cancelEditing'|translate">
+      <i nz-icon nzType="close"></i>
+    </button>
+  </div>
+  <nz-divider [nzText]="'editProfile.profile'|translate" nzOrientation="left"></nz-divider>
+  <form nz-form [formGroup]="profileFB" (ngSubmit)="submitForm(profileFB)">
+
+    <div nz-row [nzGutter]="16">
+      <div nz-col nzXs="24" nzMd="12" >
+        <nz-form-item>
+          <nz-form-label nzFor="username" nzRequired>
+            {{'editProfile.fullName'|translate}}
+          </nz-form-label>
+          <nz-form-control [nzErrorTip]="'editProfile.requiredField'|translate">
+            <input nz-input required="required" formControlName="userName" placeholder="John Doe"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzXs="24" nzMd="12">
+        <nz-form-item>
+          <nz-form-label nzFor="email" nzRequired>
+            {{'editProfile.email'|translate}}
+          </nz-form-label>
+          <nz-form-control [nzErrorTip]="'editProfile.requiredField'|translate">
+            <input nz-input required="required" formControlName="email" placeholder="example@test.com" type="email"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="16">
+      <div nz-col nzXs="24" nzMd="12">
+        <nz-form-item>
+          <nz-form-label>{{'editProfile.location'|translate}}</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="location" nzPlaceholder="Country (Location)" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzXs="24" nzMd="12">
+        <nz-form-item>
+          <nz-form-label>{{'editProfile.phone'|translate}}</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="phone" placeholder="38034567890" type="tel"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <nz-form-item>
+      <nz-form-label>{{'editProfile.aboutMe'|translate}}</nz-form-label>
+      <nz-form-control>
+        <textarea nz-input formControlName="commentMemo" placeholder="About me" class="profile__textarea"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-divider [nzText]="'editProfile.changePassword'|translate" nzOrientation="left"></nz-divider>
+    <div nz-row [nzGutter]="16">
+      <a nz-button nzType="link" routerLink="/reset-password">{{'editProfile.changePassword'|translate}}</a>
+    </div>
+    <div class="profile__footer">
+      <button nz-button nzType="primary" nzDanger type="button" (click)="deleteProfile()">
+        {{'editProfile.deleteProfile'|translate}}
+      </button>
+
+      <button nz-button nzType="primary" type="submit" [disabled]="profileFB.invalid">
+        {{'editProfile.updateProfile'|translate}}
+      </button>
+    </div>
+
+  </form>
+
+</nz-card>

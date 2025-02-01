@@ -1,0 +1,22 @@
+<div nz-form nzLayout="horizontal">
+
+  <nz-form-item>
+    <nz-form-label nzLabelAlign="left" nzSpan="4"> {{'bp.acceleration.typeOfGrowth' | translate}} </nz-form-label>
+    <nz-form-control nzSpan="5">
+      <nz-select nzPlaceHolder="Select Type" [formControl]="trendRecordCtrl">
+        <nz-option *ngFor="let record of trendRecords;" [nzValue]="record" [nzLabel]="record.type"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+</div>
+
+<ng-container #trendContainer></ng-container>
+
+<nz-divider [nzText]="'bp.acceleration.results' | translate" nzOrientation="left"></nz-divider>
+
+<app-acceleration-trend *ngIf="values$ | async" [periods]="periods$ | async" [values]="values$ | async"
+  [trendType]="trendType$ | async"></app-acceleration-trend>
+
+<nz-divider [nzText]="'bp.acceleration.chart' | translate" nzOrientation="left"></nz-divider>
+<app-acceleration-trend-chart *ngIf="values$ | async" [periods]="periods$ | async" [values]="values$ | async"
+  [trendType]="trendType$ | async"></app-acceleration-trend-chart>

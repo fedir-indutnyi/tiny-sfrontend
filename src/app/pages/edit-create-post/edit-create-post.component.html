@@ -1,0 +1,216 @@
+<script src="edit-create-post.routing.ts"></script>
+<nz-card [nzBordered]="false" [nzTitle]=nzTitle() class="add-idea-container" style="margin: 0 auto">
+    <form [formGroup]="form" nz-form nzLayout="vertical" class="add-idea-form">
+        <nz-form-item *ngIf="!isBusinessPlan" class="item-type">
+            <nz-form-label [nzXs]="24" nzRequired
+                           nzFor="select">{{ 'editPost.recordTypes'|translate }}
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="'editPost.inputNotValid'|translate">
+                <select nz-input
+                        formControlName="recordtype"
+                        id="select" class="form-control custom-input"
+                        style="margin-left: 15px;">
+                    <option value="" *ngIf="!idea" disabled selected>{{ 'editPost.choose'|translate }}</option>
+                    <option value="startup">{{ 'editPost.startup'|translate }}</option>
+                    <option value="idea">{{ 'editPost.idea'|translate }}</option>
+                    <option value="dream">{{ 'editPost.dream'|translate }}</option>
+                </select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <h2 *ngIf="isBusinessPlan">Business Plan</h2>
+
+        <nz-form-item class="item-visibility">
+            <label class="cl-switch cl-switch-large" nz-checkbox style="margin-left: 8px"
+                   formControlName="ispublic">
+                <span class="label-vis regular"
+                      style="margin-right: 15px">{{ 'editPost.visibleGlobally'|translate }}</span>
+            </label>
+            <label class="cl-switch cl-switch-large" nz-checkbox style="margin-top: 10px"
+                   formControlName="commentsDisabled">
+                <span class="label-vis regular" style="margin-right: 15px">Disable Comments</span>
+            </label>
+
+        </nz-form-item>
+
+        <nz-form-item *ngIf="!isBusinessPlan" class="item-image">
+            <nz-form-label
+                    [nzXs]="24"
+                    nzFor="image"
+                    [nzTooltipTitle]="'editPost.whatUwantOther'|translate"
+            >
+        <span>{{ 'editPost.image'|translate }}
+            {{ form.get('recordtype').value && ('editPost.for'|translate) }}
+            {{ form.get('recordtype').value && '"' }}{{ form.get('recordtype').value && 'editPost.' + form.get('recordtype').value|translate }}{{ form.get('recordtype').value && '"' }}</span>
+            </nz-form-label>
+            <div class="registration__avatar">
+                <img [src]="form.get('image').value ? convertToUrl(form.get('image').value) : '/assets/images/no-avatar.png'"
+                     alt="">
+                <span *ngIf="form.get('image').value" (click)="onRemoveImage()" class="registration__avatar_cancel"
+                      nz-icon nzType="close"
+                      nzTheme="outline"></span>
+            </div>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input nz-input type="file" id="image" style="display: none;"
+                       (change)="onFileChange($event)" #fileInput/>
+                <br>
+                <button
+                        nz-button
+                        nzType="primary"
+                        (click)="fileInput.click()">
+                    {{ form.get('image').value ? ('editPost.changeImage'|translate) : ('editPost.chooseImage'|translate) }}
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+        <div class="text-input-container">
+            <nz-form-item>
+                <nz-form-label [nzXs]="24"
+                               nzFor="title"
+                               nzRequired>{{ 'editPost.ideaTitle'|translate }}
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="'editPost.titleRequired'|translate"
+                                 class="add-idea-title">
+                    <input nz-input type="text"
+                           formControlName="ideatitle"
+                           id="title"
+                           name="ideatitle"/>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="item-location">
+                <nz-form-label [nzXs]="24"
+                               nzFor="location"
+                               nzRequired>{{ 'editPost.location'|translate }}
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="'editPost.inputLocation'|translate"
+                                 class="add-idea-location">
+                    <input nz-input id="location"
+                           formControlName="location"
+                    />
+                </nz-form-control>
+            </nz-form-item>
+            <div *ngIf="form.get('recordtype').value === 'businessplan'" class="_industry"
+                 style="display: flex; flex-direction: column">
+                <nz-form-label nzFor="settingsIndustry" nzRequired>Industry</nz-form-label>
+                <nz-select nzShowSearch nzAllowClear
+                           id="settingsIndustry"
+                           [nzDropdownRender]="industryTemplate"
+                           nzPlaceHolder="Choose"
+                           formControlName="settingsIndustry"
+                           (ngModelChange)="industryChange($event)"
+                >
+                    <nz-option *ngFor="let item of industryArr i as index"
+                               [nzLabel]="item['industry']"
+                               [nzValue]="item['industry']"
+                    ></nz-option>
+                </nz-select>
+
+                <nz-form-label *ngIf="form.get('settingsIndustry').value" nzFor="settingsCategory" nzRequired
+                               style="margin-top: 10px">Category
+                </nz-form-label>
+                <nz-select *ngIf="form.get('settingsIndustry').value"
+                           id="settingsCategory"
+                           nzShowSearch nzAllowClear
+                           [nzDropdownRender]="categoryTemplate"
+                           [nzPlaceHolder]="form.get('settingsCategory')?.value ? form.get('settingsCategory').value : 'Choose'"
+                           formControlName="settingsCategory"
+                >
+                    <nz-option *ngFor="let item of categories"
+                               [nzLabel]="item || form.get('settingsCategory').value"
+                               [nzValue]="item || form.get('settingsCategory').value"></nz-option>
+                </nz-select>
+
+
+                <ng-template #industryTemplate>
+                    <nz-divider></nz-divider>
+                    <div class="container">
+                        <input type="text" nz-input #inputElement/>
+                        <a *ngIf="inputElement.value.length > 1" class="add-item" (click)="addIndustry(inputElement)">
+                            <span>Add to List <span nz-icon nzType="file-add" nzTheme="outline"></span></span>
+                        </a>
+                    </div>
+                </ng-template>
+
+                <ng-template #categoryTemplate>
+                    <nz-divider></nz-divider>
+                    <div class="container">
+                        <input type="text" nz-input #inputElement/>
+                        <a *ngIf="inputElement.value.length > 1" class="add-item" (click)="addCategory(inputElement)">
+                            Add to List <span nz-icon nzType="file-add" nzTheme="outline"></span>
+                        </a>
+                    </div>
+                </ng-template>
+            </div>
+
+        </div>
+        <nz-form-item>
+            <nz-form-label [nzXs]="24" nzFor="description" nzRequired>{{ 'editPost.description'|translate }}&nbsp;
+                <span *ngIf="form.get('recordtype').value">"{{ 'editPost.' + form.get('recordtype').value|translate }}
+                    "</span>
+            </nz-form-label>
+            <nz-form-control
+                    [nzSm]="14"
+                    [nzXs]="24"
+                    class="add-idea-description"
+                    [nzErrorTip]="'editPost.inputDescription'|translate"
+            >
+                <quill-editor id='quill'
+                              name="detailEditTxt"
+                              formControlName="ideadescription"
+                              (onEditorCreated)="onEditorCreated($event)"
+
+                >
+                </quill-editor>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control
+                    [nzSm]="14"
+                    [nzXs]="24"
+            >
+                <div nz-row [nzGutter]="8">
+                    <div nz-col [nzSpan]="8">
+                        <button
+                                nz-button
+                                nzType="primary"
+                                nzBlock
+                                [disabled]="!form.valid"
+                                (click)="idea ? savePost() : createPost()">
+                            {{ idea ? ('editPost.save'|translate) : ('editPost.create'|translate) }}
+                        </button>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <button *ngIf="!isCancel"
+                                nz-button
+                                nzType="default"
+                                nzBlock
+                                (click)="isCancel = true">
+                            <span>Cancel</span>
+                        </button>
+                        <button *ngIf="isCancel"
+                                style="cursor: default"
+                                nz-button
+                                nzType="default"
+                                nzBlock>
+                            <a *ngIf="isCancel"
+                               [nz-tooltip]="'confirm cancel'"
+                               (click)="onCancel()">
+                                <span class="on_cancel_icon" nz-icon nzType="check" nzTheme="outline"></span>
+                            </a>
+                            <a *ngIf="isCancel"
+                               [nz-tooltip]="'no'"
+                               (click)="isCancel = false">
+                                <span class="on_cancel_icon" nz-icon nzType="close" nzTheme="outline"></span>
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-card>
+
+<businessplan-item *ngIf="isBusinessPlan && idea"></businessplan-item>
+
+
+<!--<businessplan-item></businessplan-item>-->
+<!--<app-pnl-data></app-pnl-data>-->

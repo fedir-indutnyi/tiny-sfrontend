@@ -1,0 +1,147 @@
+<div class="login _login">
+    <div class="edition-badge__text"
+         [ngStyle]="{'display': displayBadge? 'block' : 'none'}">{{ badgeText }}
+        <div class="blinking-dot"></div>
+    </div>
+    <div class="background-image"></div>
+    <div class="login__block">
+        <a href="https://wlasnasprawa.com/">
+    <span class="arrow_left"
+          nz-icon nzType="arrow-left"
+          nzTheme="outline"></span>
+        </a>
+        <h3
+                nz-typography
+                class="text-center">
+            {{ 'reg.registration'|translate }}
+        </h3>
+
+        <h4 class="text-center">
+            {{ 'reg.create'|translate }}
+        </h4>
+
+        <div class="registration__avatar">
+            <img [src]="profileAvatar || '/assets/images/no-avatar.png'" alt="">
+        </div>
+
+        <input
+                type="file"
+                style="display: none;"
+                (change)="onFileChange($event)"
+                #fileInput>
+
+        <button
+                nz-button
+                nzType="primary"
+                (click)="fileInput.click();">{{ 'reg.chooseAvatar'|translate }}
+        </button>
+
+        <form
+                nz-form
+                [formGroup]="registrationForm"
+                class="login__form">
+
+            <nz-form-item>
+                <nz-form-label>{{ 'reg.fullName'|translate }}</nz-form-label>
+                <nz-form-control
+                        [nzErrorTip]="fullNameErrorMessage">
+
+                    <input
+                            nz-input
+                            autocomplete="off"
+                            formControlName="fullName"
+                            placeholder="Full Name"
+                            required
+                            type="text"
+                            name="fullName"/>
+
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>{{ 'reg.email'|translate }}</nz-form-label>
+                <nz-form-control
+                        [nzErrorTip]="emailErrorMessage">
+
+                    <input
+                            nz-input
+                            autocomplete="off"
+                            formControlName="email"
+                            placeholder="example@ex.com"
+                            required=""
+                            type="email"
+                            name="email"/>
+
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>{{ 'reg.password'|translate }}</nz-form-label>
+                <nz-form-control
+                        [nzErrorTip]="passwordErrorMessage">
+
+                    <input
+                            nz-input
+                            autocomplete="off"
+                            formControlName="password"
+                            required=""
+                            type="password"/>
+
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>{{ 'reg.confirmPassword'|translate }}</nz-form-label>
+                <nz-form-control
+                        [nzErrorTip]="confirmPasswordErrorMessage">
+
+                    <input
+                            nz-input
+                            formControlName="confirmPassword"
+                            type="password"/>
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control
+                        nzErrorTip="Confirm checkbox">
+
+                    <label
+                            nz-checkbox
+                            formControlName="termsChecker"
+                            class="registration__confirm">
+
+                        {{ 'reg.iAgree'|translate }} <a class="registration__link"
+                                                        (click)="createComponentModal()">{{ 'reg.allTermsAndConditions'|translate }}</a>
+
+                    </label>
+
+                </nz-form-control>
+            </nz-form-item>
+
+            <button
+                    nz-button
+                    nzBlock
+                    nzType="primary"
+                    (click)="signUp()">
+                {{ 'reg.signUp'|translate }}
+            </button>
+
+            <p class="mt-15 text-center">
+                {{ 'reg.alreadyHaveAccount'|translate }}
+                <a routerLink="/login">
+                    {{ 'reg.signIn'|translate }}
+                </a>
+            </p>
+
+            <div class="login__footer" *ngIf="errorMessages.length">
+        <span *ngFor="let item of errorMessages">
+          {{ item }}
+        </span>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
