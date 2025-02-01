@@ -1,6 +1,70 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# git repo
+.git
+_.git
+_*.git
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/frontend/node_modules
+/frontend/*node_modules
+/frontend/_node_modules
 /node_modules
 /*node_modules
 /_node_modules
-/.angular
-/.vscode
-/public
+package-lock.json
+.angular
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.angular/cache
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+yarn-error.log
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
+/frontendprod.iml
+
+# Compilation timestamps
+frontend/src/app/timestamp/Timestamp.ts
+
+/.scannerwork/
+/.idea/
+.idea
+frontend/production
+/sonar-shellcheck-plugin-2.5.0.jar
+/.gitlab/
+.angulardoc.json
+.vscode/settings.json
+frontend/.vscode/settings.json

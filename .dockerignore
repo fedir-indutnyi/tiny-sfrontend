@@ -1,11 +1,9 @@
 # node modules and logs
-/node_modules
-/*node_modules
-/_node_modules
+node_modules
+*/node_modules
+frontend/node_modules
 npm-debug.log
 
-.angular
-.vscode
 /.idea/
 /.scannerwork/
 /production/
@@ -15,10 +13,3 @@ npm-debug.log
 /.stackblitzrc
 /.travis.yml
 /sonar-project.properties
-
-/frontend/node_modules
-/frontend/*node_modules
-/frontend/_node_modules
-/frontend/.angular
-/frontend/.vscode
-/frontend/public

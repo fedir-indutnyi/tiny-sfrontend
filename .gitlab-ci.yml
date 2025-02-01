@@ -1,0 +1,92 @@
+variables: !reference [.global, variables]
+
+include:
+  - local: "/.gitlab-ci-templates/vars.yml"
+  - project: "splatforma/pipelines"
+    ref: "1.0.3" # also change GITLAB_PIPELINE_REF variable in vars.yml with the same
+    file:
+      - "/.gitlab-ci-templates/group-variables.yml"
+      - "/.gitlab-ci-templates/build-job.yml"
+      - "/.gitlab-ci-templates/deploy-job.yml"
+      - "/.gitlab-ci-templates/workflow.yml"
+      - "/.gitlab-ci-templates/sync-central-repo-job.yml"
+
+stages:
+  - 📦 build
+  - 🚀 deploy
+  - ☕ synchronize
+
+####################### Build Job #######################
+
+build-job:
+  stage: 📦 build
+  tags:
+    - "splatforma-production-velia"
+  rules:
+    - if: $RUN_BUILD_JOB == "true" && $CI_COMMIT_TAG
+      variables: !reference [.build-release, variables]
+    - if: $RUN_BUILD_JOB == "true" && $CI_COMMIT_BRANCH == "main"
+      variables: !reference [.build-production, variables]
+    - if: $RUN_BUILD_JOB == "true" && $CI_COMMIT_BRANCH == "sandbox"
+      variables: !reference [.build-latest, variables]
+  before_script:
+    - mv $PROJECT_NAME docker-build/
+  extends:
+    - .build-node-template
+
+######################## Deploy Jobs #######################
+
+deploy-job:splatforma-01:
+  stage: 🚀 deploy
+  tags:
+    - "splatforma-production-velia-01"
+    - "splatforma-production-velia"
+  needs:
+    - job: build-job
+      optional: true
+  environment:
+    name: "splatforma-$ENVIRONMENT/$SERVER_NAME"
+  rules:
+    - if: $RUN_DEPLOY_JOB == "true" && $CI_COMMIT_TAG
+      variables: !reference [.deploy-release-01, variables]
+      when: manual
+    - if: $RUN_DEPLOY_JOB == "true" && $CI_COMMIT_BRANCH == "main"
+      variables: !reference [.deploy-production-01, variables]
+    - if: $RUN_DEPLOY_JOB == "true" && $CI_COMMIT_BRANCH == "sandbox"
+      variables: !reference [.deploy-staging-01, variables]
+  extends:
+    - .deploy-template
+
+# Commented due to major incident with german servers
+# deploy-job:splatforma-02:
+#   stage: 🚀 deploy
+#   tags:
+#     - "splatforma-production-velia-02"
+#     - "splatforma-production-velia"
+#   needs:
+#     - job: build-job
+#       optional: true
+#   environment:
+#     name: "splatforma-$ENVIRONMENT/$SERVER_NAME"
+#   rules:
+#     - if: $RUN_DEPLOY_JOB == "true" && $CI_COMMIT_TAG
+#       variables: !reference [.deploy-release-02, variables]
+#       when: manual
+#     - if: $RUN_DEPLOY_JOB == "true" && $CI_COMMIT_BRANCH == "main"
+#       variables: !reference [.deploy-production-02, variables]
+#     - if: $RUN_DEPLOY_JOB == "true" && $CI_COMMIT_BRANCH == "sandbox"
+#       variables: !reference [.deploy-staging-02, variables]
+#   extends:
+#     - .deploy-template
+
+####################### Build Job #######################
+
+synchronize-job:
+  stage: ☕ synchronize
+  tags:
+    - "splatforma-production-velia"
+  rules:
+    - if: $RUN_SYNC_JOB == "true" && $CI_COMMIT_BRANCH == "sandbox"
+      variables: !reference [.synchronize-staging, variables]
+  extends:
+    - .sync-central-repo-template
