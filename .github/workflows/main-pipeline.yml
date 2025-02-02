@@ -1,0 +1,41 @@
+name: Splatform Reusable Workflow Run
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    branches:
+      - main
+      - sandbox
+      - dev
+      - tst/*
+      - '*'
+  pull_request:
+    branches:
+      - main
+      - sandbox
+      - dev
+      - tst/*
+      # - '*'
+# This provides ability of reusable workflow to read contents of this caller repository
+permissions:
+  pull-requests: read
+  contents: write  # Allows write access to the repository
+
+# Allows you to run this workflow manually from the Actions tab
+env:
+  workflow_dispatch: true
+  
+jobs:
+  reusable-workflow-run:
+    uses: fedir-indutnyi/sreusable-workflow/.github/workflows/global_main.yml@versioning
+    secrets: inherit
+
+
+
+
+
+
+
+
+

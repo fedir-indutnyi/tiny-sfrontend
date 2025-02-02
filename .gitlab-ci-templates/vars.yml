@@ -1,0 +1,163 @@
+.global:
+  variables:
+    RUN_BUILD_JOB:
+      description: "Run docker build job"
+      value: "true"
+      options:
+        - "true"
+        - "false"
+
+    RUN_DEPLOY_JOB:
+      description: "Run docker deploy job"
+      value: "true"
+      options:
+        - "true"
+        - "false"
+
+    RUN_SYNC_JOB:
+      description: "Run synchronize job"
+      value: "true"
+      options:
+        - "true"
+        - "false"
+
+    DEBUG:
+      description: "Debug logs"
+      value: "false"
+      options:
+        - "true"
+        - "false"
+
+    GITLAB_PIPELINE_REF: "1.0.3" # change also include ci-templates from .gitlab-ci.yml
+
+.build-common:
+  variables:
+    ROOT_PROJECT_NAME: "splatforma"
+    PROJECT_NAME: "frontend"
+
+.build-release:
+  extends:
+    - .build-common
+  variables:
+    DOCKER_IMAGE_TAG: "$CI_COMMIT_TAG"
+    DOCKER_NODE_ENV: "prod"
+    ENVIRONMENT: "production"
+
+.build-production:
+  extends:
+    - .build-common
+  variables:
+    DOCKER_IMAGE_TAG: "production"
+    DOCKER_NODE_ENV: "prod"
+    ENVIRONMENT: "production"
+
+.build-latest:
+  extends:
+    - .build-common
+  variables:
+    DOCKER_IMAGE_TAG: "latest"
+    DOCKER_NODE_ENV: "kendartsbx"
+    ENVIRONMENT: "staging"
+
+.deploy-common:
+  variables:
+    ROOT_PROJECT_NAME: "splatforma"
+    PROJECT_NAME: "frontend"
+    GIT_TOKEN: $CI_VAR_GIT_TOKEN
+    SSH_USER: gitlab-runner
+    SSH_PRIVATE_KEY: $CI_VAR_GITLAB_RUNNER_SSH_PRIVATE_KEY
+    GIT_STRATEGY: fetch
+
+.deploy-release:
+  extends:
+    - .deploy-common
+  variables:
+    ENVIRONMENT: "production"
+    DOCKER_IMAGE_TAG: "$CI_COMMIT_TAG"
+    DOCKER_FRONTEND_PORT: 32187
+    UID: 1003
+    GID: 1003
+
+.deploy-release-01:
+  extends: .deploy-release
+  variables:
+    SERVER_NAME: "splatforma-production-01"
+    SSH_IP: "10.2.21.6"
+    SSH_PORT: 22
+    CONTAINER_ID: "01"
+
+.deploy-release-02:
+  extends: .deploy-release
+  variables:
+    SERVER_NAME: "splatforma-production-02"
+    SSH_IP: "10.2.21.7"
+    SSH_PORT: 22
+    CONTAINER_ID: "02"
+
+.deploy-production:
+  extends:
+    - .deploy-common
+  variables:
+    ENVIRONMENT: "production"
+    DOCKER_IMAGE_TAG: "production"
+    DOCKER_FRONTEND_PORT: 32187
+    UID: 1003
+    GID: 1003
+
+.deploy-production-01:
+  extends: .deploy-production
+  variables:
+    SERVER_NAME: "splatforma-production-01"
+    SSH_IP: "10.2.21.6"
+    SSH_PORT: 22
+    CONTAINER_ID: "01"
+
+.deploy-production-02:
+  extends: .deploy-production
+  variables:
+    SERVER_NAME: "splatforma-production-02"
+    SSH_IP: "10.2.21.7"
+    SSH_PORT: 22
+    CONTAINER_ID: "02"
+
+.deploy-staging:
+  extends:
+    - .deploy-common
+  variables:
+    ENVIRONMENT: "staging"
+    DOCKER_IMAGE_TAG: "latest"
+    DOCKER_FRONTEND_PORT: 32177
+    UID: 1004
+    GID: 1004
+
+.deploy-staging-01:
+  extends: .deploy-staging
+  variables:
+    SERVER_NAME: "splatforma-production-01"
+    SSH_IP: "10.2.21.6"
+    SSH_PORT: 22
+    CONTAINER_ID: "01"
+
+.deploy-staging-02:
+  extends: .deploy-staging
+  variables:
+    SERVER_NAME: "splatforma-production-02"
+    SSH_IP: "10.2.21.7"
+    SSH_PORT: 22
+    CONTAINER_ID: "02"
+
+.synchronize-common:
+  variables:
+    ROOT_PROJECT_NAME: "splatforma"
+    PROJECT_NAME: "frontend"
+    GIT_TOKEN: $CI_VAR_GIT_TOKEN
+    SSH_USER: gitlab-runner
+    SSH_PRIVATE_KEY: $CI_VAR_GITLAB_RUNNER_SSH_PRIVATE_KEY
+    GIT_STRATEGY: fetch
+
+.synchronize-staging:
+  extends:
+    - .synchronize-common
+    - .centralrepo-group-staging
+  variables:
+    PROJ_BRANCH_TO_SYNC: "sandbox"
