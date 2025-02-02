@@ -1,6 +1,6 @@
 {
   "name": "sfrontend",
-"version": "2025.7-dev",
+"version": "2025.8-dev",
   "license": "MIT",
   "environments": {
     "dev": "environments/environment.ts",
