@@ -20,7 +20,7 @@ on:
 # This provides ability of reusable workflow to read contents of this caller repository
 permissions:
   pull-requests: read
-  contents: read 
+  contents: write  # Allows write access to the repository
 
 # Allows you to run this workflow manually from the Actions tab
 env:
