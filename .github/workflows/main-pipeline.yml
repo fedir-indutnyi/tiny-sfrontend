@@ -30,3 +30,4 @@ jobs:
   reusable-workflow-run:
     uses: fedir-indutnyi/sreusable-workflow/.github/workflows/global_main.yml@versioning
     secrets: inherit
+
